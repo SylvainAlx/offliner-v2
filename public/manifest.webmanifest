@@ -1,0 +1,30 @@
+{
+  "name": "Offliner — Déconnecte-toi",
+  "short_name": "Offliner",
+  "description": "Suivez votre temps passé hors ligne et déconnectez-vous de votre téléphone.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "categories": ["health", "lifestyle", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Statut actuel",
+      "short_name": "Statut",
+      "description": "Voir le statut de connexion immédiatement",
+      "url": "./"
+    }
+  ]
+}
