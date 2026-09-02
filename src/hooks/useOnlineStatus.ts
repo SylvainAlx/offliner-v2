@@ -31,7 +31,7 @@ function savePeriods(periods: OfflinePeriod[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(periods));
   } catch {
-    // ignore
+    // ignore write errors
   }
 }
 
@@ -43,20 +43,64 @@ function computeTotalMs(periods: OfflinePeriod[], now: number): number {
   }, 0);
 }
 
+function closeAnyOpenPeriod(
+  periods: OfflinePeriod[],
+  endTs: number,
+): OfflinePeriod[] {
+  const openIdx = periods.findIndex((p) => p.end === null);
+  if (openIdx === -1) return periods;
+  const updated = periods.slice();
+  updated[openIdx] = { ...updated[openIdx], end: endTs };
+  return updated;
+}
+
+function openPeriodIfNeeded(
+  periods: OfflinePeriod[],
+  startTs: number,
+): OfflinePeriod[] {
+  const hasOpen = periods.some((p) => p.end === null);
+  if (hasOpen) return periods;
+  return [...periods, { start: startTs, end: null }];
+}
+
 export function useOnlineStatus(): OnlineStatus {
   const initialOnline =
     typeof navigator !== "undefined" ? navigator.onLine : true;
-  const initialPeriods = loadPeriods();
-  const initialNow = Date.now();
+  const now0 = Date.now();
+  let initialPeriods = loadPeriods();
+
+  if (initialOnline) {
+    const hasOrphanOpen = initialPeriods.some((p) => p.end === null);
+    if (hasOrphanOpen) {
+      initialPeriods = closeAnyOpenPeriod(initialPeriods, now0);
+      savePeriods(initialPeriods);
+    }
+  } else {
+    const hasOpen = initialPeriods.some((p) => p.end === null);
+    if (!hasOpen) {
+      initialPeriods = [...initialPeriods, { start: now0, end: null }];
+      savePeriods(initialPeriods);
+    }
+  }
+
+  const startTicking = !initialOnline;
 
   const [isOnline, setIsOnline] = useState<boolean>(initialOnline);
-  const [lastChecked, setLastChecked] = useState<Date | null>(new Date());
+  const [lastChecked, setLastChecked] = useState<Date | null>(new Date(now0));
   const [periods, setPeriods] = useState<OfflinePeriod[]>(initialPeriods);
   const [totalOfflineMs, setTotalOfflineMs] = useState<number>(
-    computeTotalMs(initialPeriods, initialNow),
+    computeTotalMs(initialPeriods, now0),
   );
 
   const tickRef = useRef<number | null>(null);
+
+  const refreshTotalFromPeriods = useCallback(
+    (currentPeriods: OfflinePeriod[]) => {
+      setTotalOfflineMs(computeTotalMs(currentPeriods, Date.now()));
+      setLastChecked(new Date());
+    },
+    [setTotalOfflineMs, setLastChecked],
+  );
 
   const stopTick = useCallback(() => {
     if (tickRef.current !== null) {
@@ -68,33 +112,48 @@ export function useOnlineStatus(): OnlineStatus {
   const startTick = useCallback(() => {
     stopTick();
     tickRef.current = window.setInterval(() => {
-      setTotalOfflineMs((prev) => prev + 1000);
+      setPeriods((prev) => {
+        setTotalOfflineMs(computeTotalMs(prev, Date.now()));
+        setLastChecked(new Date());
+        return prev;
+      });
     }, 1000);
-  }, [stopTick]);
+  }, [stopTick, setPeriods, setTotalOfflineMs, setLastChecked]);
 
   const resetTracking = useCallback(() => {
     const empty: OfflinePeriod[] = [];
     savePeriods(empty);
     setPeriods(empty);
     setTotalOfflineMs(0);
-  }, []);
+    setLastChecked(new Date());
+  }, [setPeriods, setTotalOfflineMs, setLastChecked]);
 
   const goOnline = useCallback(() => {
     const now = Date.now();
     setPeriods((prev) => {
       const openIdx = prev.findIndex((p) => p.end === null);
-      if (openIdx === -1) return prev;
+      if (openIdx === -1) {
+        refreshTotalFromPeriods(prev);
+        return prev;
+      }
       const updated = prev.map((p, i) =>
         i === openIdx ? { ...p, end: now } : p,
       );
       savePeriods(updated);
       setTotalOfflineMs(computeTotalMs(updated, now));
+      setLastChecked(new Date());
       return updated;
     });
     setIsOnline(true);
-    setLastChecked(new Date());
     stopTick();
-  }, [stopTick]);
+  }, [
+    refreshTotalFromPeriods,
+    stopTick,
+    setPeriods,
+    setTotalOfflineMs,
+    setLastChecked,
+    setIsOnline,
+  ]);
 
   const goOffline = useCallback(() => {
     const now = Date.now();
@@ -103,35 +162,88 @@ export function useOnlineStatus(): OnlineStatus {
       const updated = hasOpen ? prev : [...prev, { start: now, end: null }];
       savePeriods(updated);
       setTotalOfflineMs(computeTotalMs(updated, now));
+      setLastChecked(new Date());
       return updated;
     });
     setIsOnline(false);
-    setLastChecked(new Date());
     startTick();
-  }, [startTick]);
+  }, [startTick, setPeriods, setTotalOfflineMs, setLastChecked, setIsOnline]);
+
+  const persistOnHide = useCallback(() => {
+    try {
+      const snapshot = JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "[]",
+      ) as OfflinePeriod[];
+      const now = Date.now();
+      if (!navigator.onLine) {
+        const normalized = openPeriodIfNeeded(snapshot, now);
+        savePeriods(normalized);
+      } else {
+        const normalized = closeAnyOpenPeriod(snapshot, now);
+        savePeriods(normalized);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const handleVisibilityChange = useCallback(() => {
+    if (document.visibilityState === "hidden") {
+      persistOnHide();
+      stopTick();
+    } else {
+      const now = Date.now();
+      const online = navigator.onLine;
+      let snapshot = loadPeriods();
+
+      if (online) {
+        snapshot = closeAnyOpenPeriod(snapshot, now);
+      } else {
+        snapshot = openPeriodIfNeeded(snapshot, now);
+      }
+      savePeriods(snapshot);
+      setPeriods(snapshot);
+      setIsOnline(online);
+      setTotalOfflineMs(computeTotalMs(snapshot, now));
+      setLastChecked(new Date(now));
+      if (!online) startTick();
+    }
+  }, [
+    persistOnHide,
+    startTick,
+    stopTick,
+    setPeriods,
+    setIsOnline,
+    setTotalOfflineMs,
+    setLastChecked,
+  ]);
 
   useEffect(() => {
-    if (!initialOnline) {
-      const hasOpen = initialPeriods.some((p) => p.end === null);
-      if (!hasOpen) {
-        const now = Date.now();
-        const updated = [...initialPeriods, { start: now, end: null }];
-        savePeriods(updated);
-        setPeriods(updated);
-        setTotalOfflineMs(computeTotalMs(updated, now));
-      }
-      startTick();
-    }
+    if (startTicking) startTick();
 
     window.addEventListener("online", goOnline);
     window.addEventListener("offline", goOffline);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", persistOnHide);
+    window.addEventListener("beforeunload", persistOnHide);
 
     return () => {
       window.removeEventListener("online", goOnline);
       window.removeEventListener("offline", goOffline);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", persistOnHide);
+      window.removeEventListener("beforeunload", persistOnHide);
       stopTick();
     };
-  }, [goOnline, goOffline, initialOnline, initialPeriods, startTick, stopTick]);
+  }, [
+    goOnline,
+    goOffline,
+    handleVisibilityChange,
+    persistOnHide,
+    startTicking,
+    startTick,
+    stopTick,
+  ]);
 
   return {
     isOnline,

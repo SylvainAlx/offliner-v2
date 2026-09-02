@@ -1,44 +1,45 @@
-import { useOnlineStatus, type OfflinePeriod } from './hooks/useOnlineStatus'
-import { useDeviceType } from './hooks/useDeviceType'
-import './App.css'
+import { useMemo } from "react";
+import { useOnlineStatus, type OfflinePeriod } from "./hooks/useOnlineStatus";
+import { useDeviceType } from "./hooks/useDeviceType";
+import "./App.css";
 
 function formatDate(date: Date | null): string {
-  if (!date) return '—'
-  return new Intl.DateTimeFormat('fr-FR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  }).format(date)
+  if (!date) return "—";
+  return new Intl.DateTimeFormat("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
 }
 
 function formatDateTime(ts: number): string {
-  return new Intl.DateTimeFormat('fr-FR', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(ts))
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(ts));
 }
 
 function formatDuration(ms: number): string {
-  const totalSeconds = Math.floor(ms / 1000)
-  const hours = Math.floor(totalSeconds / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  const seconds = totalSeconds % 60
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
 
-  const parts: string[] = []
-  if (hours > 0) parts.push(`${hours}h`)
-  if (minutes > 0) parts.push(`${minutes}m`)
-  if (hours === 0) parts.push(`${seconds}s`)
-  else if (seconds > 0) parts.push(`${seconds}s`)
+  const parts: string[] = [];
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  if (hours === 0) parts.push(`${seconds}s`);
+  else if (seconds > 0) parts.push(`${seconds}s`);
 
-  if (parts.length === 0) return '0s'
-  return parts.join(' ')
+  if (parts.length === 0) return "0s";
+  return parts.join(" ");
 }
 
 function periodDurationMs(period: OfflinePeriod, now: number): number {
-  const end = period.end ?? now
-  return Math.max(0, end - period.start)
+  const end = period.end ?? now;
+  return Math.max(0, end - period.start);
 }
 
 function DesktopGate({ onContinue }: { onContinue: () => void }) {
@@ -60,7 +61,8 @@ function DesktopGate({ onContinue }: { onContinue: () => void }) {
 
         <h1 className="gate-title">Utilisez Offliner sur mobile</h1>
         <p className="gate-lead">
-          Offliner est conçu pour vous aider à <strong>déconnecter</strong> depuis votre téléphone.
+          Offliner est conçu pour vous aider à <strong>déconnecter</strong>{" "}
+          depuis votre téléphone.
         </p>
 
         <ul className="gate-reasons">
@@ -83,51 +85,53 @@ function DesktopGate({ onContinue }: { onContinue: () => void }) {
             Ouvrez cette page dans le navigateur de votre téléphone :
           </p>
           <div className="gate-url" title="URL de la page">
-            {typeof window !== 'undefined' ? window.location.href : '...'}
+            {typeof window !== "undefined" ? window.location.href : "..."}
           </div>
         </div>
 
-        <button
-          type="button"
-          className="gate-bypass"
-          onClick={onContinue}
-        >
+        <button type="button" className="gate-bypass" onClick={onContinue}>
           Continuer sur desktop (aperçu)
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
-  const device = useDeviceType()
+  const device = useDeviceType();
   const {
     isOnline,
     lastChecked,
     offlinePeriods,
     totalOfflineMs,
     resetTracking,
-  } = useOnlineStatus()
+  } = useOnlineStatus();
 
-  const now = Date.now()
-  const completedPeriods = offlinePeriods
-    .filter((p) => p.end !== null)
-    .reverse()
-  const openPeriod = offlinePeriods.find((p) => p.end === null)
+  const { completedPeriods, openPeriod } = useMemo(() => {
+    const completed = offlinePeriods.filter((p) => p.end !== null).reverse();
+    const open = offlinePeriods.find((p) => p.end === null) ?? null;
+    return { completedPeriods: completed, openPeriod: open };
+  }, [offlinePeriods]);
 
-  if (device.isDesktop && !sessionStorage.getItem('offliner:bypass-desktop')) {
+  const nowRef = useMemo(
+    () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),
+    [lastChecked],
+  );
+  const now = nowRef.now;
+
+  if (device.isDesktop && !sessionStorage.getItem("offliner:bypass-desktop")) {
     return (
       <DesktopGate
         onContinue={() => {
-          sessionStorage.setItem('offliner:bypass-desktop', '1')
-          window.dispatchEvent(new Event('resize'))
+          sessionStorage.setItem("offliner:bypass-desktop", "1");
+          window.dispatchEvent(new Event("resize"));
         }}
       />
-    )
+    );
   }
 
   return (
-    <div className={`app-container ${isOnline ? 'online' : 'offline'}`}>
+    <div className={`app-container ${isOnline ? "online" : "offline"}`}>
       <header className="app-header">
         <h1>Offliner</h1>
         <p className="app-subtitle">Détecteur de connexion</p>
@@ -136,20 +140,20 @@ function App() {
       <main className="app-main">
         <div className="status-card">
           <div
-            className={`status-indicator ${isOnline ? 'pulse-online' : 'pulse-offline'}`}
+            className={`status-indicator ${isOnline ? "pulse-online" : "pulse-offline"}`}
           >
             <div className="status-dot"></div>
           </div>
 
           <div className="status-content">
             <h2
-              className={`status-title ${isOnline ? 'text-online' : 'text-offline'}`}
+              className={`status-title ${isOnline ? "text-online" : "text-offline"}`}
             >
-              {isOnline ? 'En ligne' : 'Hors ligne'}
+              {isOnline ? "En ligne" : "Hors ligne"}
             </h2>
             <p className="status-description">
               {isOnline
-                ? 'Votre appareil est connecté à Internet.'
+                ? "Votre appareil est connecté à Internet."
                 : "Votre appareil n'est pas connecté à Internet."}
             </p>
           </div>
@@ -174,8 +178,8 @@ function App() {
               <h3>📊 Historique</h3>
               <p className="tracking-sub">
                 {offlinePeriods.length} période
-                {offlinePeriods.length > 1 ? 's' : ''} enregistrée
-                {offlinePeriods.length > 1 ? 's' : ''}
+                {offlinePeriods.length > 1 ? "s" : ""} enregistrée
+                {offlinePeriods.length > 1 ? "s" : ""}
               </p>
             </div>
             {offlinePeriods.length > 0 && (
@@ -211,7 +215,7 @@ function App() {
               {completedPeriods.map((period, index) => {
                 const safeIndex = offlinePeriods.findIndex(
                   (p) => p.start === period.start && p.end === period.end,
-                )
+                );
                 return (
                   <li
                     key={`${period.start}-${period.end}-${safeIndex}-${index}`}
@@ -226,12 +230,12 @@ function App() {
                         </span>
                       </div>
                       <div className="period-time">
-                        {formatDateTime(period.start)} →{' '}
+                        {formatDateTime(period.start)} →{" "}
                         {formatDateTime(period.end!)}
                       </div>
                     </div>
                   </li>
-                )
+                );
               })}
             </ul>
           ) : (
@@ -249,10 +253,12 @@ function App() {
         <div className="info-card">
           <h3>💡 Comment tester ?</h3>
           <p>
-            Activez/désactivez le mode avion ou votre connexion Wi-Fi/données mobiles.
+            Activez/désactivez le mode avion ou votre connexion Wi-Fi/données
+            mobiles.
           </p>
           <p>
-            Vous pouvez aussi utiliser les outils de développement de votre navigateur (Network → Offline).
+            Vous pouvez aussi utiliser les outils de développement de votre
+            navigateur (Network → Offline).
           </p>
         </div>
       </main>
@@ -261,7 +267,7 @@ function App() {
         <p>POC Offliner — Détection et suivi de connexion</p>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
