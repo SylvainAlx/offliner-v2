@@ -1,11 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-export interface OfflinePeriod {
-  start: number;
-  end: number | null;
-}
+import type { OfflinePeriod } from "../utils/interfaces";
 
-export interface OnlineStatus {
+interface OnlineStatus {
   isOnline: boolean;
   lastChecked: Date | null;
   offlinePeriods: OfflinePeriod[];
@@ -64,9 +61,10 @@ function openPeriodIfNeeded(
 }
 
 export function useOnlineStatus(): OnlineStatus {
+  const [now0] = useState(() => Date.now());
+
   const initialOnline =
     typeof navigator !== "undefined" ? navigator.onLine : true;
-  const now0 = Date.now();
   let initialPeriods = loadPeriods();
 
   if (initialOnline) {

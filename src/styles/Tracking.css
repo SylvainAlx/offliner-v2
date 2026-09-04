@@ -1,0 +1,167 @@
+
+.tracking-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-100);
+}
+
+.tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.tracking-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+  color: var(--gray-900);
+  font-weight: 700;
+}
+
+.tracking-sub {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.reset-btn {
+  appearance: none;
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  color: var(--gray-700);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.reset-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: var(--red-dark);
+}
+
+.reset-btn:active {
+  transform: translateY(1px);
+}
+
+.period-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.period-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.period-item:last-child {
+  border-bottom: none;
+}
+
+.period-item.period-open {
+  background: var(--red-bg);
+  margin: 0 -20px 12px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border-bottom: none;
+}
+
+.period-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gray-300, #d1d5db);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.period-dot-active {
+  background: var(--red-primary);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  animation: dotBlink 1.4s ease-in-out infinite;
+}
+
+@keyframes dotBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.period-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.period-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.period-status {
+  color: var(--gray-600);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.period-open .period-status {
+  color: var(--red-dark);
+  font-weight: 700;
+}
+
+.period-duration {
+  font-weight: 700;
+  color: var(--gray-900);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.period-time {
+  font-size: 0.78rem;
+  color: var(--gray-600);
+  line-height: 1.4;
+}
+
+
+.empty-state {
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--gray-600);
+}
+
+.empty-state p {
+  margin: 0 0 6px 0;
+  font-size: 0.9rem;
+}
+
+.empty-hint {
+  font-size: 0.82rem;
+  color: var(--gray-600);
+  opacity: 0.8;
+}

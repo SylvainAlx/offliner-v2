@@ -1,0 +1,63 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.4s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.app-container.online {
+  background: linear-gradient(180deg, var(--green-bg) 0%, #ffffff 40%);
+}
+
+.app-container.offline {
+  background: linear-gradient(180deg, var(--red-bg) 0%, #ffffff 40%);
+}
+
+.app-header {
+  text-align: center;
+  padding: 48px 20px 24px;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-700) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.app-subtitle {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 16px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 20px 16px 32px;
+}
+
+.app-footer p {
+  margin: 0;
+  color: var(--gray-600);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
