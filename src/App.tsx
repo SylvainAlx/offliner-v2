@@ -1,4 +1,5 @@
-import { useOnlineStatus } from "./hooks/useOnlineStatus";
+import { OnlineStatusProvider } from "./contexts/OnlineStatusProvider";
+import { useOnlineStatusContext } from "./hooks/useOnlineStatusContext";
 import { useDeviceType } from "./hooks/useDeviceType";
 import DesktopGate from "./components/DesktopGate";
 import Header from "./components/layouts/Header";
@@ -8,15 +9,24 @@ import Tracking from "./components/Tracking";
 import Status from "./components/Status";
 import "./styles/App.css";
 
+function AppContent() {
+  const { isOnline } = useOnlineStatusContext();
+
+  return (
+    <div className={`app-container ${isOnline ? "online" : "offline"}`}>
+      <Header />
+      <main className="app-main">
+        <Status />
+        <Tracking />
+        <Help />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 function App() {
   const device = useDeviceType();
-  const {
-    isOnline,
-    lastChecked,
-    offlinePeriods,
-    totalOfflineMs,
-    resetTracking,
-  } = useOnlineStatus();
 
   if (device.isDesktop && !sessionStorage.getItem("offliner:bypass-desktop")) {
     return (
@@ -30,23 +40,9 @@ function App() {
   }
 
   return (
-    <div className={`app-container ${isOnline ? "online" : "offline"}`}>
-      <Header />
-      <main className="app-main">
-        <Status
-          isOnline={isOnline}
-          lastChecked={lastChecked}
-          totalOfflineMs={totalOfflineMs}
-        />
-        <Tracking
-          offlinePeriods={offlinePeriods}
-          lastChecked={lastChecked}
-          resetTracking={resetTracking}
-        />
-        <Help />
-      </main>
-      <Footer />
-    </div>
+    <OnlineStatusProvider>
+      <AppContent />
+    </OnlineStatusProvider>
   );
 }
 

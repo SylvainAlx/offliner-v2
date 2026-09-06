@@ -1,3 +1,5 @@
+@import '_media-queries.css';
+
 :root {
    --green-primary: #22c55e;
   --green-dark: #15803d;

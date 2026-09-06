@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { OfflinePeriod } from "../utils/interfaces";
+import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
 import {
   formatDateTime,
   formatDuration,
@@ -7,17 +7,10 @@ import {
 } from "../utils/format";
 import "../styles/Tracking.css";
 
-interface TrackingProps {
-  offlinePeriods: OfflinePeriod[];
-  resetTracking: () => void;
-  lastChecked: Date | null;
-}
+export default function Tracking() {
+  const { offlinePeriods, resetTracking, lastChecked } =
+    useOnlineStatusContext();
 
-export default function Tracking({
-  offlinePeriods,
-  resetTracking,
-  lastChecked,
-}: TrackingProps) {
   const nowRef = useMemo(
     () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),
     [lastChecked],
