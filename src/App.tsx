@@ -1,3 +1,4 @@
+import { UserProvider } from "./contexts/UserProvider";
 import { OnlineStatusProvider } from "./contexts/OnlineStatusProvider";
 import { useOnlineStatusContext } from "./hooks/useOnlineStatusContext";
 import { useDeviceType } from "./hooks/useDeviceType";
@@ -40,9 +41,11 @@ function App() {
   }
 
   return (
-    <OnlineStatusProvider>
-      <AppContent />
-    </OnlineStatusProvider>
+    <UserProvider>
+      <OnlineStatusProvider>
+        <AppContent />
+      </OnlineStatusProvider>
+    </UserProvider>
   );
 }
 

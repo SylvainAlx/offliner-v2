@@ -6,10 +6,12 @@ import {
   periodDurationMs,
 } from "../utils/format";
 import "../styles/Tracking.css";
+import { useUserContext } from "../hooks/useUserContext";
 
 export default function Tracking() {
-  const { offlinePeriods, resetTracking, lastChecked } =
+  const { resetTracking, lastChecked } =
     useOnlineStatusContext();
+  const { user } = useUserContext();
 
   const nowRef = useMemo(
     () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),
@@ -17,10 +19,10 @@ export default function Tracking() {
   );
   const now = nowRef.now;
   const { completedPeriods, openPeriod } = useMemo(() => {
-    const completed = offlinePeriods.filter((p) => p.end !== null).reverse();
-    const open = offlinePeriods.find((p) => p.end === null) ?? null;
+    const completed = user.periodList.periods.filter((p) => p.end !== null).reverse();
+    const open = user.periodList.periods.find((p) => p.end === null) ?? null;
     return { completedPeriods: completed, openPeriod: open };
-  }, [offlinePeriods]);
+  }, [user]);
 
   return (
     <div className="tracking-card">
@@ -28,12 +30,12 @@ export default function Tracking() {
         <div>
           <h3>📊 Historique</h3>
           <p className="tracking-sub">
-            {offlinePeriods.length} période
-            {offlinePeriods.length > 1 ? "s" : ""} enregistrée
-            {offlinePeriods.length > 1 ? "s" : ""}
+            {user.periodList.periods.length} période
+            {user.periodList.periods.length > 1 ? "s" : ""} enregistrée
+            {user.periodList.periods.length > 1 ? "s" : ""}
           </p>
         </div>
-        {offlinePeriods.length > 0 && (
+        {user.periodList.periods.length > 0 && (
           <button type="button" className="reset-btn" onClick={resetTracking}>
             Réinitialiser
           </button>
@@ -60,7 +62,7 @@ export default function Tracking() {
       {completedPeriods.length > 0 ? (
         <ul className="period-list">
           {completedPeriods.map((period, index) => {
-            const safeIndex = offlinePeriods.findIndex(
+            const safeIndex = user.periodList.periods.findIndex(
               (p) => p.start === period.start && p.end === period.end,
             );
             return (

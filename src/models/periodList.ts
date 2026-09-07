@@ -7,13 +7,32 @@ export class PeriodList {
     this.periods = periods;
   }
 
-  loadPeriods(rawPeriods: object[] | Period[] = []): void {
+  loadPeriods(rawPeriods: unknown = []): void {
     try {
+      let list: any[] = [];
       if (Array.isArray(rawPeriods)) {
-        this.periods = rawPeriods as Period[];
-      } else {
-        this.periods = [];
+        list = rawPeriods;
+      } else if (rawPeriods && typeof rawPeriods === "object") {
+        const candidate =
+          (rawPeriods as any).periods ??
+          (rawPeriods as any).periodList ??
+          (rawPeriods as any).perdioList ??
+          (rawPeriods as any).offlinePeriods;
+        if (Array.isArray(candidate)) {
+          list = candidate;
+        }
       }
+      this.periods = list
+        .filter((p: any) => p && p.start !== undefined && !isNaN(Number(p.start)))
+        .map(
+          (p: any) =>
+            new Period(
+              Number(p.start),
+              p.end !== null && p.end !== undefined && !isNaN(Number(p.end))
+                ? Number(p.end)
+                : null,
+            ),
+        );
     } catch {
       this.periods = [];
     }
@@ -39,16 +58,13 @@ export class PeriodList {
   }, 0);
 }
 
-closeAnyOpenPeriod(
-  endTs: number,
-): void {
-  const openIdx = this.periods.findIndex((p) => p.end === null);
-  if (openIdx === -1) return;
-  const updated = this.periods.slice();
-  updated[openIdx] = new Period(updated[openIdx].start, endTs);
-}
+  closeAnyOpenPeriod(endTs: number): void {
+    const openIdx = this.periods.findIndex((p) => p.end === null);
+    if (openIdx === -1) return;
+    this.periods[openIdx] = new Period(this.periods[openIdx].start, endTs);
+  }
 
-openPeriodIfNeeded(
+  openPeriodIfNeeded(
   startTs: number,
 ): void {
   const hasOpen = this.periods.some((p) => p.end === null);

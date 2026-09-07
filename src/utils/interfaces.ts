@@ -1,4 +1,1 @@
-export interface OfflinePeriod {
-  start: number;
-  end: number | null;
-}
+export type { Period as OfflinePeriod } from "../models/period";

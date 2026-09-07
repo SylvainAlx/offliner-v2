@@ -1,5 +1,6 @@
 import { USER_KEY } from "../utils/constants";
 import { PeriodList } from "./periodList";
+import { Period } from "./period";
 
 export class User {
   name: string;
@@ -16,13 +17,29 @@ export class User {
 
   loadUser(): void {
     try {
-      const raw = localStorage.getItem(USER_KEY);
+      let raw = localStorage.getItem(USER_KEY);
       if (!raw) return;
       const parsed = JSON.parse(raw);
+      if (!parsed) return;
+
+      if (Array.isArray(parsed)) {
+        this.periodList.loadPeriods(parsed);
+        return;
+      }
+
       if (typeof parsed.name === "string") this.name = parsed.name;
       if (typeof parsed.offlinium === "number") this.offlinium = parsed.offlinium;
-      if (typeof parsed.periodList === "object") this.periodList.loadPeriods(parsed.periodList);
       if (typeof parsed.createdAt === "number") this.createdAt = parsed.createdAt;
+
+      const rawPeriods =
+        parsed.periodList ??
+        parsed.perdioList ??
+        parsed.periods ??
+        parsed.offlinePeriods;
+
+      if (rawPeriods !== undefined && rawPeriods !== null) {
+        this.periodList.loadPeriods(rawPeriods);
+      }
     } catch {
       return;
     }
@@ -35,6 +52,16 @@ export class User {
     } catch {
       return;
     }
+  }
+
+  clone(): User {
+    const copy = new User(this.name);
+    copy.offlinium = this.offlinium;
+    copy.createdAt = this.createdAt;
+    copy.periodList = new PeriodList(
+      this.periodList.periods.map((p) => new Period(p.start, p.end)),
+    );
+    return copy;
   }
 
   addOfflinium(amount: number): void {

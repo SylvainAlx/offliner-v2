@@ -1,7 +1,5 @@
 import { createContext } from "react";
 
-import type { OfflinePeriod } from "../utils/interfaces";
-
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -9,7 +7,6 @@ import type { OfflinePeriod } from "../utils/interfaces";
 export interface OnlineStatusContextValue {
   isOnline: boolean;
   lastChecked: Date | null;
-  offlinePeriods: OfflinePeriod[];
   totalOfflineMs: number;
   resetTracking: () => void;
 }
