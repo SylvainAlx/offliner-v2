@@ -9,7 +9,7 @@ export default function Header() {
         <h1>Offliner</h1>
         <OffliniumBadge />
       </div>
-      <p className="app-subtitle">Un monde hors-ligne</p>
+      <p className="app-subtitle">Explorer le monde hors-ligne</p>
     </header>
   );
 }

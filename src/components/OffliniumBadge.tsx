@@ -1,9 +1,9 @@
-import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
+import { useOnlineStatus } from "../contexts/OnlineStatusContext";
 import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 import "../styles/OffliniumBadge.css";
 
 export default function OffliniumBadge() {
-  const { isOnline, totalOfflineMs } = useOnlineStatusContext();
+  const { isOnline, totalOfflineMs } = useOnlineStatus();
   const currentOfflinium = Math.floor(totalOfflineMs / OFFLINIUM_DELIVERY_INTERVAL);
 
   return (

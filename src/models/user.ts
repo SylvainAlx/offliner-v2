@@ -41,8 +41,8 @@ export class User {
         this.periodList.loadPeriods(rawPeriods);
         this.extractOfflinium();
       }
-    } catch {
-      return;
+    } catch(e) {
+     console.error(e);
     }
   }
 

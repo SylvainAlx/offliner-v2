@@ -1,9 +1,9 @@
-import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
+import { useOnlineStatus } from "../contexts/OnlineStatusContext";
 import { formatDate, formatDuration } from "../utils/format";
 import "../styles/Status.css";
 
 export default function Status() {
-  const { isOnline, lastChecked, totalOfflineMs } = useOnlineStatusContext();
+  const { isOnline, lastChecked, totalOfflineMs } = useOnlineStatus();
 
   return (
     <div className="status-card">

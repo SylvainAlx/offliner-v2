@@ -1,17 +1,16 @@
 import { useMemo } from "react";
-import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
+import { useOnlineStatus } from "../contexts/OnlineStatusContext";
 import {
   formatDateTime,
   formatDuration,
 } from "../utils/format";
 import "../styles/Tracking.css";
-import { useUserContext } from "../hooks/useUserContext";
+import { useUser } from "../contexts/UserContext";
 import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 
 export default function Tracking() {
-  const { resetTracking, lastChecked } =
-    useOnlineStatusContext();
-  const { user } = useUserContext();
+  const { resetTracking, lastChecked } = useOnlineStatus();
+  const { user } = useUser();
 
   const nowRef = useMemo(
     () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),

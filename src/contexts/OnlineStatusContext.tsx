@@ -1,13 +1,23 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from "react";
 import { User } from "../models/user";
-import { useUserContext } from "./useUserContext";
+import { useUser } from "./UserContext";
 
-export interface OnlineStatus {
+export interface OnlineStatusContextValue {
   isOnline: boolean;
   lastChecked: Date | null;
   totalOfflineMs: number;
   resetTracking: () => void;
 }
+
+const OnlineStatusContext = createContext<OnlineStatusContextValue | null>(null);
 
 function persistDirectly(now: number, isOnline: boolean): void {
   try {
@@ -20,18 +30,21 @@ function persistDirectly(now: number, isOnline: boolean): void {
     }
     u.saveUser();
   } catch {
-    // ignore write errors
   }
 }
 
-export function useOnlineStatus(): OnlineStatus {
+interface OnlineStatusProviderProps {
+  children: ReactNode;
+}
+
+export function OnlineStatusProvider({ children }: OnlineStatusProviderProps) {
   const {
     user,
     openPeriodIfNeeded,
     closeAnyOpenPeriod,
     resetPeriods,
     syncWithStorage,
-  } = useUserContext();
+  } = useUser();
 
   const initialOnline =
     typeof navigator !== "undefined" ? navigator.onLine : true;
@@ -141,10 +154,24 @@ export function useOnlineStatus(): OnlineStatus {
     stopTick,
   ]);
 
-  return {
-    isOnline,
-    lastChecked,
-    totalOfflineMs,
-    resetTracking,
-  };
+  return (
+    <OnlineStatusContext.Provider
+      value={{
+        isOnline,
+        lastChecked,
+        totalOfflineMs,
+        resetTracking,
+      }}
+    >
+      {children}
+    </OnlineStatusContext.Provider>
+  );
+}
+
+export function useOnlineStatus(): OnlineStatusContextValue {
+  const ctx = useContext(OnlineStatusContext);
+  if (!ctx) {
+    throw new Error("useOnlineStatus must be used within an OnlineStatusProvider");
+  }
+  return ctx;
 }

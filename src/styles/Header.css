@@ -14,14 +14,9 @@
 }
 
 .app-header h1 {
-  font-size: 2.25rem;
+  font-size: 2rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-700) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
 }
 
 .app-subtitle {

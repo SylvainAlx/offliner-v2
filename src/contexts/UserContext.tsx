@@ -1,7 +1,29 @@
-import { useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 import { User } from "../models/user";
 
-export function useUser() {
+export interface UserContextValue {
+  user: User;
+  openPeriodIfNeeded: (startTs: number) => void;
+  closeAnyOpenPeriod: (endTs: number) => void;
+  resetPeriods: () => void;
+  saveUser: () => void;
+  reloadUser: () => User;
+  syncWithStorage: (online: boolean, now: number) => User;
+}
+
+const UserContext = createContext<UserContextValue | null>(null);
+
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User>(() => {
     const u = new User();
     u.loadUser();
@@ -70,13 +92,27 @@ export function useUser() {
     return u;
   }, []);
 
-  return {
-    user,
-    openPeriodIfNeeded,
-    closeAnyOpenPeriod,
-    resetPeriods,
-    saveUser,
-    reloadUser,
-    syncWithStorage,
-  };
+  return (
+    <UserContext.Provider
+      value={{
+        user,
+        openPeriodIfNeeded,
+        closeAnyOpenPeriod,
+        resetPeriods,
+        saveUser,
+        reloadUser,
+        syncWithStorage,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
+}
+
+export function useUser(): UserContextValue {
+  const ctx = useContext(UserContext);
+  if (!ctx) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return ctx;
 }

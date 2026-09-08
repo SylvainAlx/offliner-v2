@@ -1,6 +1,5 @@
-import { UserProvider } from "./providers/UserProvider";
-import { OnlineStatusProvider } from "./providers/OnlineStatusProvider";
-import { useOnlineStatusContext } from "./hooks/useOnlineStatusContext";
+import { UserProvider } from "./contexts/UserContext";
+import { OnlineStatusProvider, useOnlineStatus } from "./contexts/OnlineStatusContext";
 import { useDeviceType } from "./hooks/useDeviceType";
 import DesktopGate from "./components/DesktopGate";
 import Header from "./components/layouts/Header";
@@ -11,7 +10,7 @@ import Status from "./components/Status";
 import "./styles/App.css";
 
 function AppContent() {
-  const { isOnline } = useOnlineStatusContext();
+  const { isOnline } = useOnlineStatus();
 
   return (
     <div className={`app-container ${isOnline ? "online" : "offline"}`}>

@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
+import { useOnlineStatus } from "../contexts/OnlineStatusContext";
 import "../styles/OffliniumGenerator.css";
 import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 
 
 export default function OffliniumGenerator() {
-  const { isOnline, totalOfflineMs } = useOnlineStatusContext();
+  const { isOnline, totalOfflineMs } = useOnlineStatus();
 
   const totalOfflinium = Math.floor(totalOfflineMs / OFFLINIUM_DELIVERY_INTERVAL);
   const cycleMs = totalOfflineMs % OFFLINIUM_DELIVERY_INTERVAL;
