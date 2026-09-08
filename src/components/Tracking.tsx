@@ -6,6 +6,7 @@ import {
 } from "../utils/format";
 import "../styles/Tracking.css";
 import { useUserContext } from "../hooks/useUserContext";
+import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 
 export default function Tracking() {
   const { resetTracking, lastChecked } =
@@ -53,7 +54,7 @@ export default function Tracking() {
                   {formatDuration(openPeriod.getPeriodDurationMs(now))}
                 </span>
                 <span className="period-offlinium-tag active">
-                  +{Math.floor(openPeriod.getPeriodDurationMs(now) / 60000)} ⬡
+                  +{Math.floor(openPeriod.getPeriodDurationMs(now) / OFFLINIUM_DELIVERY_INTERVAL)} ⬡
                 </span>
               </div>
             </div>
@@ -70,8 +71,8 @@ export default function Tracking() {
             const safeIndex = user.periodList.periods.findIndex(
               (p) => p.start === period.start && p.end === period.end,
             );
-            const durationMs = period.getPeriodDurationMs(now);
-            const offliniumGain = period.getOffliniumGain(now);
+            const durationMs = period.getPeriodDurationMs() ?? 0;
+            const offliniumGain = period.getOffliniumGain();
 
             return (
               <li

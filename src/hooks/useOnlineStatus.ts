@@ -66,9 +66,15 @@ export function useOnlineStatus(): OnlineStatus {
   }, [stopTick]);
 
   const resetTracking = useCallback(() => {
-    resetPeriods();
-    setTotalOfflineMs(0);
-    setLastChecked(new Date());
+    if (
+      window.confirm(
+        "Cette action va supprimer l'historique complet de vos périodes de déconnexion. Continuer?",
+      )
+    ) {
+      resetPeriods();
+      setTotalOfflineMs(0);
+      setLastChecked(new Date());
+    }
   }, [resetPeriods]);
 
   const goOnline = useCallback(() => {

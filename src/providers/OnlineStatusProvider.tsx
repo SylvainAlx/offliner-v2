@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { useOnlineStatus } from "../hooks/useOnlineStatus";
-import { OnlineStatusContext } from "./OnlineStatusContext";
+import { OnlineStatusContext } from "../contexts/OnlineStatusContext";
 
 // ---------------------------------------------------------------------------
 // Provider

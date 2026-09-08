@@ -6,7 +6,7 @@ export default function Help() {
     <div className="info-card">
       <h3>💡 Comment ça marche ?</h3>
       <p>
-        <strong>{`1 particule d'Offlinium générée toutes les ${OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes.`}.</strong> Plus vous restez déconnecté, plus votre réacteur en synthétise.
+        <strong>1 particule d'Offlinium (⬡) est générée toutes les {OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes que vous passez hors ligne.</strong>
       </p>
       <p>
         Pour tester, activez le mode avion, coupez le Wi-Fi ou utilisez l'onglet Réseau (Network → Offline) de vos outils de développement.

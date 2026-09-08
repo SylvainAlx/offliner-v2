@@ -53,7 +53,7 @@ export class PeriodList {
   closeAnyOpenPeriod(endTs: number): void {
     const openIdx = this.periods.findIndex((p) => p.end === null);
     if (openIdx === -1) return;
-    this.periods[openIdx] = new Period(this.periods[openIdx].start, endTs);
+    this.periods[openIdx].close(endTs);
   }
 
   openPeriodIfNeeded(

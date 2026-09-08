@@ -1,5 +1,5 @@
-import { UserProvider } from "./contexts/UserProvider";
-import { OnlineStatusProvider } from "./contexts/OnlineStatusProvider";
+import { UserProvider } from "./providers/UserProvider";
+import { OnlineStatusProvider } from "./providers/OnlineStatusProvider";
 import { useOnlineStatusContext } from "./hooks/useOnlineStatusContext";
 import { useDeviceType } from "./hooks/useDeviceType";
 import DesktopGate from "./components/DesktopGate";
