@@ -1,0 +1,356 @@
+.offlinium-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--gray-100);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.offlinium-card.extracting {
+  border-color: rgba(170, 59, 255, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(170, 59, 255, 0.15),
+              0 8px 10px -6px rgba(170, 59, 255, 0.1);
+  background: linear-gradient(180deg, rgba(245, 235, 255, 0.6) 0%, #ffffff 60%);
+}
+
+.offlinium-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.offlinium-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.offlinium-badge-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(170, 59, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(170, 59, 255, 0.2);
+}
+
+.offlinium-card.extracting .offlinium-badge-icon {
+  animation: floatOrb 3s ease-in-out infinite;
+}
+
+.offlinium-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--gray-900);
+  letter-spacing: -0.01em;
+}
+
+.offlinium-rate {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+  margin: 2px 0 0 0;
+  font-weight: 500;
+}
+
+.offlinium-total-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: var(--gray-50);
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+}
+
+.offlinium-card.extracting .offlinium-total-chip {
+  background: #ffffff;
+  border-color: rgba(170, 59, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(170, 59, 255, 0.12);
+}
+
+.chip-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gray-600);
+}
+
+.chip-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+/* Reactor visual core */
+.reactor-core-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--gray-50);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--gray-100);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 520px) {
+  .reactor-core-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+}
+
+.reactor-visual {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reactor-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.reactor-track {
+  fill: none;
+  stroke: var(--gray-200);
+  stroke-width: 8;
+}
+
+.reactor-progress {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease;
+}
+
+.offlinium-card.idle .reactor-progress {
+  stroke: #c084fc;
+  opacity: 0.9;
+}
+
+.reactor-orb {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--gray-100);
+}
+
+.offlinium-card.extracting .reactor-orb {
+  background: radial-gradient(circle, #ffffff 40%, rgba(245, 235, 255, 0.9) 100%);
+  border-color: rgba(170, 59, 255, 0.25);
+  box-shadow: 0 0 16px rgba(170, 59, 255, 0.25);
+}
+
+.orb-crystal {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.orb-seconds {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  line-height: 1.1;
+  font-family: var(--mono);
+}
+
+.offlinium-card.extracting .orb-seconds {
+  color: var(--accent);
+}
+
+.orb-max {
+  font-size: 0.65rem;
+  color: var(--gray-600);
+  font-weight: 600;
+}
+
+/* Particle burst effect on minute completed */
+.particle-burst {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  pointer-events: none;
+  animation: floatUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.burst-particle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #aa3bff;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 20px;
+  border: 1px solid #aa3bff;
+  box-shadow: 0 4px 12px rgba(170, 59, 255, 0.4);
+}
+
+@keyframes floatUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+}
+
+@keyframes floatOrb {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.05);
+  }
+}
+
+/* Reactor info right column */
+.reactor-info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reactor-status-tag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .reactor-status-tag {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.status-ping {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-400);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+@media (max-width: 520px) {
+  .status-ping {
+    margin-top: 0;
+  }
+}
+
+.offlinium-card.extracting .status-ping {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.25);
+  animation: pingDot 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pingDot {
+  0% {
+    box-shadow: 0 0 0 0 rgba(170, 59, 255, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(170, 59, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(170, 59, 255, 0);
+  }
+}
+
+.status-tag-text {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.reactor-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reactor-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  width: 100%;
+}
+
+.reactor-progress-bar {
+  height: 8px;
+  background: var(--gray-200);
+  border-radius: 999px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reactor-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #aa3bff 0%, #7c3aed 100%);
+  border-radius: 999px;
+  transition: width 0.8s ease;
+  max-width: 100%;
+}
+
+.offlinium-card.idle .reactor-progress-fill {
+  background: linear-gradient(90deg, #c084fc 0%, #a855f7 100%);
+}
+
+.reactor-hint {
+  font-size: 0.78rem;
+  color: var(--gray-600);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.reactor-hint strong {
+  color: var(--gray-900);
+}

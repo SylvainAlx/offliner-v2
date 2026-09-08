@@ -24,6 +24,7 @@ export function useUser() {
     setUser((prev) => {
       const next = prev.clone();
       next.periodList.openPeriodIfNeeded(startTs);
+      next.extractOfflinium(startTs);
       next.saveUser();
       return next;
     });
@@ -33,6 +34,7 @@ export function useUser() {
     setUser((prev) => {
       const next = prev.clone();
       next.periodList.closeAnyOpenPeriod(endTs);
+      next.extractOfflinium(endTs);
       next.saveUser();
       return next;
     });
@@ -42,6 +44,7 @@ export function useUser() {
     setUser((prev) => {
       const next = prev.clone();
       next.periodList.clearPeriods();
+      next.offlinium = 0;
       next.saveUser();
       return next;
     });

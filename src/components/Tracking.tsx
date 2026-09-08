@@ -48,9 +48,14 @@ export default function Tracking() {
           <div className="period-content">
             <div className="period-top">
               <span className="period-status">En cours…</span>
-              <span className="period-duration">
-                {formatDuration(periodDurationMs(openPeriod, now))}
-              </span>
+              <div className="period-metrics">
+                <span className="period-duration">
+                  {formatDuration(periodDurationMs(openPeriod, now))}
+                </span>
+                <span className="period-offlinium-tag active">
+                  +{Math.floor(periodDurationMs(openPeriod, now) / 60000)} ⬡
+                </span>
+              </div>
             </div>
             <div className="period-time">
               Débuté le {formatDateTime(openPeriod.start)}
@@ -65,6 +70,9 @@ export default function Tracking() {
             const safeIndex = user.periodList.periods.findIndex(
               (p) => p.start === period.start && p.end === period.end,
             );
+            const durationMs = periodDurationMs(period, now);
+            const offliniumGain = Math.floor(durationMs / 60000);
+
             return (
               <li
                 key={`${period.start}-${period.end}-${safeIndex}-${index}`}
@@ -74,9 +82,16 @@ export default function Tracking() {
                 <div className="period-content">
                   <div className="period-top">
                     <span className="period-status">Terminée</span>
-                    <span className="period-duration">
-                      {formatDuration(periodDurationMs(period, now))}
-                    </span>
+                    <div className="period-metrics">
+                      <span className="period-duration">
+                        {formatDuration(durationMs)}
+                      </span>
+                      {offliniumGain > 0 && (
+                        <span className="period-offlinium-tag">
+                          +{offliniumGain} ⬡
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <div className="period-time">
                     {formatDateTime(period.start)} →{" "}

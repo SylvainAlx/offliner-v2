@@ -50,10 +50,10 @@ export class PeriodList {
     this.periods = [];
   }
 
-  computeTotalMs(now: number): number {
+  computeTotalMs(now?: number): number {
   return this.periods.reduce((total: number, p: Period) => {
     const end = p.end ?? now;
-    const dur = end - p.start;
+    const dur = Number(end) - Number(p.start);
     return total + Math.max(0, dur);
   }, 0);
 }

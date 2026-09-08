@@ -1,4 +1,4 @@
-import { USER_KEY } from "../utils/constants";
+import { OFFLINIUM_DELIVERY_INTERVAL, USER_KEY } from "../utils/constants";
 import { PeriodList } from "./periodList";
 import { Period } from "./period";
 
@@ -39,6 +39,7 @@ export class User {
 
       if (rawPeriods !== undefined && rawPeriods !== null) {
         this.periodList.loadPeriods(rawPeriods);
+        this.extractOfflinium();
       }
     } catch {
       return;
@@ -62,6 +63,11 @@ export class User {
       this.periodList.periods.map((p) => new Period(p.start, p.end)),
     );
     return copy;
+  }
+
+  extractOfflinium(now?: number): void {
+    const totalMs = this.periodList.computeTotalMs(now);
+    this.offlinium = Math.floor(totalMs / OFFLINIUM_DELIVERY_INTERVAL);
   }
 
   addOfflinium(amount: number): void {

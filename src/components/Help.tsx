@@ -1,16 +1,15 @@
 import "../styles/Help.css";
+import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 
 export default function Help() {
   return (
     <div className="info-card">
-      <h3>💡 Comment tester ?</h3>
+      <h3>💡 Comment ça marche ?</h3>
       <p>
-        Activez/désactivez le mode avion ou votre connexion Wi-Fi/données
-        mobiles.
+        <strong>{`1 particule d'Offlinium générée toutes les ${OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes.`}.</strong> Plus vous restez déconnecté, plus votre réacteur en synthétise.
       </p>
       <p>
-        Vous pouvez aussi utiliser les outils de développement de votre
-        navigateur (Network → Offline).
+        Pour tester, activez le mode avion, coupez le Wi-Fi ou utilisez l'onglet Réseau (Network → Offline) de vos outils de développement.
       </p>
     </div>
   );

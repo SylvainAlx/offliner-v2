@@ -5,6 +5,8 @@ import { useDeviceType } from "./hooks/useDeviceType";
 import DesktopGate from "./components/DesktopGate";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
+// import OffliniumGenerator from "./components/OffliniumGenerator";
+import HarvestToast from "./components/HarvestToast";
 import Help from "./components/Help";
 import Tracking from "./components/Tracking";
 import Status from "./components/Status";
@@ -15,8 +17,10 @@ function AppContent() {
 
   return (
     <div className={`app-container ${isOnline ? "online" : "offline"}`}>
+      <HarvestToast />
       <Header />
       <main className="app-main">
+        {/* <OffliniumGenerator /> */}
         <Status />
         <Tracking />
         <Help />
