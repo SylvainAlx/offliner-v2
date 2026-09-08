@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
 import "../styles/OffliniumGenerator.css";
+import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
+
 
 export default function OffliniumGenerator() {
   const { isOnline, totalOfflineMs } = useOnlineStatusContext();
 
-  const totalOfflinium = Math.floor(totalOfflineMs / 60000);
-  const cycleMs = totalOfflineMs % 60000;
+  const totalOfflinium = Math.floor(totalOfflineMs / OFFLINIUM_DELIVERY_INTERVAL);
+  const cycleMs = totalOfflineMs % OFFLINIUM_DELIVERY_INTERVAL;
   const cycleSeconds = Math.floor(cycleMs / 1000);
   const remainingSeconds = 60 - cycleSeconds;
-  const cyclePercent = Math.min(100, Math.max(0, (cycleMs / 60000) * 100));
+  const cyclePercent = Math.min(100, Math.max(0, (cycleMs / OFFLINIUM_DELIVERY_INTERVAL) * 100));
 
   // Trigger burst effect when offlinium increases
   const [showBurst, setShowBurst] = useState(false);
@@ -44,7 +46,7 @@ export default function OffliniumGenerator() {
           <span className="offlinium-badge-icon">⚛️</span>
           <div>
             <h3 className="offlinium-title">Réacteur d'Offlinium</h3>
-            <p className="offlinium-rate">Taux : 1 ⬡ / minute hors ligne</p>
+            <p className="offlinium-rate">Taux : 1 ⬡ / {OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes hors ligne</p>
           </div>
         </div>
         <div className="offlinium-total-chip">
@@ -80,7 +82,7 @@ export default function OffliniumGenerator() {
             <span className="orb-seconds">
               {`${cycleSeconds}s`}
             </span>
-            <span className="orb-max">/ 60s</span>
+            <span className="orb-max">/ {OFFLINIUM_DELIVERY_INTERVAL / 1000}s</span>
           </div>
 
           {/* Animated particle burst on +1 */}
@@ -111,7 +113,7 @@ export default function OffliniumGenerator() {
           </div>
 
           <p className="reactor-hint">
-            💡 <strong>1 minute hors-ligne = 1 Offlinium</strong> accumulé.
+            💡 <strong>1 {OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes hors-ligne = 1 Offlinium</strong> accumulé.
           </p>
         </div>
       </div>

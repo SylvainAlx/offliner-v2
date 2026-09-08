@@ -1,14 +1,15 @@
 import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
-import { useUserContext } from "../hooks/useUserContext";
+import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
+import "../styles/OffliniumBadge.css";
 
 export default function OffliniumBadge() {
-    const { isOnline } = useOnlineStatusContext();
-    const { user } = useUserContext();
+  const { isOnline, totalOfflineMs } = useOnlineStatusContext();
+  const currentOfflinium = Math.floor(totalOfflineMs / OFFLINIUM_DELIVERY_INTERVAL);
 
-    return (
-        <div className={`header-offlinium-badge ${!isOnline ? "active" : ""}`}>
-          <span className="badge-gem">⬡</span>
-          <span className="badge-count">{isOnline ? user.offlinium : "Extraction"}</span>
-        </div>
-    );
+  return (
+    <div className={`header-offlinium-badge ${!isOnline ? "active" : ""}`}>
+      <span className="badge-gem">⬡</span>
+      <span className="badge-count">{currentOfflinium}</span>
+    </div>
+  );
 }

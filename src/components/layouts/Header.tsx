@@ -1,4 +1,5 @@
 import OffliniumBadge from "../OffliniumBadge";
+import "../../styles/Header.css"
 
 export default function Header() {
 
@@ -8,7 +9,7 @@ export default function Header() {
         <h1>Offliner</h1>
         <OffliniumBadge />
       </div>
-      <p className="app-subtitle">Détecteur de connexion & Générateur d'Offlinium</p>
+      <p className="app-subtitle">Un monde hors-ligne</p>
     </header>
   );
 }

@@ -3,7 +3,6 @@ import { useOnlineStatusContext } from "../hooks/useOnlineStatusContext";
 import {
   formatDateTime,
   formatDuration,
-  periodDurationMs,
 } from "../utils/format";
 import "../styles/Tracking.css";
 import { useUserContext } from "../hooks/useUserContext";
@@ -26,6 +25,7 @@ export default function Tracking() {
 
   return (
     <div className="tracking-card">
+      <button onClick={() => console.log(user)}>LOG</button>
       <div className="tracking-header">
         <div>
           <h3>📊 Historique</h3>
@@ -50,10 +50,10 @@ export default function Tracking() {
               <span className="period-status">En cours…</span>
               <div className="period-metrics">
                 <span className="period-duration">
-                  {formatDuration(periodDurationMs(openPeriod, now))}
+                  {formatDuration(openPeriod.getPeriodDurationMs(now))}
                 </span>
                 <span className="period-offlinium-tag active">
-                  +{Math.floor(periodDurationMs(openPeriod, now) / 60000)} ⬡
+                  +{Math.floor(openPeriod.getPeriodDurationMs(now) / 60000)} ⬡
                 </span>
               </div>
             </div>
@@ -70,8 +70,8 @@ export default function Tracking() {
             const safeIndex = user.periodList.periods.findIndex(
               (p) => p.start === period.start && p.end === period.end,
             );
-            const durationMs = periodDurationMs(period, now);
-            const offliniumGain = Math.floor(durationMs / 60000);
+            const durationMs = period.getPeriodDurationMs(now);
+            const offliniumGain = period.getOffliniumGain(now);
 
             return (
               <li

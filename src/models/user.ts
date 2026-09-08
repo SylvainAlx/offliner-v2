@@ -87,4 +87,5 @@ export class User {
       this.offlinium -= amount;
     }
   }
+
 }

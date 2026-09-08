@@ -38,14 +38,6 @@ export class PeriodList {
     }
   }
 
-  addPeriod(period: Period): void {
-    this.periods.push(period);
-  }
-
-  removePeriod(period: Period): void {
-    this.periods = this.periods.filter((p) => p !== period);
-  }
-
   clearPeriods(): void {
     this.periods = [];
   }

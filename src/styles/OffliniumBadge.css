@@ -1,0 +1,38 @@
+.header-offlinium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.header-offlinium-badge.active {
+  border-color: rgba(170, 59, 255, 0.4);
+  background: rgba(245, 235, 255, 0.8);
+  box-shadow: 0 0 12px rgba(170, 59, 255, 0.2);
+}
+
+.badge-gem {
+  color: var(--accent);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.badge-count {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--gray-900);
+  font-family: var(--mono);
+}
+
+.badge-unit {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

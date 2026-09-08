@@ -1,5 +1,3 @@
-import type { Period } from "../models/period";
-
 function formatDate(date: Date | null): string {
   if (!date) return "—";
   return new Intl.DateTimeFormat("fr-FR", {
@@ -34,9 +32,4 @@ function formatDuration(ms: number): string {
   return parts.join(" ");
 }
 
-function periodDurationMs(period: Period, now: number): number {
-  const end = period.end ?? now;
-  return Math.max(0, end - period.start);
-}
-
-export { formatDate, formatDateTime, formatDuration, periodDurationMs };
+export { formatDate, formatDateTime, formatDuration };
