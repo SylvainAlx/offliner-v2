@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useOnlineStatus } from "../contexts/OnlineStatusContext";
+import { useOnlineStatus } from "../stores/onlineStatusStore";
 import "../styles/Tracking.css";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../stores/userStore";
 import PeriodItem from "./PeriodItem";
 
 export default function Tracking() {

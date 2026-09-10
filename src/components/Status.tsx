@@ -1,4 +1,4 @@
-import { useOnlineStatus } from "../contexts/OnlineStatusContext";
+import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { formatDate, formatDuration } from "../utils/format";
 import "../styles/Status.css";
 

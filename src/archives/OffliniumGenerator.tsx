@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useOnlineStatus } from "../contexts/OnlineStatusContext";
+import { useOnlineStatus } from "../stores/onlineStatusStore";
 import "../styles/OffliniumGenerator.css";
 import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 

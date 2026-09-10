@@ -9,7 +9,7 @@ export class User {
   periodList: PeriodList;
   createdAt: number;
 
-  constructor(name: string = 'Offliner') {
+  constructor(name: string = "Offliner") {
     this.name = name;
     this.offlinium = 0;
     this.periodList = new PeriodList();
@@ -30,8 +30,10 @@ export class User {
       const record = parsed as Record<string, unknown>;
 
       if (typeof record.name === "string") this.name = record.name;
-      if (typeof record.offlinium === "number") this.offlinium = record.offlinium;
-      if (typeof record.createdAt === "number") this.createdAt = record.createdAt;
+      if (typeof record.offlinium === "number")
+        this.offlinium = Math.floor(record.offlinium);
+      if (typeof record.createdAt === "number")
+        this.createdAt = record.createdAt;
 
       const rawPeriods =
         record.periodList ??
@@ -41,7 +43,6 @@ export class User {
 
       if (rawPeriods !== undefined && rawPeriods !== null) {
         this.periodList.loadPeriods(rawPeriods);
-        this.extractOfflinium();
       }
     } catch {
       return;
@@ -62,27 +63,13 @@ export class User {
     return copy;
   }
 
-  extractOfflinium(now?: number): void {
-    const totalMs = this.periodList.computeTotalMs(now);
-    this.offlinium = Math.floor(totalMs / OFFLINIUM_DELIVERY_INTERVAL);
-  }
-
-  addOfflinium(amount: number): void {
-    if (amount < 0) {
-      throw new Error("L'amount doit être supérieur à 0.");
+  addOfflinium(periodDurationMs: number): void {
+    if (periodDurationMs < 0) {
+      throw new Error("La durée du période doit être supérieure à 0.");
     } else {
-      this.offlinium += amount;
+      this.offlinium += Math.floor(
+        periodDurationMs / OFFLINIUM_DELIVERY_INTERVAL,
+      );
     }
   }
-
-  removeOfflinium(amount: number): void {
-    if (amount < 0) {
-      throw new Error("L'amount doit être supérieur à 0.");
-    } else if (this.offlinium - amount < 0) {
-      throw new Error("Pas assez d'offlinium.");
-    } else {
-      this.offlinium -= amount;
-    }
-  }
-
 }

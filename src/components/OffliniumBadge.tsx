@@ -1,4 +1,4 @@
-import { useOnlineStatus } from "../contexts/OnlineStatusContext";
+import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 import "../styles/OffliniumBadge.css";
 

@@ -23,7 +23,9 @@ export class PeriodList {
         }
       }
       this.periods = list
-        .filter((p: any) => p && p.start !== undefined && !isNaN(Number(p.start)))
+        .filter(
+          (p: any) => p && p.start !== undefined && !isNaN(Number(p.start)),
+        )
         .map(
           (p: any) =>
             new Period(
@@ -43,24 +45,23 @@ export class PeriodList {
   }
 
   computeTotalMs(now?: number): number {
-  return this.periods.reduce((total: number, p: Period) => {
-    const end = p.end ?? now;
-    const dur = Number(end) - Number(p.start);
-    return total + Math.max(0, dur);
-  }, 0);
-}
-
-  closeAnyOpenPeriod(endTs: number): void {
-    const openIdx = this.periods.findIndex((p) => p.end === null);
-    if (openIdx === -1) return;
-    this.periods[openIdx].close(endTs);
+    return this.periods.reduce((total: number, p: Period) => {
+      const end = p.end ?? now;
+      const dur = Number(end) - Number(p.start);
+      return total + Math.max(0, dur);
+    }, 0);
   }
 
-  openPeriodIfNeeded(
-  startTs: number,
-): void {
-  const hasOpen = this.periods.some((p) => p.end === null);
-  if (hasOpen) return;
-  this.periods.push(new Period(startTs));
-}
+  closeAnyOpenPeriod(endTs: number): number | undefined {
+    const openIdx = this.periods.findIndex((p) => p.end === null);
+    if (openIdx === -1) return;
+    const periodDuration = this.periods[openIdx].close(endTs);
+    return periodDuration;
+  }
+
+  openPeriodIfNeeded(startTs: number): void {
+    const hasOpen = this.periods.some((p) => p.end === null);
+    if (hasOpen) return;
+    this.periods.push(new Period(startTs));
+  }
 }

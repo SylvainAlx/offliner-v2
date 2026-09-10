@@ -11,9 +11,10 @@ export class Period {
     this.finalDuration = this.getPeriodDurationMs();
   }
 
-  close(end: number): void {
+  close(end: number): number {
     this.end = end;
     this.finalDuration = this.getPeriodDurationMs(end);
+    return this.finalDuration;
   }
 
   getPeriodDurationMs(now?: number): number {
