@@ -42,7 +42,7 @@ export default function PeriodItem({ isOpen, now, period }: PeriodItemProps) {
           {isOpen
             ? "Débuté le " + formatDateTime(period.start)
             : period.end != null
-              ? formatDateTime(period.end) + " → " + formatDateTime(period.end)
+              ? formatDateTime(period.start) + " → " + formatDateTime(period.end)
               : ""}
         </div>
       </div>

@@ -23,7 +23,6 @@ export default function Tracking() {
 
   return (
     <div className="tracking-card">
-      <button onClick={() => console.log(user)}>LOG</button>
       <div className="tracking-header">
         <div>
           <h3>📊 Historique</h3>

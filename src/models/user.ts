@@ -1,6 +1,7 @@
 import { OFFLINIUM_DELIVERY_INTERVAL, USER_KEY } from "../utils/constants";
 import { PeriodList } from "./periodList";
 import { Period } from "./period";
+import { readStorage, writeStorage } from "../services/storage";
 
 export class User {
   name: string;
@@ -17,9 +18,7 @@ export class User {
 
   loadUser(): void {
     try {
-      let raw = localStorage.getItem(USER_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
+      const parsed = readStorage<unknown>(USER_KEY, null);
       if (!parsed) return;
 
       if (Array.isArray(parsed)) {
@@ -27,32 +26,30 @@ export class User {
         return;
       }
 
-      if (typeof parsed.name === "string") this.name = parsed.name;
-      if (typeof parsed.offlinium === "number") this.offlinium = parsed.offlinium;
-      if (typeof parsed.createdAt === "number") this.createdAt = parsed.createdAt;
+      if (typeof parsed !== "object" || parsed === null) return;
+      const record = parsed as Record<string, unknown>;
+
+      if (typeof record.name === "string") this.name = record.name;
+      if (typeof record.offlinium === "number") this.offlinium = record.offlinium;
+      if (typeof record.createdAt === "number") this.createdAt = record.createdAt;
 
       const rawPeriods =
-        parsed.periodList ??
-        parsed.perdioList ??
-        parsed.periods ??
-        parsed.offlinePeriods;
+        record.periodList ??
+        record.perdioList ??
+        record.periods ??
+        record.offlinePeriods;
 
       if (rawPeriods !== undefined && rawPeriods !== null) {
         this.periodList.loadPeriods(rawPeriods);
         this.extractOfflinium();
       }
-    } catch(e) {
-     console.error(e);
+    } catch {
+      return;
     }
   }
 
   saveUser(): void {
-    try {
-      const raw = JSON.stringify(this);
-      localStorage.setItem(USER_KEY, raw);
-    } catch {
-      return;
-    }
+    writeStorage(USER_KEY, this);
   }
 
   clone(): User {
