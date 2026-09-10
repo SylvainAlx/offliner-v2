@@ -1,12 +1,8 @@
 import { useMemo } from "react";
 import { useOnlineStatus } from "../contexts/OnlineStatusContext";
-import {
-  formatDateTime,
-  formatDuration,
-} from "../utils/format";
 import "../styles/Tracking.css";
 import { useUser } from "../contexts/UserContext";
-import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
+import PeriodItem from "./PeriodItem";
 
 export default function Tracking() {
   const { resetTracking, lastChecked } = useOnlineStatus();
@@ -18,7 +14,9 @@ export default function Tracking() {
   );
   const now = nowRef.now;
   const { completedPeriods, openPeriod } = useMemo(() => {
-    const completed = user.periodList.periods.filter((p) => p.end !== null).reverse();
+    const completed = user.periodList.periods
+      .filter((p) => p.end !== null)
+      .reverse();
     const open = user.periodList.periods.find((p) => p.end === null) ?? null;
     return { completedPeriods: completed, openPeriod: open };
   }, [user]);
@@ -42,27 +40,7 @@ export default function Tracking() {
         )}
       </div>
 
-      {openPeriod && (
-        <div className="period-item period-open">
-          <div className="period-dot period-dot-active"></div>
-          <div className="period-content">
-            <div className="period-top">
-              <span className="period-status">En cours…</span>
-              <div className="period-metrics">
-                <span className="period-duration">
-                  {formatDuration(openPeriod.getPeriodDurationMs(now))}
-                </span>
-                <span className="period-offlinium-tag active">
-                  +{Math.floor(openPeriod.getPeriodDurationMs(now) / OFFLINIUM_DELIVERY_INTERVAL)} ⬡
-                </span>
-              </div>
-            </div>
-            <div className="period-time">
-              Débuté le {formatDateTime(openPeriod.start)}
-            </div>
-          </div>
-        </div>
-      )}
+      {openPeriod && <PeriodItem isOpen={true} now={now} period={openPeriod} />}
 
       {completedPeriods.length > 0 ? (
         <ul className="period-list">
@@ -70,35 +48,13 @@ export default function Tracking() {
             const safeIndex = user.periodList.periods.findIndex(
               (p) => p.start === period.start && p.end === period.end,
             );
-            const durationMs = period.getPeriodDurationMs() ?? 0;
-            const offliniumGain = period.getOffliniumGain();
 
             return (
-              <li
+              <PeriodItem
+                isOpen={false}
+                period={period}
                 key={`${period.start}-${period.end}-${safeIndex}-${index}`}
-                className="period-item"
-              >
-                <div className="period-dot"></div>
-                <div className="period-content">
-                  <div className="period-top">
-                    <span className="period-status">Terminée</span>
-                    <div className="period-metrics">
-                      <span className="period-duration">
-                        {formatDuration(durationMs)}
-                      </span>
-                      {offliniumGain > 0 && (
-                        <span className="period-offlinium-tag">
-                          +{offliniumGain} ⬡
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="period-time">
-                    {formatDateTime(period.start)} →{" "}
-                    {formatDateTime(period.end!)}
-                  </div>
-                </div>
-              </li>
+              />
             );
           })}
         </ul>
