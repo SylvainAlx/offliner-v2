@@ -4,8 +4,11 @@ import Card from "./ui/Card";
 
 export default function Help() {
   return (
-    <Card ariaLabel="Aide et informations">
-      <h3>💡 Comment ça marche ?</h3>
+    <Card
+      ariaLabel="Aide et informations"
+      title="Aide"
+      subtitle="Comment fonctionne Offliner ?"
+    >
       <p>
         <strong>
           1 particule d'Offlinium (⬡) est générée toutes les{" "}

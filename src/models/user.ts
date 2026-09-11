@@ -9,6 +9,11 @@ import { readStorage, writeStorage } from "../services/storage";
 import { Companion } from "./companion";
 import { Village } from "./village";
 
+export interface OffliniumSpend {
+  stored: number;
+  openPeriod: number;
+}
+
 export class User {
   name: string;
   offlinium: number;
@@ -119,16 +124,20 @@ export class User {
     );
   }
 
-  spendOfflinium(amount: number, totalOfflineMs: number): boolean {
+  spendOfflinium(
+    amount: number,
+    totalOfflineMs: number,
+  ): OffliniumSpend | undefined {
     if (amount < 0) {
       throw new Error("Le montant à retirer doit être supérieur à 0.");
     }
-    if (this.getAvailableOfflinium(totalOfflineMs) < amount) return false;
+    if (this.getAvailableOfflinium(totalOfflineMs) < amount) return;
 
     const fromStoredBalance = Math.min(amount, this.offlinium);
     this.offlinium -= fromStoredBalance;
-    this.offliniumSpentDuringOpenPeriod += amount - fromStoredBalance;
-    return true;
+    const fromOpenPeriod = amount - fromStoredBalance;
+    this.offliniumSpentDuringOpenPeriod += fromOpenPeriod;
+    return { stored: fromStoredBalance, openPeriod: fromOpenPeriod };
   }
 
   closeOfflinePeriod(endTs: number): number | undefined {
@@ -150,6 +159,21 @@ export class User {
     }
   }
 
+  refundOfflinium(spend: {
+    storedOffliniumCost: number;
+    openPeriodOffliniumCost: number;
+  }): void {
+    const refundedFromOpenPeriod = Math.min(
+      this.offliniumSpentDuringOpenPeriod,
+      spend.openPeriodOffliniumCost,
+    );
+    const settledOpenPeriodCost =
+      spend.openPeriodOffliniumCost - refundedFromOpenPeriod;
+
+    this.offliniumSpentDuringOpenPeriod -= refundedFromOpenPeriod;
+    this.offlinium += spend.storedOffliniumCost + settledOpenPeriodCost;
+  }
+
   releaseCompanionAndGetOfflinium(companionId: string): boolean {
     if (
       window.confirm(
@@ -163,5 +187,19 @@ export class User {
       return true;
     }
     return false;
+  }
+
+  cancelCompanionInvocation(
+    companionId: string,
+    currentOfflineMs: number,
+  ): boolean {
+    const cancelled = this.village.cancelPendingCompanion(
+      companionId,
+      currentOfflineMs,
+    );
+    if (!cancelled) return false;
+
+    this.refundOfflinium(cancelled);
+    return true;
   }
 }

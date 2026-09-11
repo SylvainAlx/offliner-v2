@@ -1,10 +1,15 @@
 import { Companion } from "./companion";
-import { COMPANION_INVOCATION_OFFLINE_MS } from "../utils/constants";
+import {
+  COMPANION_INVOCATION_COST,
+  COMPANION_INVOCATION_OFFLINE_MS,
+} from "../utils/constants";
 
 export interface PendingCompanion {
   id: string;
   startedAt: number;
   offlineMsAtStart: number;
+  storedOffliniumCost: number;
+  openPeriodOffliniumCost: number;
 }
 
 export class Village {
@@ -32,7 +37,12 @@ export class Village {
         : [];
 
       const pendingCompanions = Array.isArray(record.pendingCompanions)
-        ? record.pendingCompanions.filter(isPendingCompanion)
+        ? record.pendingCompanions.filter(isPendingCompanion).map((pending) => ({
+            ...pending,
+            storedOffliniumCost:
+              pending.storedOffliniumCost ?? COMPANION_INVOCATION_COST,
+            openPeriodOffliniumCost: pending.openPeriodOffliniumCost ?? 0,
+          }))
         : [];
       this.pendingCompanions = pendingCompanions.map((pending, index) => ({
         ...pending,
@@ -61,15 +71,48 @@ export class Village {
     return this.companions.find((companion) => companion.id === companionId);
   }
 
-  addPendingCompanion(offlineMs: number, startedAt = Date.now()): void {
+  addPendingCompanion(
+    offlineMs: number,
+    storedOffliniumCost: number,
+    openPeriodOffliniumCost: number,
+    startedAt = Date.now(),
+  ): void {
     const previous = this.pendingCompanions.at(-1);
     this.pendingCompanions.push({
       id: crypto.randomUUID(),
       startedAt,
+      storedOffliniumCost,
+      openPeriodOffliniumCost,
       offlineMsAtStart: previous
         ? previous.offlineMsAtStart + COMPANION_INVOCATION_OFFLINE_MS
         : Math.max(0, offlineMs),
     });
+  }
+
+  cancelPendingCompanion(
+    companionId: string,
+    currentOfflineMs: number,
+  ): PendingCompanion | undefined {
+    const index = this.pendingCompanions.findIndex(
+      (pending) => pending.id === companionId,
+    );
+    if (index === -1) return;
+
+    const [cancelled] = this.pendingCompanions.splice(index, 1);
+    if (this.pendingCompanions.length === 0) return cancelled;
+
+    const first = this.pendingCompanions[0];
+    if (index === 0) {
+      first.offlineMsAtStart = currentOfflineMs;
+    }
+
+    for (let queueIndex = Math.max(1, index); queueIndex < this.pendingCompanions.length; queueIndex += 1) {
+      this.pendingCompanions[queueIndex].offlineMsAtStart =
+        this.pendingCompanions[queueIndex - 1].offlineMsAtStart +
+        COMPANION_INVOCATION_OFFLINE_MS;
+    }
+
+    return cancelled;
   }
 
   completePendingCompanions(currentOfflineMs: number): number {
@@ -96,6 +139,10 @@ function isPendingCompanion(value: unknown): value is PendingCompanion {
   return (
     typeof record.id === "string" &&
     typeof record.startedAt === "number" &&
-    typeof record.offlineMsAtStart === "number"
+    typeof record.offlineMsAtStart === "number" &&
+    (record.storedOffliniumCost === undefined ||
+      typeof record.storedOffliniumCost === "number") &&
+    (record.openPeriodOffliniumCost === undefined ||
+      typeof record.openPeriodOffliniumCost === "number")
   );
 }

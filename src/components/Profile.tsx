@@ -28,42 +28,34 @@ export default function Profile() {
   }
 
   return (
-    <Card ariaLabel="Profil de l'utilisateur">
-      <div className="profile-avatar" aria-hidden="true">
-        {user.name.charAt(0).toUpperCase()}
-      </div>
-      <div className="profile-content">
-        <p className="profile-eyebrow">Profil</p>
-        <h2 id="profile-title" className="profile-name">
-          {user.name}
-        </h2>
-        <p className="profile-created-at">
-          Membre depuis le {createdAtFormatter.format(user.createdAt)}
-        </p>
-        <form className="profile-form" onSubmit={handleSubmit}>
-          <label className="profile-label" htmlFor="profile-name-input">
-            Modifier votre nom
-          </label>
-          <div className="profile-form-row">
-            <input
-              id="profile-name-input"
-              className="profile-input"
-              type="text"
-              value={name}
-              maxLength={40}
-              onChange={(event) => {
-                setName(event.target.value);
-                setIsSaved(false);
-              }}
-              required
-            />
-            <Button onClick={() => {}} type="submit">
-              Enregistrer
-            </Button>
-          </div>
-          {isSaved && <p className="profile-feedback">Nom enregistré.</p>}
-        </form>
-      </div>
+    <Card
+      ariaLabel="Profil de l'utilisateur"
+      title={user.name}
+      subtitle={`Membre depuis le ${createdAtFormatter.format(user.createdAt)}`}
+    >
+      <form className="profile-form" onSubmit={handleSubmit}>
+        <label className="profile-label" htmlFor="profile-name-input">
+          Modifier votre nom
+        </label>
+        <div className="profile-form-row">
+          <input
+            id="profile-name-input"
+            className="profile-input"
+            type="text"
+            value={name}
+            maxLength={40}
+            onChange={(event) => {
+              setName(event.target.value);
+              setIsSaved(false);
+            }}
+            required
+          />
+          <Button onClick={() => {}} type="submit">
+            Enregistrer
+          </Button>
+        </div>
+        {isSaved && <p className="profile-feedback">Nom enregistré.</p>}
+      </form>
     </Card>
   );
 }

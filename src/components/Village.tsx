@@ -5,14 +5,17 @@ import {
   COMPANION_INVOCATION_COST,
   COMPANION_INVOCATION_OFFLINE_MS,
 } from "../utils/constants";
-import "../styles/OffliniumWorkshop.css";
+import "../styles/Village.css";
 import CompanionTile from "./CompanionTile";
 import { formatCountdown } from "../utils/format";
 import Card from "./ui/Card";
 
-export default function OffliniumWorkshop() {
+export default function Village() {
   const user = useUser((state) => state.user);
   const invokeCompanion = useUser((state) => state.invokeCompanion);
+  const cancelCompanionInvocation = useUser(
+    (state) => state.cancelCompanionInvocation,
+  );
 
   const completeCompanionInvocations = useUser(
     (state) => state.completeCompanionInvocations,
@@ -28,30 +31,15 @@ export default function OffliniumWorkshop() {
   const canInvoke = liveOfflinium >= COMPANION_INVOCATION_COST;
 
   return (
-    <Card ariaLabel="Atelier d'Offlinium">
-      <div className="workshop-header">
-        <div>
-          <p className="workshop-eyebrow">Village</p>
-          <h2 id="workshop-title">Atelier d&apos;Offlinium</h2>
-          <p className="workshop-subtitle">
-            Transformez vos périodes hors ligne en compagnons.
-          </p>
-        </div>
-        <div
-          className="workshop-balance"
-          aria-label={`${liveOfflinium} orbes disponibles`}
-        >
-          <span className="workshop-balance-icon" aria-hidden="true">
-            ⬡
-          </span>
-          <span>{liveOfflinium}</span>
-        </div>
-      </div>
-
-      <div className="workshop-section">
-        <div className="workshop-section-heading">
+    <Card
+      ariaLabel="Village"
+      title="Village"
+      subtitle="Utilisez vos périodes hors ligne pour peupler votre village."
+    >
+      <div className="village-section">
+        <div className="village-section-heading">
           <h3>Vos compagnons</h3>
-          <span className="workshop-count">{companions.length}</span>
+          <span className="village-count">{companions.length}</span>
         </div>
 
         {companions.length > 0 ? (
@@ -61,8 +49,8 @@ export default function OffliniumWorkshop() {
             ))}
           </ul>
         ) : (
-          <div className="workshop-empty-state">
-            <span className="workshop-empty-icon" aria-hidden="true">
+          <div className="village-empty-state">
+            <span className="village-empty-icon" aria-hidden="true">
               ◇
             </span>
             <p>Votre village n&apos;a pas encore de compagnon.</p>
@@ -71,8 +59,8 @@ export default function OffliniumWorkshop() {
         )}
       </div>
 
-      <div className="workshop-section workshop-crafting-section">
-        <div className="workshop-section-heading">
+      <div className="village-section village-crafting-section">
+        <div className="village-section-heading">
           <div>
             <h3>À créer</h3>
             <p>Chaque création avance pendant vos périodes hors ligne.</p>
@@ -147,6 +135,32 @@ export default function OffliniumWorkshop() {
               : `Il vous manque ${COMPANION_INVOCATION_COST - liveOfflinium} ⬡`}
           </span>
         </button>
+
+        {pendingCompanions.length > 0 && (
+          <div
+            className="craft-queue-cancel-list"
+            aria-label="Invocations en cours"
+          >
+            {pendingCompanions.map((pending, index) => (
+              <div className="craft-queue-cancel-item" key={pending.id}>
+                <span>
+                  {index === 0
+                    ? "Invocation active"
+                    : `Invocation en file ${index + 1}`}
+                </span>
+                <button
+                  type="button"
+                  className="craft-cancel-button"
+                  onClick={() =>
+                    cancelCompanionInvocation(pending.id, totalOfflineMs)
+                  }
+                >
+                  Annuler · rembourser {COMPANION_INVOCATION_COST} ⬡
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </Card>
   );

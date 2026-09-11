@@ -24,10 +24,13 @@ export default function Tracking() {
   }, [user]);
 
   return (
-    <Card ariaLabel="Historique des périodes hors ligne">
+    <Card
+      ariaLabel="Historique des périodes hors ligne"
+      title="Historique"
+      subtitle="Suivez vos périodes hors ligne et leur impact sur votre village."
+    >
       <div className="tracking-header">
         <div>
-          <h3>📊 Historique</h3>
           <p className="tracking-sub">
             {user.periodList.periods.length} période
             {user.periodList.periods.length > 1 ? "s" : ""} enregistrée

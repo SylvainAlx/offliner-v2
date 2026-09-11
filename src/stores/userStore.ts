@@ -13,6 +13,7 @@ export interface UserStore {
   saveUser: () => void;
   invokeCompanion: (offlineMs: number) => boolean;
   releaseCompanionAndGetOfflinium: (companionId: string) => boolean;
+  cancelCompanionInvocation: (companionId: string, offlineMs: number) => boolean;
   completeCompanionInvocations: (offlineMs: number) => void;
   reloadUser: () => User;
   syncWithStorage: (online: boolean, now: number) => User;
@@ -52,10 +53,15 @@ export const useUser = create<UserStore>((set, get) => ({
 
   invokeCompanion: (offlineMs) => {
     const next = get().user.clone();
-    if (!next.spendOfflinium(COMPANION_INVOCATION_COST, offlineMs)) {
+    const spend = next.spendOfflinium(COMPANION_INVOCATION_COST, offlineMs);
+    if (!spend) {
       return false;
     }
-    next.village.addPendingCompanion(offlineMs);
+    next.village.addPendingCompanion(
+      offlineMs,
+      spend.stored,
+      spend.openPeriod,
+    );
     next.saveUser();
     set({ user: next });
     return true;
@@ -64,6 +70,17 @@ export const useUser = create<UserStore>((set, get) => ({
   releaseCompanionAndGetOfflinium: (companionId) => {
     const next = get().user.clone();
     if (!next.releaseCompanionAndGetOfflinium(companionId)) return false;
+
+    next.saveUser();
+    set({ user: next });
+    return true;
+  },
+
+  cancelCompanionInvocation: (companionId, offlineMs) => {
+    const next = get().user.clone();
+    if (!next.cancelCompanionInvocation(companionId, offlineMs)) {
+      return false;
+    }
 
     next.saveUser();
     set({ user: next });

@@ -1,0 +1,23 @@
+.card-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 22px 20px 20px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.card-title {
+  margin: 0 0 5px;
+  color: var(--gray-900);
+  font-size: 1.28rem;
+  font-weight: 800;
+}
+
+.card-subtitle {
+  max-width: 250px;
+  color: var(--gray-600);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
