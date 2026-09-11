@@ -1,12 +1,13 @@
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { formatDate, formatDuration } from "../utils/format";
 import "../styles/Status.css";
+import Card from "./ui/Card";
 
 export default function Status() {
   const { isOnline, lastChecked, totalOfflineMs } = useOnlineStatus();
 
   return (
-    <div className="status-card">
+    <Card ariaLabel="Statut de la connexion">
       <div
         className={`status-indicator ${isOnline ? "pulse-online" : "pulse-offline"}`}
       >
@@ -38,6 +39,6 @@ export default function Status() {
           </span>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

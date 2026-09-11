@@ -8,6 +8,7 @@ import Help from "./components/Help";
 import Profile from "./components/Profile";
 import Tracking from "./components/Tracking";
 import Status from "./components/Status";
+import OffliniumWorkshop from "./components/OffliniumWorkshop";
 import "./styles/App.css";
 
 function AppContent() {
@@ -21,6 +22,7 @@ function AppContent() {
       <main className="app-main">
         <Status />
         <Profile />
+        <OffliniumWorkshop />
         <Tracking />
         <Help />
       </main>

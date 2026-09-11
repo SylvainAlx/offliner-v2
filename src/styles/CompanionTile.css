@@ -1,0 +1,52 @@
+.companion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--gray-100);
+  border-radius: 12px;
+  background: var(--gray-50);
+}
+
+.companion-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 1.1rem;
+}
+
+.companion-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.companion-details strong,
+.companion-details span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.companion-details strong {
+  color: var(--gray-800);
+  font-size: 0.76rem;
+}
+
+.companion-details span {
+  color: var(--gray-600);
+  font-size: 0.68rem;
+}
+
+.companion-actions {
+  display: flex;
+  gap: 6px;
+}

@@ -1,12 +1,3 @@
-
-.tracking-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--gray-100);
-}
-
 .tracking-header {
   display: flex;
   justify-content: space-between;

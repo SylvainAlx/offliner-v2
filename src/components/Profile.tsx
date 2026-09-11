@@ -2,7 +2,8 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useUser } from "../stores/userStore";
 import "../styles/Profile.css";
-import { Companion } from "../models/companion";
+import Card from "./ui/Card";
+import Button from "./ui/Button";
 
 const createdAtFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -26,13 +27,8 @@ export default function Profile() {
     setIsSaved(true);
   }
 
-  function handleCreateCompanion() {
-    const newCompanion = new Companion();
-    newCompanion.sayHello();
-  }
-
   return (
-    <section className="profile-card" aria-labelledby="profile-title">
+    <Card ariaLabel="Profil de l'utilisateur">
       <div className="profile-avatar" aria-hidden="true">
         {user.name.charAt(0).toUpperCase()}
       </div>
@@ -61,14 +57,13 @@ export default function Profile() {
               }}
               required
             />
-            <button className="profile-save-button" type="submit">
+            <Button onClick={() => {}} type="submit">
               Enregistrer
-            </button>
+            </Button>
           </div>
           {isSaved && <p className="profile-feedback">Nom enregistré.</p>}
         </form>
       </div>
-      <button onClick={handleCreateCompanion}>Créer compagnon</button>
-    </section>
+    </Card>
   );
 }

@@ -7,6 +7,9 @@
   --red-primary: #ef4444;
   --red-dark: #b91c1c;
   --red-bg: #fee2e2;
+  --slate-primary: #64748b;
+  --slate-dark: #0f172a;
+  --slate-bg: #f1f5f9;
   --gray-50: #f9fafb;
   --gray-100: #f3f4f6;
   --gray-200: #e5e7eb;
@@ -25,7 +28,7 @@
   --bg: #fff;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
-  --accent: #aa3bff;
+  --accent: #411264;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);

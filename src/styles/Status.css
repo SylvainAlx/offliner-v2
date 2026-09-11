@@ -1,15 +1,3 @@
-.status-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 32px 24px;
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  border: 1px solid var(--gray-100);
-}
-
 .status-indicator {
   position: relative;
   width: 96px;
@@ -27,13 +15,13 @@
 }
 
 .app-container.online .status-dot {
-  background: var(--green-primary);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+  background: var(--slate-primary);
+  box-shadow: 0 0 0 4px var(--slate-primary);
 }
 
 .app-container.offline .status-dot {
-  background: var(--red-primary);
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+  background: var(--green-primary);
+  box-shadow: 0 0 0 4px var(--green-primary);
 }
 
 .pulse-online::before,
@@ -49,22 +37,22 @@
 }
 
 .pulse-online::before {
-  background: rgba(34, 197, 94, 0.35);
+  background: var(--slate-dark);
   animation: pulse 2s ease-out infinite;
 }
 
 .pulse-online::after {
-  background: rgba(34, 197, 94, 0.2);
+  background: var(--slate-primary);
   animation: pulse 2s ease-out infinite 0.6s;
 }
 
 .pulse-offline::before {
-  background: rgba(239, 68, 68, 0.35);
+  background: var(--green-dark);
   animation: pulse 2s ease-out infinite;
 }
 
 .pulse-offline::after {
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--green-primary);
   animation: pulse 2s ease-out infinite 0.6s;
 }
 
@@ -93,11 +81,11 @@
 
 
 .text-online {
-  color: var(--green-dark);
+  color: var(--slate-dark);
 }
 
 .text-offline {
-  color: var(--red-dark);
+  color: var(--green-dark);
 }
 
 .status-description {

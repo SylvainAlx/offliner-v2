@@ -1,25 +1,15 @@
-.info-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--gray-100);
-}
-
-.info-card h3 {
+h3 {
   margin: 0 0 12px 0;
   font-size: 1rem;
   color: var(--gray-900);
   font-weight: 700;
 }
-
-.info-card p {
+p {
   margin: 0 0 10px 0;
   color: var(--gray-600);
   font-size: 0.9rem;
   line-height: 1.5;
 }
-
-.info-card p:last-child {
+p:last-child {
   margin-bottom: 0;
 }

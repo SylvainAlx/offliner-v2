@@ -1,9 +1,4 @@
-import {
-  animals,
-  colors,
-  names,
-  uniqueNamesGenerator,
-} from "unique-names-generator";
+import { colors, names, uniqueNamesGenerator } from "unique-names-generator";
 
 export class Companion {
   id: string;
@@ -17,19 +12,15 @@ export class Companion {
     const color: string = uniqueNamesGenerator({
       dictionaries: [colors],
     });
-    const animal: string = uniqueNamesGenerator({
-      dictionaries: [animals],
-    });
 
     this.id = crypto.randomUUID();
-    this.name = `${randomName} ${color.charAt(0).toUpperCase() + color.slice(1)}-${animal.charAt(0).toUpperCase() + animal.slice(1)}`;
+    this.name = `${randomName} ${color.charAt(0).toUpperCase() + color.slice(1)}`;
     this.birthdate = Date.now();
   }
 
-  sayHello(): string {
+  sayHello(): void {
     const response = `Bonjour, je m'appelle ${this.name}. Je suis né(e) le ${new Date(this.birthdate).toLocaleDateString()} à ${new Date(this.birthdate).toLocaleTimeString()}.`;
     alert(response);
     console.log(this);
-    return response;
   }
 }

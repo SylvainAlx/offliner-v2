@@ -19,7 +19,7 @@ function persistDirectly(now: number, isOnline: boolean): void {
     const user = new User();
     user.loadUser();
     if (isOnline) {
-      user.periodList.closeAnyOpenPeriod(now);
+      user.closeOfflinePeriod(now);
     } else {
       user.periodList.openPeriodIfNeeded(now);
     }
@@ -67,8 +67,13 @@ export const useOnlineStatus = create<OnlineStatusStore>((set, get) => ({
     };
     const goOnline = () => {
       const now = Date.now();
+      const user = useUser.getState().user;
       useUser.getState().closeAnyOpenPeriod(now);
-      set({ isOnline: true, lastChecked: new Date(now) });
+      set({
+        isOnline: true,
+        totalOfflineMs: user.periodList.computeTotalMs(now),
+        lastChecked: new Date(now),
+      });
       stopTick();
     };
     const goOffline = () => {

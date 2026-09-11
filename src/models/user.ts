@@ -1,18 +1,28 @@
-import { OFFLINIUM_DELIVERY_INTERVAL, USER_KEY } from "../utils/constants";
+import {
+  COMPANION_INVOCATION_COST,
+  OFFLINIUM_DELIVERY_INTERVAL,
+  USER_KEY,
+} from "../utils/constants";
 import { PeriodList } from "./periodList";
 import { Period } from "./period";
 import { readStorage, writeStorage } from "../services/storage";
+import { Companion } from "./companion";
+import { Village } from "./village";
 
 export class User {
   name: string;
   offlinium: number;
+  offliniumSpentDuringOpenPeriod: number;
   periodList: PeriodList;
+  village: Village;
   createdAt: number;
 
-  constructor(name: string = "Offliner") {
+  constructor(name: string = "Joueur") {
     this.name = name;
     this.offlinium = 0;
+    this.offliniumSpentDuringOpenPeriod = 0;
     this.periodList = new PeriodList();
+    this.village = new Village();
     this.createdAt = Date.now();
   }
 
@@ -32,19 +42,23 @@ export class User {
       if (typeof record.name === "string") this.name = record.name;
       if (typeof record.offlinium === "number")
         this.offlinium = Math.floor(record.offlinium);
+      if (typeof record.offliniumSpentDuringOpenPeriod === "number") {
+        this.offliniumSpentDuringOpenPeriod = Math.max(
+          0,
+          Math.floor(record.offliniumSpentDuringOpenPeriod),
+        );
+      }
       if (typeof record.createdAt === "number")
         this.createdAt = record.createdAt;
 
-      const rawPeriods =
-        record.periodList ??
-        record.perdioList ??
-        record.periods ??
-        record.offlinePeriods;
-
-      if (rawPeriods !== undefined && rawPeriods !== null) {
-        this.periodList.loadPeriods(rawPeriods);
+      if (record.periodList !== undefined && record.periodList !== null) {
+        this.periodList.loadPeriods(record.periodList);
       }
-    } catch {
+      if (record.village !== undefined && record.village !== null) {
+        this.village.loadVillage(record.village);
+      }
+    } catch (e) {
+      console.error("Error loading user data:", e);
       return;
     }
   }
@@ -56,9 +70,19 @@ export class User {
   clone(): User {
     const copy = new User(this.name);
     copy.offlinium = this.offlinium;
+    copy.offliniumSpentDuringOpenPeriod = this.offliniumSpentDuringOpenPeriod;
     copy.createdAt = this.createdAt;
     copy.periodList = new PeriodList(
       this.periodList.periods.map((p) => new Period(p.start, p.end)),
+    );
+    copy.village = new Village();
+    copy.village.companions = this.village.companions.map((companion) => {
+      const clonedCompanion = new Companion();
+      Object.assign(clonedCompanion, companion);
+      return clonedCompanion;
+    });
+    copy.village.pendingCompanions = this.village.pendingCompanions.map(
+      (pending) => ({ ...pending }),
     );
     return copy;
   }
@@ -71,5 +95,73 @@ export class User {
         periodDurationMs / OFFLINIUM_DELIVERY_INTERVAL,
       );
     }
+  }
+
+  getCurrentPeriodOfflinium(totalOfflineMs: number): number {
+    const completedOfflineMs = this.periodList.periods.reduce(
+      (total, period) =>
+        period.end === null ? total : total + period.getPeriodDurationMs(),
+      0,
+    );
+
+    return Math.floor(
+      Math.max(0, totalOfflineMs - completedOfflineMs) /
+        OFFLINIUM_DELIVERY_INTERVAL,
+    );
+  }
+
+  getAvailableOfflinium(totalOfflineMs: number): number {
+    return Math.max(
+      0,
+      this.offlinium +
+        this.getCurrentPeriodOfflinium(totalOfflineMs) -
+        this.offliniumSpentDuringOpenPeriod,
+    );
+  }
+
+  spendOfflinium(amount: number, totalOfflineMs: number): boolean {
+    if (amount < 0) {
+      throw new Error("Le montant à retirer doit être supérieur à 0.");
+    }
+    if (this.getAvailableOfflinium(totalOfflineMs) < amount) return false;
+
+    const fromStoredBalance = Math.min(amount, this.offlinium);
+    this.offlinium -= fromStoredBalance;
+    this.offliniumSpentDuringOpenPeriod += amount - fromStoredBalance;
+    return true;
+  }
+
+  closeOfflinePeriod(endTs: number): number | undefined {
+    const duration = this.periodList.closeAnyOpenPeriod(endTs);
+    if (duration === undefined) return;
+
+    const spentDuringPeriod = this.offliniumSpentDuringOpenPeriod;
+    this.addOfflinium(duration);
+    this.offlinium = Math.max(0, this.offlinium - spentDuringPeriod);
+    this.offliniumSpentDuringOpenPeriod = 0;
+    return duration;
+  }
+
+  removeOfflinium(amount: number): void {
+    if (amount < 0) {
+      throw new Error("Le montant à retirer doit être supérieur à 0.");
+    } else {
+      this.offlinium = Math.max(0, this.offlinium - amount);
+    }
+  }
+
+  releaseCompanionAndGetOfflinium(companionId: string): boolean {
+    if (
+      window.confirm(
+        `Êtes-vous sûr de vouloir libérer ce compagnon ? Gainérez ${COMPANION_INVOCATION_COST} orbes d'Offlinium.`,
+      )
+    ) {
+      const released = this.village.releaseCompanion(companionId);
+      if (!released) return false;
+
+      this.offlinium += COMPANION_INVOCATION_COST;
+      return true;
+    }
+    return false;
   }
 }

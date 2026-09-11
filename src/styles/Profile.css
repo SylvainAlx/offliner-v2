@@ -1,14 +1,3 @@
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 24px;
-  background: #ffffff;
-  border: 1px solid var(--gray-100);
-  border-radius: 20px;
-  box-shadow: var(--shadow-lg);
-}
-
 .profile-avatar {
   display: flex;
   align-items: center;
@@ -86,24 +75,6 @@
 .profile-input:focus {
   outline: 2px solid var(--accent-border);
   outline-offset: 1px;
-}
-
-.profile-save-button {
-  width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--accent);
-  color: #ffffff;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
-.profile-save-button:active {
-  transform: translateY(1px);
 }
 
 .profile-feedback {

@@ -3,6 +3,8 @@ import { useOnlineStatus } from "../stores/onlineStatusStore";
 import "../styles/Tracking.css";
 import { useUser } from "../stores/userStore";
 import PeriodItem from "./PeriodItem";
+import Card from "./ui/Card";
+import Button from "./ui/Button";
 
 export default function Tracking() {
   const { resetTracking, lastChecked } = useOnlineStatus();
@@ -22,7 +24,7 @@ export default function Tracking() {
   }, [user]);
 
   return (
-    <div className="tracking-card">
+    <Card ariaLabel="Historique des périodes hors ligne">
       <div className="tracking-header">
         <div>
           <h3>📊 Historique</h3>
@@ -33,9 +35,7 @@ export default function Tracking() {
           </p>
         </div>
         {user.periodList.periods.length > 0 && (
-          <button type="button" className="reset-btn" onClick={resetTracking}>
-            Réinitialiser
-          </button>
+          <Button onClick={resetTracking}>Réinitialiser</Button>
         )}
       </div>
 
@@ -67,6 +67,6 @@ export default function Tracking() {
           </div>
         )
       )}
-    </div>
+    </Card>
   );
 }
