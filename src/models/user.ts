@@ -153,7 +153,7 @@ export class User {
   releaseCompanionAndGetOfflinium(companionId: string): boolean {
     if (
       window.confirm(
-        `Êtes-vous sûr de vouloir libérer ce compagnon ? Gainérez ${COMPANION_INVOCATION_COST} orbes d'Offlinium.`,
+        `Êtes-vous sûr de vouloir libérer ${this.village.getCompanion(companionId)?.name} ? Gainérez ${COMPANION_INVOCATION_COST} orbes d'Offlinium.`,
       )
     ) {
       const released = this.village.releaseCompanion(companionId);

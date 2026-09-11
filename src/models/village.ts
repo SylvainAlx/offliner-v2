@@ -57,6 +57,10 @@ export class Village {
     return this.companions.length < previousLength;
   }
 
+  getCompanion(companionId: string): Companion | undefined {
+    return this.companions.find((companion) => companion.id === companionId);
+  }
+
   addPendingCompanion(offlineMs: number, startedAt = Date.now()): void {
     const previous = this.pendingCompanions.at(-1);
     this.pendingCompanions.push({
