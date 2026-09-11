@@ -43,6 +43,26 @@
   font-weight: 800;
 }
 
+.village-house-summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid var(--gray-100);
+  border-radius: 11px;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  font-size: 0.78rem;
+}
+
+.village-house-summary > span:first-child {
+  font-size: 1.2rem;
+}
+
+.village-house-summary strong {
+  color: var(--gray-800);
+}
+
 .companion-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -95,6 +115,12 @@
   font: inherit;
   text-align: left;
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.craft-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .craft-tile:not(:disabled):hover {
@@ -260,6 +286,10 @@
   }
 
   .companion-list {
+    grid-template-columns: 1fr;
+  }
+
+  .craft-tile-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { User } from "../models/user";
 import {
   COMPANION_INVOCATION_COST,
+  HOUSE_CONSTRUCTION_COST,
 } from "../utils/constants";
 
 export interface UserStore {
@@ -11,10 +12,13 @@ export interface UserStore {
   closeAnyOpenPeriod: (endTs: number) => void;
   resetPeriods: () => void;
   saveUser: () => void;
+  buildHouse: (offlineMs: number) => boolean;
   invokeCompanion: (offlineMs: number) => boolean;
   releaseCompanionAndGetOfflinium: (companionId: string) => boolean;
   cancelCompanionInvocation: (companionId: string, offlineMs: number) => boolean;
   completeCompanionInvocations: (offlineMs: number) => void;
+  completePendingElements: (offlineMs: number) => void;
+  cancelPendingElement: (elementId: string, offlineMs: number) => boolean;
   reloadUser: () => User;
   syncWithStorage: (online: boolean, now: number) => User;
 }
@@ -51,13 +55,32 @@ export const useUser = create<UserStore>((set, get) => ({
     get().user.saveUser();
   },
 
+  buildHouse: (offlineMs) => {
+    const next = get().user.clone();
+    const spend = next.spendOfflinium(HOUSE_CONSTRUCTION_COST, offlineMs);
+    if (!spend) return false;
+
+    next.village.addPendingElement(
+      "house",
+      offlineMs,
+      spend.stored,
+      spend.openPeriod,
+    );
+    next.saveUser();
+    set({ user: next });
+    return true;
+  },
+
   invokeCompanion: (offlineMs) => {
     const next = get().user.clone();
+    if (!next.village.canInvokeCompanion()) return false;
+
     const spend = next.spendOfflinium(COMPANION_INVOCATION_COST, offlineMs);
     if (!spend) {
       return false;
     }
-    next.village.addPendingCompanion(
+    next.village.addPendingElement(
+      "companion",
       offlineMs,
       spend.stored,
       spend.openPeriod,
@@ -88,11 +111,24 @@ export const useUser = create<UserStore>((set, get) => ({
   },
 
   completeCompanionInvocations: (offlineMs) => {
+    get().completePendingElements(offlineMs);
+  },
+
+  completePendingElements: (offlineMs) => {
     const next = get().user.clone();
-    if (next.village.completePendingCompanions(offlineMs) === 0) return;
+    if (next.village.completePendingElements(offlineMs) === 0) return;
 
     next.saveUser();
     set({ user: next });
+  },
+
+  cancelPendingElement: (elementId, offlineMs) => {
+    const next = get().user.clone();
+    if (!next.cancelPendingElement(elementId, offlineMs)) return false;
+
+    next.saveUser();
+    set({ user: next });
+    return true;
   },
 
   openPeriodIfNeeded: (startTs) => {
@@ -115,7 +151,7 @@ export const useUser = create<UserStore>((set, get) => ({
     next.periodList.clearPeriods();
     next.offlinium = 0;
     next.offliniumSpentDuringOpenPeriod = 0;
-    next.village.pendingCompanions = next.village.pendingCompanions.map(
+    next.village.pendingElements = next.village.pendingElements.map(
       (pending) => ({
         ...pending,
         offlineMsAtStart: pending.offlineMsAtStart - elapsedOfflineMs,

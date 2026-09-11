@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useOnlineStatus } from "./stores/onlineStatusStore";
-import { useDeviceType } from "./hooks/useDeviceType";
-import DesktopGate from "./components/DesktopGate";
+import HomePage from "./components/HomePage";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import Help from "./components/Help";
@@ -32,14 +31,17 @@ function AppContent() {
 }
 
 function App() {
-  const device = useDeviceType();
+  const [showHomePage, setShowHomePage] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !sessionStorage.getItem("offliner:welcome-dismissed");
+  });
 
-  if (device.isDesktop && !sessionStorage.getItem("offliner:bypass-desktop")) {
+  if (showHomePage) {
     return (
-      <DesktopGate
-        onContinue={() => {
-          sessionStorage.setItem("offliner:bypass-desktop", "1");
-          window.dispatchEvent(new Event("resize"));
+      <HomePage
+        onPlay={() => {
+          sessionStorage.setItem("offliner:welcome-dismissed", "1");
+          setShowHomePage(false);
         }}
       />
     );

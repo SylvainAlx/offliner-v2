@@ -8,6 +8,7 @@ import { Period } from "./period";
 import { readStorage, writeStorage } from "../services/storage";
 import { Companion } from "./companion";
 import { Village } from "./village";
+import { House } from "./house";
 
 export interface OffliniumSpend {
   stored: number;
@@ -86,7 +87,12 @@ export class User {
       Object.assign(clonedCompanion, companion);
       return clonedCompanion;
     });
-    copy.village.pendingCompanions = this.village.pendingCompanions.map(
+    copy.village.houses = this.village.houses.map((house) => {
+      const clonedHouse = new House();
+      Object.assign(clonedHouse, house);
+      return clonedHouse;
+    });
+    copy.village.pendingElements = this.village.pendingElements.map(
       (pending) => ({ ...pending }),
     );
     return copy;
@@ -195,6 +201,17 @@ export class User {
   ): boolean {
     const cancelled = this.village.cancelPendingCompanion(
       companionId,
+      currentOfflineMs,
+    );
+    if (!cancelled) return false;
+
+    this.refundOfflinium(cancelled);
+    return true;
+  }
+
+  cancelPendingElement(elementId: string, currentOfflineMs: number): boolean {
+    const cancelled = this.village.cancelPendingElement(
+      elementId,
       currentOfflineMs,
     );
     if (!cancelled) return false;
