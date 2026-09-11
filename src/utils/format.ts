@@ -16,6 +16,15 @@ function formatDateTime(ts: number): string {
   }).format(new Date(ts));
 }
 
+function formatDay(ts: number): string {
+  const value = new Intl.DateTimeFormat("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(new Date(ts));
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 function formatDuration(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);
   const hours = Math.floor(totalSeconds / 3600);
@@ -39,4 +48,4 @@ export const formatCountdown = (milliseconds: number): string => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
-export { formatDate, formatDateTime, formatDuration };
+export { formatDate, formatDateTime, formatDay, formatDuration };

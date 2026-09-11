@@ -3,12 +3,12 @@ import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 export class Period {
   start: number;
   end: number | null;
-  private finalDuration: number;
+  private finalDuration: number | null;
 
   constructor(start: number, end: number | null = null) {
     this.start = start;
     this.end = end;
-    this.finalDuration = this.getPeriodDurationMs();
+    this.finalDuration = end === null ? null : this.getPeriodDurationMs();
   }
 
   close(end: number): number {
@@ -18,7 +18,7 @@ export class Period {
   }
 
   getPeriodDurationMs(now?: number): number {
-    if (this.finalDuration) return this.finalDuration;
+    if (this.finalDuration !== null) return this.finalDuration;
     const end = this.end ?? now ?? Date.now();
     return Math.max(0, end - this.start);
   }

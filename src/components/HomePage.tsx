@@ -1,6 +1,12 @@
+import { useState } from "react";
+import CompanionSprite from "./CompanionSprite";
 import "../styles/HomePage.css";
 
 export default function HomePage({ onPlay }: { onPlay: () => void }) {
+  const [companionIds] = useState(() =>
+    Array.from({ length: 3 }, () => crypto.randomUUID()),
+  );
+
   return (
     <main className="home-page">
       <div className="home-page-glow home-page-glow-one" aria-hidden="true" />
@@ -41,12 +47,18 @@ export default function HomePage({ onPlay }: { onPlay: () => void }) {
             <div className="home-page-cloud home-page-cloud-two" />
             <div className="home-page-hill home-page-hill-back" />
             <div className="home-page-hill home-page-hill-front" />
-            <div className="home-page-house">
-              <div className="home-page-roof" />
-              <div className="home-page-house-body">
-                <div className="home-page-door" />
-                <div className="home-page-window" />
-              </div>
+            <div className="home-page-companions">
+              {companionIds.map((id, index) => (
+                <div
+                  className={`home-page-companion home-page-companion-${index + 1}`}
+                  key={id}
+                >
+                  <CompanionSprite
+                    id={id}
+                    className="home-page-companion-sprite"
+                  />
+                </div>
+              ))}
             </div>
             <span className="home-page-orb home-page-orb-one">✦</span>
             <span className="home-page-orb home-page-orb-two">✦</span>

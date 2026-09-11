@@ -4,7 +4,6 @@ import {
   USER_KEY,
 } from "../utils/constants";
 import { PeriodList } from "./periodList";
-import { Period } from "./period";
 import { readStorage, writeStorage } from "../services/storage";
 import { Companion } from "./companion";
 import { Village } from "./village";
@@ -79,7 +78,8 @@ export class User {
     copy.offliniumSpentDuringOpenPeriod = this.offliniumSpentDuringOpenPeriod;
     copy.createdAt = this.createdAt;
     copy.periodList = new PeriodList(
-      this.periodList.periods.map((p) => new Period(p.start, p.end)),
+      this.periodList.days.map((day) => ({ ...day })),
+      this.periodList.openPeriodStart,
     );
     copy.village = new Village();
     copy.village.companions = this.village.companions.map((companion) => {
@@ -109,11 +109,7 @@ export class User {
   }
 
   getCurrentPeriodOfflinium(totalOfflineMs: number): number {
-    const completedOfflineMs = this.periodList.periods.reduce(
-      (total, period) =>
-        period.end === null ? total : total + period.getPeriodDurationMs(),
-      0,
-    );
+    const completedOfflineMs = this.periodList.computeCompletedMs();
 
     return Math.floor(
       Math.max(0, totalOfflineMs - completedOfflineMs) /

@@ -3,6 +3,7 @@ import { useOnlineStatus } from "../stores/onlineStatusStore";
 import "../styles/Tracking.css";
 import { useUser } from "../stores/userStore";
 import PeriodItem from "./PeriodItem";
+import DayItem from "./DayItem";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
 
@@ -15,12 +16,11 @@ export default function Tracking() {
     [lastChecked],
   );
   const now = nowRef.now;
-  const { completedPeriods, openPeriod } = useMemo(() => {
-    const completed = user.periodList.periods
-      .filter((p) => p.end !== null)
-      .reverse();
-    const open = user.periodList.periods.find((p) => p.end === null) ?? null;
-    return { completedPeriods: completed, openPeriod: open };
+  const { completedDays, openPeriod } = useMemo(() => {
+    return {
+      completedDays: user.periodList.days,
+      openPeriod: user.periodList.getOpenPeriod(),
+    };
   }, [user]);
 
   return (
@@ -32,33 +32,23 @@ export default function Tracking() {
       <div className="tracking-header">
         <div>
           <p className="tracking-sub">
-            {user.periodList.periods.length} période
-            {user.periodList.periods.length > 1 ? "s" : ""} enregistrée
-            {user.periodList.periods.length > 1 ? "s" : ""}
+            {completedDays.length} journée
+            {completedDays.length > 1 ? "s" : ""} enregistrée
+            {completedDays.length > 1 ? "s" : ""}
           </p>
         </div>
-        {user.periodList.periods.length > 0 && (
+        {(completedDays.length > 0 || openPeriod) && (
           <Button onClick={resetTracking}>Réinitialiser</Button>
         )}
       </div>
 
       {openPeriod && <PeriodItem isOpen={true} now={now} period={openPeriod} />}
 
-      {completedPeriods.length > 0 ? (
+      {completedDays.length > 0 ? (
         <ul className="period-list">
-          {completedPeriods.map((period, index) => {
-            const safeIndex = user.periodList.periods.findIndex(
-              (p) => p.start === period.start && p.end === period.end,
-            );
-
-            return (
-              <PeriodItem
-                isOpen={false}
-                period={period}
-                key={`${period.start}-${period.end}-${safeIndex}-${index}`}
-              />
-            );
-          })}
+          {completedDays.map((day) => (
+            <DayItem day={day} key={day.dayStart} />
+          ))}
         </ul>
       ) : (
         !openPeriod && (
