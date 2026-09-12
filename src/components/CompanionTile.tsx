@@ -6,6 +6,7 @@ import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
 import ConfirmModal from "./ui/ConfirmModal";
 import CompanionSprite from "./CompanionSprite";
+import CompanionPreview from "./CompanionPreview";
 
 interface CompanionProps {
   companion: Companion;
@@ -43,7 +44,8 @@ export default function CompanionTile({ companion }: CompanionProps) {
         <span className="companion-details">
           <strong>{companion.name}</strong>
           <span>
-            Invoqué le {new Date(companion.birthdate).toLocaleDateString("fr-FR")}
+            Invoqué le{" "}
+            {new Date(companion.birthdate).toLocaleDateString("fr-FR")}
           </span>
         </span>
         <div className="companion-actions">
@@ -71,39 +73,10 @@ export default function CompanionTile({ companion }: CompanionProps) {
 
       {isSpriteOpen &&
         createPortal(
-          <div
-            className="companion-preview-backdrop"
-            role="presentation"
-            onClick={(event) => {
-              if (event.target === event.currentTarget) setIsSpriteOpen(false);
-            }}
-          >
-            <div
-              className="companion-preview-dialog"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={`companion-preview-title-${companion.id}`}
-            >
-              <button
-                type="button"
-                className="companion-preview-close"
-                onClick={() => setIsSpriteOpen(false)}
-                aria-label="Fermer l’aperçu"
-                autoFocus
-              >
-                ×
-              </button>
-              <div className="companion-sprite-large">
-                <CompanionSprite id={companion.id} />
-              </div>
-              <h2 id={`companion-preview-title-${companion.id}`}>
-                {companion.name}
-              </h2>
-              <p>
-                Compagnon invoqué le {new Date(companion.birthdate).toLocaleDateString("fr-FR")}.
-              </p>
-            </div>
-          </div>,
+          <CompanionPreview
+            companion={companion}
+            setIsSpriteOpen={setIsSpriteOpen}
+          />,
           document.body,
         )}
     </>
