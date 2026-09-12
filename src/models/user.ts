@@ -153,6 +153,11 @@ export class User {
     return duration;
   }
 
+  discardOpenPeriod(): void {
+    this.periodList.discardOpenPeriod();
+    this.offliniumSpentDuringOpenPeriod = 0;
+  }
+
   removeOfflinium(amount: number): void {
     if (amount < 0) {
       throw new Error("Le montant à retirer doit être supérieur à 0.");
@@ -177,18 +182,11 @@ export class User {
   }
 
   releaseCompanionAndGetOfflinium(companionId: string): boolean {
-    if (
-      window.confirm(
-        `Êtes-vous sûr de vouloir libérer ${this.village.getCompanion(companionId)?.name} ? Gainérez ${COMPANION_INVOCATION_COST} orbes d'Offlinium.`,
-      )
-    ) {
-      const released = this.village.releaseCompanion(companionId);
-      if (!released) return false;
+    const released = this.village.releaseCompanion(companionId);
+    if (!released) return false;
 
-      this.offlinium += COMPANION_INVOCATION_COST;
-      return true;
-    }
-    return false;
+    this.offlinium += COMPANION_INVOCATION_COST;
+    return true;
   }
 
   cancelCompanionInvocation(

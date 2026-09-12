@@ -8,7 +8,7 @@
 }
 
 .app-container.online {
-  background: linear-gradient(180deg, var(--slate-bg) 0%, #ffffff 40%);
+  background: linear-gradient(180deg, var(--accent-bg) 0%, #ffffff 40%);
 }
 
 .app-container.offline {

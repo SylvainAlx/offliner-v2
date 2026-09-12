@@ -37,14 +37,8 @@ export const useOnlineStatus = create<OnlineStatusStore>((set, get) => ({
     .user.periodList.computeTotalMs(Date.now()),
 
   resetTracking: () => {
-    if (
-      window.confirm(
-        "Cette action va supprimer l'historique complet de vos périodes de déconnexion. Continuer?",
-      )
-    ) {
-      useUser.getState().resetPeriods();
-      set({ totalOfflineMs: 0, lastChecked: new Date() });
-    }
+    useUser.getState().resetPeriods();
+    set({ totalOfflineMs: 0, lastChecked: new Date() });
   },
 
   initialize: () => {

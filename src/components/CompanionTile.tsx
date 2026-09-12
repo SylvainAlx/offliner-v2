@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { useUser } from "../stores/userStore";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
+import ConfirmModal from "./ui/ConfirmModal";
 import CompanionSprite from "./CompanionSprite";
 
 interface CompanionProps {
@@ -12,6 +13,7 @@ interface CompanionProps {
 
 export default function CompanionTile({ companion }: CompanionProps) {
   const [isSpriteOpen, setIsSpriteOpen] = useState(false);
+  const [isReleaseModalOpen, setIsReleaseModalOpen] = useState(false);
   const releaseCompanionAndGetOfflinium = useUser(
     (state) => state.releaseCompanionAndGetOfflinium,
   );
@@ -47,13 +49,25 @@ export default function CompanionTile({ companion }: CompanionProps) {
         <div className="companion-actions">
           <Button onClick={() => companion.sayHello()}>👋​</Button>
           <Button
-            onClick={() => releaseCompanionAndGetOfflinium(companion.id)}
+            onClick={() => setIsReleaseModalOpen(true)}
             color="var(--red-bg)"
           >
             ❌​
           </Button>
         </div>
       </li>
+
+      <ConfirmModal
+        isOpen={isReleaseModalOpen}
+        title={`Libérer ${companion.name} ?`}
+        message="Cette action est définitive. Vous récupérerez le coût d'invocation du compagnon."
+        confirmLabel="Libérer"
+        onCancel={() => setIsReleaseModalOpen(false)}
+        onConfirm={() => {
+          releaseCompanionAndGetOfflinium(companion.id);
+          setIsReleaseModalOpen(false);
+        }}
+      />
 
       {isSpriteOpen &&
         createPortal(

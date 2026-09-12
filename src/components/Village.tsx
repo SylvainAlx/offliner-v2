@@ -10,6 +10,7 @@ import type { PendingElement } from "../models/village";
 import "../styles/Village.css";
 import CompanionTile from "./CompanionTile";
 import Card from "./ui/Card";
+import VillageSection from "./VillageSection";
 
 export default function Village() {
   const user = useUser((state) => state.user);
@@ -82,35 +83,25 @@ export default function Village() {
       title="Village"
       subtitle="Utilisez vos périodes hors ligne pour développer votre village."
     >
-      <div className="village-section village-houses-section">
-        <div className="village-section-heading">
-          <div>
-            <h3>Vos maisons</h3>
-            <p>Chaque maison accueille jusqu&apos;à 4 compagnons.</p>
-          </div>
-          <span className="village-count">{houses.length}</span>
-        </div>
+      <VillageSection
+        title="Vos maisons"
+        subtitle="Chaque maison accueille jusqu'à 4 compagnons."
+      >
         <div className="village-house-summary">
+          <span className="village-count">{houses.length}</span>
           <span aria-hidden="true">🏠</span>
           <span>
             Capacité actuelle : <strong>{companionCapacity}</strong> compagnons
           </span>
         </div>
-      </div>
-
-      <div className="village-section">
-        <div className="village-section-heading">
-          <div>
-            <h3>Vos compagnons</h3>
-            <p>
-              Votre population utilise les places disponibles dans vos maisons.
-            </p>
-          </div>
-          <span className="village-count">
-            {companions.length}/{companionCapacity}
-          </span>
-        </div>
-
+      </VillageSection>
+      <VillageSection
+        title="Vos compagnons"
+        subtitle="Votre population utilise les places disponibles dans vos maisons."
+      >
+        <span className="village-count">
+          {companions.length}/{companionCapacity}
+        </span>
         {companions.length > 0 ? (
           <ul className="companion-list">
             {companions.map((companion) => (
@@ -130,16 +121,11 @@ export default function Village() {
             </span>
           </div>
         )}
-      </div>
-
-      <div className="village-section village-crafting-section">
-        <div className="village-section-heading">
-          <div>
-            <h3>À construire</h3>
-            <p>Chaque élément avance pendant vos périodes hors ligne.</p>
-          </div>
-        </div>
-
+      </VillageSection>
+      <VillageSection
+        title="À construire"
+        subtitle="Chaque élément avance pendant vos périodes hors ligne."
+      >
         <div className="craft-tile-grid">
           <button
             type="button"
@@ -207,7 +193,6 @@ export default function Village() {
             </span>
           </button>
         </div>
-
         {pendingElements.length > 0 && (
           <div
             className="craft-queue-cancel-list"
@@ -235,7 +220,7 @@ export default function Village() {
             ))}
           </div>
         )}
-      </div>
+      </VillageSection>
     </Card>
   );
 }

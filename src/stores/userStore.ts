@@ -29,11 +29,8 @@ function createInitialUser(): User {
 
   const isOnline = typeof navigator !== "undefined" ? navigator.onLine : true;
   const now = Date.now();
-  if (isOnline) {
-    user.closeOfflinePeriod(now);
-  } else {
-    user.periodList.openPeriodIfNeeded(now);
-  }
+  user.discardOpenPeriod();
+  if (!isOnline) user.periodList.openPeriodIfNeeded(now);
   user.saveUser();
   return user;
 }

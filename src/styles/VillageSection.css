@@ -1,0 +1,29 @@
+.village-section {
+  padding: 20px;
+}
+
+.village-section + .village-section {
+  padding-top: 0;
+}
+
+.village-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.village-section-heading h3 {
+  margin: 0;
+  color: var(--gray-900);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.village-section-heading p {
+  margin-top: 3px;
+  color: var(--gray-600);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import "../styles/Tracking.css";
 import { useUser } from "../stores/userStore";
@@ -6,10 +6,12 @@ import PeriodItem from "./PeriodItem";
 import DayItem from "./DayItem";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
+import ConfirmModal from "./ui/ConfirmModal";
 
 export default function Tracking() {
   const { resetTracking, lastChecked } = useOnlineStatus();
   const { user } = useUser();
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
   const nowRef = useMemo(
     () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),
@@ -38,9 +40,23 @@ export default function Tracking() {
           </p>
         </div>
         {(completedDays.length > 0 || openPeriod) && (
-          <Button onClick={resetTracking}>Réinitialiser</Button>
+          <Button onClick={() => setIsResetModalOpen(true)}>
+            Réinitialiser
+          </Button>
         )}
       </div>
+
+      <ConfirmModal
+        isOpen={isResetModalOpen}
+        title="Réinitialiser l'historique ?"
+        message="Cette action supprimera toutes vos périodes hors ligne et les Offlinium associés."
+        confirmLabel="Réinitialiser"
+        onCancel={() => setIsResetModalOpen(false)}
+        onConfirm={() => {
+          resetTracking();
+          setIsResetModalOpen(false);
+        }}
+      />
 
       {openPeriod && <PeriodItem isOpen={true} now={now} period={openPeriod} />}
 

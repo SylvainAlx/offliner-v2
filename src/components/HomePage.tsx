@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CompanionSprite from "./CompanionSprite";
 import "../styles/HomePage.css";
+import Button from "./ui/Button";
 
 export default function HomePage({ onPlay }: { onPlay: () => void }) {
   const [companionIds] = useState(() =>
@@ -15,30 +16,34 @@ export default function HomePage({ onPlay }: { onPlay: () => void }) {
       <div className="home-page-shell">
         <header className="home-page-header">
           <div className="home-page-brand" aria-label="Offliner">
-            <span className="home-page-brand-mark" aria-hidden="true">
-              ◈
-            </span>
+            <img
+              className="home-page-brand-image"
+              src="./logo.png"
+              alt="Offliner"
+            />
             <span>Offliner</span>
           </div>
-          <span className="home-page-tagline">Votre village hors-ligne</span>
         </header>
 
         <section className="home-page-hero" aria-labelledby="home-page-title">
           <div className="home-page-hero-copy">
-            <span className="home-page-eyebrow">Un jeu pour décrocher</span>
             <h1 id="home-page-title">
-              Éteignez l&apos;écran.
+              Déconnectez,
               <br />
               <span>Faites grandir votre village.</span>
             </h1>
             <p className="home-page-lead">
-              Offliner transforme votre temps loin du téléphone en progression.
-              Fermez l&apos;application, vivez votre période hors ligne, puis
-              revenez découvrir les orbes et les habitants gagnés.
+              Offliner transforme votre temps hors-ligne en un village vivant,
+              avec des maisons et des compagnons à invoquer. Accordez-vous une
+              pause d'internet et regardez votre village prospérer pendant que
+              vous êtes déconnecté.
             </p>
-            <button type="button" className="home-page-play" onClick={onPlay}>
+            {/* <button type="button" className="home-page-play" onClick={onPlay}>
               Jouer <span aria-hidden="true">→</span>
-            </button>
+            </button> */}
+            <Button onClick={onPlay}>
+              Jouer <span aria-hidden="true">→</span>
+            </Button>
           </div>
 
           <div className="home-page-village-preview" aria-hidden="true">
@@ -66,7 +71,10 @@ export default function HomePage({ onPlay }: { onPlay: () => void }) {
           </div>
         </section>
 
-        <section className="home-page-info-grid" aria-label="À propos d'Offliner">
+        <section
+          className="home-page-info-grid"
+          aria-label="À propos d'Offliner"
+        >
           <article className="home-page-info-card">
             <span className="home-page-info-icon" aria-hidden="true">
               🌱
@@ -100,7 +108,8 @@ export default function HomePage({ onPlay }: { onPlay: () => void }) {
                   <strong>Sur l&apos;écran d&apos;accueil</strong>.
                 </li>
                 <li>
-                  Confirmez, puis lancez Offliner depuis votre écran d&apos;accueil.
+                  Confirmez, puis lancez Offliner depuis votre écran
+                  d&apos;accueil.
                 </li>
               </ol>
             </div>

@@ -68,6 +68,10 @@ export class PeriodList {
     this.openPeriodStart = null;
   }
 
+  discardOpenPeriod(): void {
+    this.openPeriodStart = null;
+  }
+
   computeCompletedMs(): number {
     return this.days.reduce((total, day) => total + day.durationMs, 0);
   }

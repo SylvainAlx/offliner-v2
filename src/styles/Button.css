@@ -1,5 +1,4 @@
 .button {
-  width: 100%;
   min-height: 44px;
   padding: 10px 14px;
   border: 0;
@@ -9,6 +8,12 @@
   font: inherit;
   font-size: 0.9rem;
   font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover {
+  box-shadow: 0 13px 24px rgba(17, 24, 39, 0.25);
+  transform: translateY(-2px);
 }
 
 .button:active {
