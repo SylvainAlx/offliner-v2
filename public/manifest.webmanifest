@@ -1,7 +1,7 @@
 {
-  "name": "Offliner — Déconnecte-toi",
+  "name": "Offliner",
   "short_name": "Offliner",
-  "description": "Suivez votre temps passé hors ligne et déconnectez-vous de votre téléphone.",
+  "description": "Déconnectez-vous et peuplez votre village.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./",
@@ -9,13 +9,13 @@
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#111827",
+  "theme_color": "#411264",
   "categories": ["health", "lifestyle", "productivity", "utilities"],
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
