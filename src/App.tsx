@@ -8,6 +8,7 @@ import Profile from "./components/Profile";
 import Tracking from "./components/Tracking";
 import Status from "./components/Status";
 import Village from "./components/Village";
+import DataBackup from "./components/DataBackup";
 import Sidebar, { type AppSection } from "./components/layouts/Sidebar";
 import "./styles/App.css";
 
@@ -38,6 +39,7 @@ function AppContent() {
             <Profile />
             <Status />
             <Tracking />
+            <DataBackup />
           </>
         );
     }

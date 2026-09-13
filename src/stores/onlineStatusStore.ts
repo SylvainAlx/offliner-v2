@@ -7,6 +7,7 @@ export interface OnlineStatusStore {
   lastChecked: Date | null;
   totalOfflineMs: number;
   resetTracking: () => void;
+  refreshFromUser: () => void;
   initialize: () => () => void;
 }
 
@@ -39,6 +40,15 @@ export const useOnlineStatus = create<OnlineStatusStore>((set, get) => ({
   resetTracking: () => {
     useUser.getState().resetPeriods();
     set({ totalOfflineMs: 0, lastChecked: new Date() });
+  },
+
+  refreshFromUser: () => {
+    const now = Date.now();
+    const user = useUser.getState().user;
+    set({
+      totalOfflineMs: user.periodList.computeTotalMs(now),
+      lastChecked: new Date(now),
+    });
   },
 
   initialize: () => {

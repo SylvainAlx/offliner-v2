@@ -1,0 +1,43 @@
+.data-backup-content {
+  width: 100%;
+}
+
+.data-backup-description {
+  color: var(--gray-600);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.data-backup-actions {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.data-backup-actions .button {
+  width: 100%;
+}
+
+.data-backup-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.data-backup-feedback {
+  margin-top: 11px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.data-backup-feedback-success {
+  color: var(--green-dark);
+}
+
+.data-backup-feedback-error {
+  color: var(--red-dark);
+}
