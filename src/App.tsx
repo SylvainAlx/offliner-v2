@@ -8,23 +8,56 @@ import Profile from "./components/Profile";
 import Tracking from "./components/Tracking";
 import Status from "./components/Status";
 import Village from "./components/Village";
+import Sidebar, { type AppSection } from "./components/layouts/Sidebar";
 import "./styles/App.css";
 
 function AppContent() {
   const { isOnline } = useOnlineStatus();
+  const [activeSection, setActiveSection] = useState<AppSection>("account");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => useOnlineStatus.getState().initialize(), []);
 
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
+  const renderSection = () => {
+    switch (activeSection) {
+      case "village":
+        return <Village />;
+      case "help":
+        return <Help />;
+      case "account":
+      default:
+        return (
+          <>
+            <Profile />
+            <Status />
+            <Tracking />
+          </>
+        );
+    }
+  };
+
   return (
     <div className={`app-container ${isOnline ? "online" : "offline"}`}>
-      <Header />
-      <main className="app-main">
-        <Status />
-        <Profile />
-        <Village />
-        <Tracking />
-        <Help />
-      </main>
+      <Header
+        isMenuOpen={isMenuOpen}
+        onMenuOpen={() => setIsMenuOpen(true)}
+      />
+      <div className="app-layout">
+        <Sidebar
+          activeSection={activeSection}
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          onSelect={setActiveSection}
+        />
+        <main className="app-main">{renderSection()}</main>
+      </div>
       <Footer />
     </div>
   );
