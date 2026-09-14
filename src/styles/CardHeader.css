@@ -1,4 +1,5 @@
 .card-header {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -16,7 +17,6 @@
 }
 
 .card-subtitle {
-  max-width: 250px;
   color: var(--gray-600);
   font-size: 0.82rem;
   line-height: 1.4;

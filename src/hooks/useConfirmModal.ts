@@ -15,9 +15,5 @@ export function useConfirmModal(isOpen: boolean, onCancel: () => void) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onCancel]);
 
-  if (!isOpen) {
-    return null;
-  } else {
-    return { messageId, titleId };
-  }
+  return { messageId, titleId };
 }

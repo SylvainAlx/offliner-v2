@@ -10,6 +10,7 @@ import { useVillage } from "../hooks/useVillage";
 
 export default function Village() {
   const {
+    isOnline,
     houses,
     companionCapacity,
     companions,
@@ -31,7 +32,7 @@ export default function Village() {
     <Card
       ariaLabel="Village"
       title="Village"
-      subtitle="Utilisez vos périodes hors ligne pour développer votre village."
+      subtitle={isOnline ? "Coupez internet pour développer votre village." : "Profitez de ce temps hors ligne pour développer votre village."}
     >
       <VillageSection
         title="Vos maisons"
@@ -93,7 +94,7 @@ export default function Village() {
               </span>
             </span>
             <strong>Maison</strong>
-            <span className="craft-tile-description">⏳ 5 min hors ligne</span>
+            <span className="craft-tile-description">⏱️ 2 min</span>
 
             {pendingHouses.length > 0 && (
               <span className="craft-tile-progress-list">
@@ -124,7 +125,7 @@ export default function Village() {
               </span>
             </span>
             <strong>Compagnon</strong>
-            <span className="craft-tile-description">⏳ 1 min hors ligne</span>
+            <span className="craft-tile-description">⏱️ 1 min</span>
 
             {pendingCompanions.length > 0 && (
               <span className="craft-tile-progress-list">

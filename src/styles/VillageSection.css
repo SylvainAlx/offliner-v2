@@ -1,5 +1,6 @@
 .village-section {
   padding: 20px;
+  width: 100%;
 }
 
 .village-section + .village-section {
@@ -7,6 +8,7 @@
 }
 
 .village-section-heading {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -23,6 +23,8 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   const { titleId, messageId } = useConfirmModal(isOpen, onCancel);
 
+  if (!isOpen) return null;
+
   return createPortal(
     <div
       className="confirm-modal-backdrop"

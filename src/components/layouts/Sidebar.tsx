@@ -9,8 +9,8 @@ const menuItems: Array<{
   description: string;
   icon: string;
 }> = [
-  { id: "account", label: "Compte", description: "Profil, statut et suivi", icon: "◉" },
-  { id: "village", label: "Village", description: "Compagnons et maisons", icon: "⌂" },
+  { id: "village", label: "Village", description: "Compagnons et maisons", icon: "🏫" },
+  { id: "account", label: "Compte", description: "Profil, statut et suivi", icon: "👤​" },
   { id: "help", label: "Aide", description: "Les règles d'Offliner", icon: "?" },
 ];
 
@@ -43,10 +43,7 @@ export default function Sidebar({
         aria-label="Navigation principale"
       >
         <div className="sidebar-heading">
-          <div>
-            <span className="sidebar-eyebrow">Navigation</span>
-            <h2>Votre espace</h2>
-          </div>
+            <h2 className="sidebar-eyebrow">Navigation</h2>
           <button
             ref={closeButtonRef}
             className="sidebar-close"

@@ -14,7 +14,7 @@ import "./styles/App.css";
 
 function AppContent() {
   const { isOnline } = useOnlineStatus();
-  const [activeSection, setActiveSection] = useState<AppSection>("account");
+  const [activeSection, setActiveSection] = useState<AppSection>("village");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => useOnlineStatus.getState().initialize(), []);

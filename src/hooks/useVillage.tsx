@@ -74,6 +74,7 @@ export function useVillage() {
   };
 
   return {
+    isOnline,
     houses,
     companionCapacity,
     companions,

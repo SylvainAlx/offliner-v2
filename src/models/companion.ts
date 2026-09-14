@@ -1,4 +1,4 @@
-import { colors, names, uniqueNamesGenerator } from "unique-names-generator";
+import { names, animals, uniqueNamesGenerator } from "unique-names-generator";
 
 export class Companion {
   id: string;
@@ -6,15 +6,16 @@ export class Companion {
   birthdate: number;
 
   constructor() {
-    const randomName: string = uniqueNamesGenerator({
+    const firstName: string = uniqueNamesGenerator({
       dictionaries: [names],
     });
-    const color: string = uniqueNamesGenerator({
-      dictionaries: [colors],
+    const lastName: string = uniqueNamesGenerator({
+      dictionaries: [animals],
+      style: "capital",
     });
 
     this.id = crypto.randomUUID();
-    this.name = `${randomName} ${color.charAt(0).toUpperCase() + color.slice(1)}`;
+    this.name = `${firstName} ${lastName}`;
     this.birthdate = Date.now();
   }
 
