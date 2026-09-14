@@ -1,6 +1,4 @@
-import { createPortal } from "react-dom";
-import "../../styles/ConfirmModal.css";
-import { useConfirmModal } from "../../hooks/useConfirmModal";
+import Modal from "./Modal";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -21,46 +19,30 @@ export default function ConfirmModal({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
-  const { titleId, messageId } = useConfirmModal(isOpen, onCancel);
-
-  if (!isOpen) return null;
-
-  return createPortal(
-    <div
-      className="confirm-modal-backdrop"
-      role="presentation"
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onCancel();
-      }}
+  return (
+    <Modal
+      isOpen={isOpen}
+      title={title}
+      message={message}
+      onClose={onCancel}
     >
-      <div
-        className="confirm-modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={messageId}
-      >
-        <h2 id={titleId}>{title}</h2>
-        <p id={messageId}>{message}</p>
-        <div className="confirm-modal-actions">
-          <button
-            type="button"
-            className="confirm-modal-button confirm-modal-button-cancel"
-            onClick={onCancel}
-            autoFocus
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            className="confirm-modal-button confirm-modal-button-confirm"
-            onClick={onConfirm}
-          >
-            {confirmLabel}
-          </button>
-        </div>
+      <div className="modal-actions">
+        <button
+          type="button"
+          className="modal-button modal-button-cancel"
+          onClick={onCancel}
+          autoFocus
+        >
+          {cancelLabel}
+        </button>
+        <button
+          type="button"
+          className="modal-button modal-button-confirm"
+          onClick={onConfirm}
+        >
+          {confirmLabel}
+        </button>
       </div>
-    </div>,
-    document.body,
+    </Modal>
   );
 }

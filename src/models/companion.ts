@@ -19,9 +19,7 @@ export class Companion {
     this.birthdate = Date.now();
   }
 
-  sayHello(): void {
-    const response = `Bonjour, je m'appelle ${this.name}. Je suis né(e) le ${new Date(this.birthdate).toLocaleDateString()} à ${new Date(this.birthdate).toLocaleTimeString()}.`;
-    alert(response);
-    console.log(this);
+  sayHello(): string {
+    return `Bonjour, je m'appelle ${this.name}. J'ai été invoqué le ${new Date(this.birthdate).toLocaleDateString()} à ${new Date(this.birthdate).toLocaleTimeString()}.`;
   }
 }

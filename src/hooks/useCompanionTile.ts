@@ -4,6 +4,7 @@ import { useUser } from "../stores/userStore";
 export function useCompanionTile() {
   const [isSpriteOpen, setIsSpriteOpen] = useState(false);
   const [isReleaseModalOpen, setIsReleaseModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const releaseCompanionAndGetOfflinium = useUser(
     (state) => state.releaseCompanionAndGetOfflinium,
   );
@@ -24,6 +25,8 @@ export function useCompanionTile() {
     setIsSpriteOpen,
     isReleaseModalOpen,
     setIsReleaseModalOpen,
+    isInfoModalOpen,
+    setIsInfoModalOpen,
     releaseCompanionAndGetOfflinium,
   };
 }

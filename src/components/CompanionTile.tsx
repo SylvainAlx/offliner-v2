@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
 import ConfirmModal from "./ui/ConfirmModal";
+import InfoModal from "./ui/InfoModal";
 import CompanionSprite from "./CompanionSprite";
 import CompanionPreview from "./CompanionPreview";
 import { useCompanionTile } from "../hooks/useCompanionTile";
@@ -17,6 +18,8 @@ export default function CompanionTile({ companion }: CompanionProps) {
     setIsSpriteOpen,
     isReleaseModalOpen,
     setIsReleaseModalOpen,
+    isInfoModalOpen,
+    setIsInfoModalOpen,
     releaseCompanionAndGetOfflinium,
   } = useCompanionTile();
 
@@ -39,7 +42,7 @@ export default function CompanionTile({ companion }: CompanionProps) {
           </span>
         </span>
         <div className="companion-actions">
-          <Button onClick={() => companion.sayHello()}>👋​</Button>
+          <Button onClick={() => setIsInfoModalOpen(true)}>👋​</Button>
           <Button
             onClick={() => setIsReleaseModalOpen(true)}
             color="var(--red-bg)"
@@ -59,6 +62,13 @@ export default function CompanionTile({ companion }: CompanionProps) {
           releaseCompanionAndGetOfflinium(companion.id);
           setIsReleaseModalOpen(false);
         }}
+      />
+
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        title={`Bonjour de ${companion.name}`}
+        message={companion.sayHello()}
+        onClose={() => setIsInfoModalOpen(false)}
       />
 
       {isSpriteOpen &&
