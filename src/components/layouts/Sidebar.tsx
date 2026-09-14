@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
 import "../../styles/Sidebar.css";
+import { useSideBar } from "../../hooks/useSideBar";
 
 export type AppSection = "account" | "village" | "help";
 
@@ -27,23 +27,8 @@ export default function Sidebar({
   onClose,
   onSelect,
 }: SidebarProps) {
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    closeButtonRef.current?.focus();
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
-  function handleSelect(section: AppSection) {
-    onSelect(section);
-    onClose();
-  }
+  
+  const {closeButtonRef, handleSelect} = useSideBar(isOpen, onClose, onSelect);
 
   return (
     <>

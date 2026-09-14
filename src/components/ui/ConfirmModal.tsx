@@ -1,6 +1,6 @@
-import { useEffect, useId } from "react";
 import { createPortal } from "react-dom";
 import "../../styles/ConfirmModal.css";
+import { useConfirmModal } from "../../hooks/useConfirmModal";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -21,21 +21,7 @@ export default function ConfirmModal({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
-  const titleId = useId();
-  const messageId = useId();
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onCancel();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onCancel]);
-
-  if (!isOpen) return null;
+  const { titleId, messageId } = useConfirmModal(isOpen, onCancel);
 
   return createPortal(
     <div

@@ -1,12 +1,14 @@
 import { generateCompanionSprite } from "../utils/companionSprite";
 
+interface CompanionSpriteProps {
+  id: string;
+  className?: string;
+}
+
 export default function CompanionSprite({
   id,
   className = "companion-sprite",
-}: {
-  id: string;
-  className?: string;
-}) {
+}: CompanionSpriteProps) {
   const sprite = generateCompanionSprite(id);
 
   return (

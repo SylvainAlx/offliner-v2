@@ -1,12 +1,10 @@
-import { useState } from "react";
 import CompanionSprite from "./CompanionSprite";
 import "../styles/HomePage.css";
 import Button from "./ui/Button";
+import { useHomePage } from "../hooks/useHomePage";
 
 export default function HomePage({ onPlay }: { onPlay: () => void }) {
-  const [companionIds] = useState(() =>
-    Array.from({ length: 3 }, () => crypto.randomUUID()),
-  );
+  const { companionIds } = useHomePage();
 
   return (
     <main className="home-page">

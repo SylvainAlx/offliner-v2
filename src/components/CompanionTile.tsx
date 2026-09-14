@@ -1,34 +1,24 @@
 import type { Companion } from "../models/companion";
-import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useUser } from "../stores/userStore";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
 import ConfirmModal from "./ui/ConfirmModal";
 import CompanionSprite from "./CompanionSprite";
 import CompanionPreview from "./CompanionPreview";
+import { useCompanionTile } from "../hooks/useCompanionTile";
 
 interface CompanionProps {
   companion: Companion;
 }
 
 export default function CompanionTile({ companion }: CompanionProps) {
-  const [isSpriteOpen, setIsSpriteOpen] = useState(false);
-  const [isReleaseModalOpen, setIsReleaseModalOpen] = useState(false);
-  const releaseCompanionAndGetOfflinium = useUser(
-    (state) => state.releaseCompanionAndGetOfflinium,
-  );
-
-  useEffect(() => {
-    if (!isSpriteOpen) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsSpriteOpen(false);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isSpriteOpen]);
+  const {
+    isSpriteOpen,
+    setIsSpriteOpen,
+    isReleaseModalOpen,
+    setIsReleaseModalOpen,
+    releaseCompanionAndGetOfflinium,
+  } = useCompanionTile();
 
   return (
     <>

@@ -1,9 +1,7 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
-import { useUser } from "../stores/userStore";
 import "../styles/Profile.css";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
+import { useProfile } from "../hooks/useProfile";
 
 const createdAtFormatter = new Intl.DateTimeFormat("fr-FR", {
   day: "numeric",
@@ -12,26 +10,14 @@ const createdAtFormatter = new Intl.DateTimeFormat("fr-FR", {
 });
 
 export default function Profile() {
-  const user = useUser((state) => state.user);
-  const updateName = useUser((state) => state.updateName);
-  const [name, setName] = useState(user.name);
-  const [isSaved, setIsSaved] = useState(false);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const trimmedName = name.trim();
-    if (!trimmedName) return;
-
-    updateName(trimmedName);
-    setName(trimmedName);
-    setIsSaved(true);
-  }
+  const { createdAt, handleSubmit, name, setName, isSaved, setIsSaved } =
+    useProfile();
 
   return (
     <Card
       ariaLabel="Profil de l'utilisateur"
-      title={user.name}
-      subtitle={`Membre depuis le ${createdAtFormatter.format(user.createdAt)}`}
+      title={name}
+      subtitle={`Membre depuis le ${createdAtFormatter.format(createdAt)}`}
     >
       <form className="profile-form" onSubmit={handleSubmit}>
         <label className="profile-label" htmlFor="profile-name-input">

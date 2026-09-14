@@ -1,11 +1,8 @@
-import { useOnlineStatus } from "../stores/onlineStatusStore";
-import { useUser } from "../stores/userStore";
+import { useOffliniumBadge } from "../hooks/useOffliniumBadge";
 import "../styles/OffliniumBadge.css";
 
 export default function OffliniumBadge() {
-  const { isOnline, totalOfflineMs } = useOnlineStatus();
-  const user = useUser((state) => state.user);
-  const currentOfflinium = user.getAvailableOfflinium(totalOfflineMs);
+  const { isOnline, currentOfflinium } = useOffliniumBadge();
 
   return (
     <div className={`header-offlinium-badge ${!isOnline ? "active" : ""}`}>
