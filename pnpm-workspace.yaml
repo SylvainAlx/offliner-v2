@@ -1,2 +1,24 @@
+minimumReleaseAge: 10080
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+
+blockExoticSubdeps: true
+trustLockfile: false
+
+strictDepBuilds: true
+dangerouslyAllowAllBuilds: false
+
+audit:
+  level: high
+
 minimumReleaseAgeExclude:
-  - '@rolldown/binding-openharmony-arm64@1.2.8'
+  - '@rolldown/*'
+  - 'rolldown@1.2.8'
+  - '@oxlint/*'
+  - 'oxlint@1.82.0'
+  - '@oxc-project/types@0.149.0'
+  - 'electron-to-chromium@1.5.425'
+  - 'node-releases@2.0.55'
+  - 'obug@2.2.1'
+
+trustPolicy: no-downgrade
