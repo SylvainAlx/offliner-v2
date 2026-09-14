@@ -2,16 +2,28 @@ import "../styles/DataBackup.css";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
 import { useDataBackup } from "../hooks/useDataBackup";
+import ConfirmModal from "./ui/ConfirmModal";
 
 export default function DataBackup() {
-  const { handleExport, handleImport, fileInputRef, feedback } =
-    useDataBackup();
+  const {
+    handleExport,
+    handleImport,
+    handleClearAll,
+    fileInputRef,
+    feedback,
+    isResetModalOpen,
+    setIsResetModalOpen,
+    isImportModalOpen,
+    setIsImportModalOpen,
+    isExportModalOpen,
+    setIsExportModalOpen,
+  } = useDataBackup();
 
   return (
     <Card
-      ariaLabel="Sauvegarde du compte"
-      title="Sauvegarde"
-      subtitle="Exportez ou récupérez vos données Offliner."
+      ariaLabel="Données du compte"
+      title="Données du compte"
+      subtitle="Exportez, importez ou effacez vos données Offliner."
     >
       <div className="data-backup-content">
         <p className="data-backup-description">
@@ -20,14 +32,23 @@ export default function DataBackup() {
         </p>
 
         <div className="data-backup-actions">
-          <Button onClick={handleExport} color="var(--accent)">
+          <Button
+            onClick={() => setIsExportModalOpen(true)}
+            color="var(--accent)"
+          >
             Exporter mes données
           </Button>
           <Button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => setIsImportModalOpen(true)}
             color="var(--green-dark)"
           >
             Importer une sauvegarde
+          </Button>
+          <Button
+            onClick={() => setIsResetModalOpen(true)}
+            color="var(--red-dark)"
+          >
+            Effacer toutes les données
           </Button>
           <input
             ref={fileInputRef}
@@ -48,6 +69,39 @@ export default function DataBackup() {
           </p>
         )}
       </div>
+      <ConfirmModal
+        isOpen={isResetModalOpen}
+        title="Effacer toutes les données ?"
+        message="Cette action supprimera toutes vos données Offliner. Continuer ?"
+        confirmLabel="Effacer"
+        onCancel={() => setIsResetModalOpen(false)}
+        onConfirm={() => {
+          handleClearAll();
+          setIsResetModalOpen(false);
+        }}
+      />
+      <ConfirmModal
+        isOpen={isImportModalOpen}
+        title="Importer une sauvegarde ?"
+        message="Cette action remplacera le compte actuel par la sauvegarde sélectionnée. Continuer ?"
+        confirmLabel="Importer"
+        onCancel={() => setIsImportModalOpen(false)}
+        onConfirm={() => {
+          setIsImportModalOpen(false);
+          fileInputRef.current?.click();
+        }}
+      />
+      <ConfirmModal
+        isOpen={isExportModalOpen}
+        title="Exporter les données ?"
+        message="Cette action exportera vos données Offliner au format JSON. Continuer ?"
+        confirmLabel="Exporter"
+        onCancel={() => setIsExportModalOpen(false)}
+        onConfirm={() => {
+          handleExport();
+          setIsExportModalOpen(false);
+        }}
+      />
     </Card>
   );
 }

@@ -9,6 +9,9 @@ export function useDataBackup() {
   const refreshOnlineStatus = useOnlineStatus((state) => state.refreshFromUser);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   type Feedback = {
     kind: "success" | "error";
@@ -93,11 +96,6 @@ export function useDataBackup() {
         throw new Error("format");
       }
 
-      const shouldImport = window.confirm(
-        "Cette action remplacera le compte actuel par la sauvegarde sélectionnée. Continuer ?",
-      );
-      if (!shouldImport) return;
-
       window.localStorage.setItem(USER_KEY, JSON.stringify(parsedData));
       syncWithStorage(navigator.onLine, Date.now());
       refreshOnlineStatus();
@@ -121,10 +119,29 @@ export function useDataBackup() {
     }
   }
 
+  function handleClearAll() {
+    if (typeof window === "undefined") return;
+
+    window.localStorage.removeItem(USER_KEY);
+    syncWithStorage(navigator.onLine, Date.now());
+    refreshOnlineStatus();
+    setFeedback({
+      kind: "success",
+      message: "Compte effacé avec succès.",
+    });
+  }
+
   return {
     feedback,
     fileInputRef,
     handleExport,
     handleImport,
+    handleClearAll,
+    isResetModalOpen,
+    setIsResetModalOpen,
+    isImportModalOpen,
+    setIsImportModalOpen,
+    isExportModalOpen,
+    setIsExportModalOpen,
   };
 }

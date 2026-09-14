@@ -29,3 +29,9 @@
   font-size: 0.78rem;
   line-height: 1.4;
 }
+
+@media (max-width: 390px) {
+  .village-section {
+    padding-inline: 16px;
+  }
+}

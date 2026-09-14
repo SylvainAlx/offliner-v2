@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { useUser } from "../stores/userStore";
 
 export function useTracking() {
-  const { resetTracking, lastChecked } = useOnlineStatus();
+  const { lastChecked } = useOnlineStatus();
   const { user } = useUser();
-  const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
   const nowRef = useMemo(
     () => ({ now: lastChecked ? lastChecked.getTime() : 0 }),
@@ -23,8 +22,5 @@ export function useTracking() {
     completedDays,
     openPeriod,
     now,
-    isResetModalOpen,
-    setIsResetModalOpen,
-    resetTracking,
   };
 }

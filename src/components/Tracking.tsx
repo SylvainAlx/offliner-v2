@@ -2,19 +2,10 @@ import "../styles/Tracking.css";
 import PeriodItem from "./PeriodItem";
 import DayItem from "./DayItem";
 import Card from "./ui/Card";
-import Button from "./ui/Button";
-import ConfirmModal from "./ui/ConfirmModal";
 import { useTracking } from "../hooks/useTracking";
 
 export default function Tracking() {
-  const {
-    completedDays,
-    openPeriod,
-    now,
-    isResetModalOpen,
-    setIsResetModalOpen,
-    resetTracking,
-  } = useTracking();
+  const { completedDays, openPeriod, now } = useTracking();
 
   return (
     <Card
@@ -23,31 +14,12 @@ export default function Tracking() {
       subtitle="Suivez vos périodes hors ligne et leur impact sur votre village."
     >
       <div className="tracking-header">
-        <div>
-          <p className="tracking-sub">
-            {completedDays.length} journée
-            {completedDays.length > 1 ? "s" : ""} enregistrée
-            {completedDays.length > 1 ? "s" : ""}
-          </p>
-        </div>
-        {(completedDays.length > 0 || openPeriod) && (
-          <Button onClick={() => setIsResetModalOpen(true)}>
-            Réinitialiser
-          </Button>
-        )}
+        <p className="tracking-sub">
+          {completedDays.length} journée
+          {completedDays.length > 1 ? "s" : ""} enregistrée
+          {completedDays.length > 1 ? "s" : ""}
+        </p>
       </div>
-
-      <ConfirmModal
-        isOpen={isResetModalOpen}
-        title="Réinitialiser l'historique ?"
-        message="Cette action supprimera toutes vos périodes hors ligne et les Offlinium associés."
-        confirmLabel="Réinitialiser"
-        onCancel={() => setIsResetModalOpen(false)}
-        onConfirm={() => {
-          resetTracking();
-          setIsResetModalOpen(false);
-        }}
-      />
 
       {openPeriod && <PeriodItem isOpen={true} now={now} period={openPeriod} />}
 

@@ -1,23 +1,23 @@
 import { useEffect } from "react";
-import type { PendingElement } from "../models/village";
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { useUser } from "../stores/userStore";
 import {
   COMPANION_INVOCATION_COST,
   HOUSE_CONSTRUCTION_COST,
 } from "../utils/constants";
+import type { PendingElement } from "../models/village";
 import { formatCountdown } from "../utils/format";
 
-export function useVillage() {
+export function useVillageConstructions() {
   const user = useUser((state) => state.user);
   const buildHouse = useUser((state) => state.buildHouse);
   const invokeCompanion = useUser((state) => state.invokeCompanion);
-  const cancelPendingElement = useUser((state) => state.cancelPendingElement);
+
   const completePendingElements = useUser(
     (state) => state.completePendingElements,
   );
   const { isOnline, totalOfflineMs } = useOnlineStatus();
-  const { houses, companions, pendingElements } = user.village;
+  const { houses, pendingElements } = user.village;
   const liveOfflinium = user.getAvailableOfflinium(totalOfflineMs);
   const pendingHouses = pendingElements.filter(
     (pending) => pending.type === "house",
@@ -25,7 +25,6 @@ export function useVillage() {
   const pendingCompanions = pendingElements.filter(
     (pending) => pending.type === "companion",
   );
-  const companionCapacity = user.village.companionCapacity;
 
   useEffect(() => {
     completePendingElements(totalOfflineMs);
@@ -74,16 +73,12 @@ export function useVillage() {
   };
 
   return {
-    isOnline,
     houses,
-    companionCapacity,
-    companions,
     canBuildHouse,
     buildHouse,
     canInvoke,
     invokeCompanion,
     pendingElements,
-    cancelPendingElement,
     pendingHouses,
     renderProgress,
     pendingCompanions,

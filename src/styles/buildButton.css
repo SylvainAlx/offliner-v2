@@ -1,0 +1,126 @@
+.craft-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-height: 150px;
+  padding: 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
+  background: linear-gradient(150deg, #ffffff 0%, #faf5ff 100%);
+  color: var(--gray-900);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.craft-tile:not(:disabled):hover {
+  box-shadow: 0 8px 18px rgba(170, 59, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.craft-tile:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.craft-tile:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.craft-tile-unavailable {
+  border-color: var(--gray-200);
+  background: var(--gray-50);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.craft-tile-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.craft-tile-icon {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 11px;
+  background: var(--accent-bg);
+  font-size: 1.2rem;
+}
+
+.craft-tile-cost {
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.craft-tile > strong {
+  font-size: 0.94rem;
+}
+
+.craft-tile-description {
+  margin-top: 2px;
+  color: var(--gray-600);
+  font-size: 0.75rem;
+}
+
+.craft-tile-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.craft-tile-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.craft-tile-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--gray-600);
+  font-size: 0.68rem;
+}
+
+.craft-tile-progress-label strong {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+}
+
+.craft-tile-progress-track {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(170, 59, 255, 0.12);
+}
+
+.craft-tile-progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 0.35s ease;
+}
+
+.craft-tile-action {
+  margin-top: auto;
+  padding-top: 12px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.craft-tile-unavailable .craft-tile-action {
+  color: var(--gray-600);
+}

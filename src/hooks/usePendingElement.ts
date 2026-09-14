@@ -1,0 +1,11 @@
+import { useOnlineStatus } from "../stores/onlineStatusStore";
+import { useUser } from "../stores/userStore";
+
+export function usePendingElement(){
+      const { totalOfflineMs } = useOnlineStatus();
+  const cancelPendingElement = useUser((state) => state.cancelPendingElement);
+  return {
+    totalOfflineMs,
+    cancelPendingElement,
+  }
+}
