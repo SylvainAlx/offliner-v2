@@ -1,100 +1,178 @@
 .companion-item {
+  --card-edge: #6b7280;
+  --card-surface: #f3f4f6;
+  --card-accent: #374151;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 9px;
+  align-items: stretch;
+  gap: 8px;
   min-width: 0;
-  padding: 10px;
-  border: 1px solid var(--gray-100);
-  border-radius: 12px;
-  background: var(--gray-50);
+  overflow: hidden;
+  padding: 9px;
+  border: 3px solid var(--card-edge);
+  border-radius: 15px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.8), transparent 42%),
+    var(--card-surface);
+  box-shadow:
+    0 5px 10px rgba(17, 24, 39, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.companion-item::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 9px;
+}
+
+.companion-card-child {
+  --card-edge: #9ca3af;
+  --card-surface: #f3f4f6;
+  --card-accent: #4b5563;
+}
+
+.companion-card-adolescent {
+  --card-edge: #15803d;
+  --card-surface: #ecfdf5;
+  --card-accent: #166534;
+}
+
+.companion-card-adult {
+  --card-edge: #7e22ce;
+  --card-surface: #faf5ff;
+  --card-accent: #6b21a8;
+}
+
+.companion-card-sage {
+  --card-edge: #b45309;
+  --card-surface: #fffbeb;
+  --card-accent: #92400e;
+}
+
+.companion-card-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
+  padding: 1px 2px 0;
+}
+
+.companion-card-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--gray-900);
+  font-size: 0.78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.companion-card-stage {
+  flex: 0 0 auto;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-accent) 12%, white);
+  color: var(--card-accent);
+  font-size: 0.58rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .companion-avatar {
-  appearance: none;
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
-  flex: 0 0 56px;
-  width: 56px;
-  height: 56px;
-  padding: 0;
-  border: 0;
-  border-radius: 12px;
-  background: var(--accent-bg);
-  color: var(--accent);
+  flex: 0 0 auto;
+  width: 100%;
+  height: 118px;
+  padding: 8px;
+  border: 2px solid color-mix(in srgb, var(--card-accent) 35%, white);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 35%, #ffffff 0%, transparent 52%),
+    color-mix(in srgb, var(--card-accent) 13%, white);
+  color: var(--card-accent);
   cursor: pointer;
   font-size: 1.1rem;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .companion-avatar:hover {
-  box-shadow: 0 4px 12px rgba(170, 59, 255, 0.2);
-  transform: scale(1.06);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--card-accent) 30%, transparent);
+  transform: translateY(-2px);
 }
 
 .companion-avatar:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--card-accent);
   outline-offset: 2px;
 }
 
 .companion-sprite {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 90px;
+  height: 90px;
   image-rendering: pixelated;
   shape-rendering: crispEdges;
 }
 
-.companion-avatar .companion-sprite {
-  width: 82%;
-  height: 82%;
-}
-
 .companion-details {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-width: 0;
-  gap: 2px;
-}
-
-.companion-details strong,
-.companion-details span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.companion-details strong {
-  color: var(--gray-800);
-  font-size: 0.76rem;
+  padding: 7px 5px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 25%, transparent);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.55);
   text-align: center;
 }
 
-.companion-details span {
+.companion-bonus-label,
+.companion-bonus-rate {
   color: var(--gray-600);
-  font-size: 0.68rem;
+  font-size: 0.59rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.companion-details .companion-stage {
-  color: var(--accent);
-  font-weight: 700;
+.companion-bonus-value {
+  color: var(--card-accent);
+  font-family: var(--mono);
+  font-size: 1rem;
+  line-height: 1.2;
 }
 
-.companion-details .companion-harvest-bonus {
-  color: var(--green-dark);
-  font-size: 0.62rem;
-  font-weight: 700;
-}
-
-.companion-details .companion-evolution-hint {
-  color: var(--gray-500);
-  font-size: 0.62rem;
+.companion-bonus-rate {
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 .companion-actions {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
+}
+
+.companion-actions .button {
+  min-height: 36px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-size: 0.8rem;
 }
 
 

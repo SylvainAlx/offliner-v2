@@ -43,13 +43,15 @@ export function BuildButton({
       aria-label={`Construire ${elementName} pour ${cost} orbes d'Offlinium`}
     >
       <span className="craft-tile-topline">
-        <span className="craft-tile-icon" aria-hidden="true">
-          {icon}
-        </span>
-        <span className="craft-tile-meta">
+        <span className="craft-tile-icon-wrapper">
+          <span className="craft-tile-icon" aria-hidden="true">
+            {icon}
+          </span>
           <span className="craft-tile-count" aria-label={countLabel}>
             {count}
           </span>
+        </span>
+        <span className="craft-tile-meta">
           <span className="craft-tile-cost">{cost} ⬡</span>
         </span>
       </span>

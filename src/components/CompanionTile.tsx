@@ -32,7 +32,13 @@ export default function CompanionTile({ companion }: CompanionProps) {
 
   return (
     <>
-      <li className="companion-item">
+      <li
+        className={"companion-item companion-card-" + companion.stage}
+      >
+        <div className="companion-card-header">
+          <strong className="companion-card-name">{companion.name}</strong>
+          <span className="companion-card-stage">{companion.stageLabel}</span>
+        </div>
         <button
           type="button"
           className="companion-avatar"
@@ -42,18 +48,12 @@ export default function CompanionTile({ companion }: CompanionProps) {
           <CompanionSprite id={companion.id} />
         </button>
         <span className="companion-details">
-          <strong>{companion.name}</strong>
-          <span className="companion-stage">{companion.stageLabel}</span>
-          {companion.harvestBonus > 0 && (
-            <span className="companion-harvest-bonus">
-              +{companion.harvestBonus} ⬡ toutes les{" "}
-              {OFFLINIUM_DELIVERY_INTERVAL / 1000} s hors ligne
-            </span>
-          )}
-          <span className="companion-evolution-hint">
-            {companion.canEvolve()
-              ? `Prochain stade : ${nextStageLabel} · ${evolutionCost.toLocaleString("fr-FR")} ⬡`
-              : "Stade maximal atteint"}
+          <span className="companion-bonus-label">Bonus de récolte</span>
+          <strong className="companion-bonus-value">
+            +{companion.harvestBonus} ⬡
+          </strong>
+          <span className="companion-bonus-rate">
+            toutes les {OFFLINIUM_DELIVERY_INTERVAL / 1000} s hors ligne
           </span>
         </span>
         <div className="companion-actions">
