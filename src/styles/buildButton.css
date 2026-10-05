@@ -43,6 +43,12 @@
   margin-bottom: 8px;
 }
 
+.craft-tile-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .craft-tile-icon {
   display: grid;
   place-items: center;
@@ -51,6 +57,18 @@
   border-radius: 11px;
   background: var(--accent-bg);
   font-size: 1.2rem;
+}
+
+.craft-tile-count {
+  padding: 3px 7px;
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--gray-800);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .craft-tile-cost {
@@ -67,6 +85,12 @@
   margin-top: 2px;
   color: var(--gray-600);
   font-size: 0.75rem;
+}
+
+.craft-tile-time {
+  margin-top: 2px;
+  color: var(--gray-500);
+  font-size: 0.7rem;
 }
 
 .craft-tile-progress-list {

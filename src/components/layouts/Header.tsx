@@ -1,4 +1,5 @@
 import OffliniumBadge from "../OffliniumBadge";
+import PopulationBadge from "../PopulationBadge";
 import "../../styles/Header.css";
 
 export default function Header({
@@ -23,7 +24,10 @@ export default function Header({
           <span aria-hidden="true">☰</span>
         </button>
         <h1>Offliner</h1>
-        <OffliniumBadge />
+        <div className="header-resources">
+          <PopulationBadge />
+          <OffliniumBadge />
+        </div>
       </div>
       <p className="app-subtitle">Votre village hors-ligne</p>
     </header>

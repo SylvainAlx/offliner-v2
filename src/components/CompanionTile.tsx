@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
 import ConfirmModal from "./ui/ConfirmModal";
-import InfoModal from "./ui/InfoModal";
 import CompanionSprite from "./CompanionSprite";
 import CompanionPreview from "./CompanionPreview";
 import { useCompanionTile } from "../hooks/useCompanionTile";
@@ -20,8 +19,6 @@ export default function CompanionTile({ companion }: CompanionProps) {
     setIsSpriteOpen,
     isReleaseModalOpen,
     setIsReleaseModalOpen,
-    isInfoModalOpen,
-    setIsInfoModalOpen,
     isEvolutionModalOpen,
     setIsEvolutionModalOpen,
     evolutionCost,
@@ -53,10 +50,6 @@ export default function CompanionTile({ companion }: CompanionProps) {
               {OFFLINIUM_DELIVERY_INTERVAL / 1000} s hors ligne
             </span>
           )}
-          <span>
-            Invoqué le{" "}
-            {new Date(companion.birthdate).toLocaleDateString("fr-FR")}
-          </span>
           <span className="companion-evolution-hint">
             {companion.canEvolve()
               ? `Prochain stade : ${nextStageLabel} · ${evolutionCost.toLocaleString("fr-FR")} ⬡`
@@ -64,7 +57,6 @@ export default function CompanionTile({ companion }: CompanionProps) {
           </span>
         </span>
         <div className="companion-actions">
-          <Button onClick={() => setIsInfoModalOpen(true)}>👋​</Button>
           <Button
             onClick={() => setIsEvolutionModalOpen(true)}
             color="var(--green-dark)"
@@ -96,13 +88,6 @@ export default function CompanionTile({ companion }: CompanionProps) {
           releaseCompanionAndGetOfflinium(companion.id);
           setIsReleaseModalOpen(false);
         }}
-      />
-
-      <InfoModal
-        isOpen={isInfoModalOpen}
-        title={`Bonjour de ${companion.name}`}
-        message={companion.sayHello()}
-        onClose={() => setIsInfoModalOpen(false)}
       />
 
       <ConfirmModal

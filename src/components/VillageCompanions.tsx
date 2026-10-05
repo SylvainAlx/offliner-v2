@@ -4,16 +4,13 @@ import VillageSection from "./VillageSection";
 import "../styles/VillageCompanions.css";
 
 export default function VillageCompanions() {
-  const { houses, companions, companionCapacity } = useVillageCompanions();
+  const { houses, companions } = useVillageCompanions();
 
   return (
     <VillageSection
       title="Vos compagnons"
       subtitle="Votre population utilise les places disponibles dans vos maisons."
     >
-      <span className="village-count">
-        {companions.length}/{companionCapacity}
-      </span>
       {companions.length > 0 ? (
         <ul className="companion-list">
           {companions.map((companion) => (

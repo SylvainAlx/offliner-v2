@@ -17,7 +17,8 @@ export function useVillageConstructions() {
     (state) => state.completePendingElements,
   );
   const { isOnline, totalOfflineMs } = useOnlineStatus();
-  const { houses, pendingElements } = user.village;
+  const { houses, companions, pendingElements } = user.village;
+  const companionCapacity = user.village.companionCapacity;
   const liveOfflinium = user.getAvailableOfflinium(totalOfflineMs);
   const pendingHouses = pendingElements.filter(
     (pending) => pending.type === "house",
@@ -74,6 +75,8 @@ export function useVillageConstructions() {
 
   return {
     houses,
+    companions,
+    companionCapacity,
     canBuildHouse,
     buildHouse,
     canInvoke,

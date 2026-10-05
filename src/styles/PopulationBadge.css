@@ -1,0 +1,23 @@
+.header-population-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.population-icon {
+  color: var(--green-dark);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.population-count {
+  color: var(--gray-900);
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 800;
+}

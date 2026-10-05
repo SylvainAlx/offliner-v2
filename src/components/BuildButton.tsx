@@ -12,6 +12,9 @@ interface BuildButtonProps {
     pendingElement: PendingElement,
     index: number,
   ) => React.ReactNode;
+  count: React.ReactNode;
+  countLabel: string;
+  description: string;
   liveOfflinium: number;
   craftTime: string;
   children: React.ReactNode;
@@ -25,6 +28,9 @@ export function BuildButton({
   cost,
   pendingElements,
   renderProgress,
+  count,
+  countLabel,
+  description,
   craftTime,
   children,
 }: BuildButtonProps) {
@@ -40,10 +46,16 @@ export function BuildButton({
         <span className="craft-tile-icon" aria-hidden="true">
           {icon}
         </span>
-        <span className="craft-tile-cost">{cost} ⬡</span>
+        <span className="craft-tile-meta">
+          <span className="craft-tile-count" aria-label={countLabel}>
+            {count}
+          </span>
+          <span className="craft-tile-cost">{cost} ⬡</span>
+        </span>
       </span>
       <strong>{elementName}</strong>
-      <span className="craft-tile-description">⏱️ {craftTime}</span>
+      <span className="craft-tile-description">{description}</span>
+      <span className="craft-tile-time">⏱️ {craftTime}</span>
 
       {pendingElements.length > 0 && (
         <span className="craft-tile-progress-list">

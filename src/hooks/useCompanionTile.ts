@@ -6,7 +6,6 @@ import { useUser } from "../stores/userStore";
 export function useCompanionTile(companion: Companion) {
   const [isSpriteOpen, setIsSpriteOpen] = useState(false);
   const [isReleaseModalOpen, setIsReleaseModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isEvolutionModalOpen, setIsEvolutionModalOpen] = useState(false);
   const user = useUser((state) => state.user);
   const evolveCompanion = useUser((state) => state.evolveCompanion);
@@ -40,8 +39,6 @@ export function useCompanionTile(companion: Companion) {
     setIsSpriteOpen,
     isReleaseModalOpen,
     setIsReleaseModalOpen,
-    isInfoModalOpen,
-    setIsInfoModalOpen,
     isEvolutionModalOpen,
     setIsEvolutionModalOpen,
     evolutionCost,
