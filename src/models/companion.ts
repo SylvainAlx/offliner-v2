@@ -1,5 +1,8 @@
 import { names, animals, uniqueNamesGenerator } from "unique-names-generator";
-import { COMPANION_EVOLUTION_COSTS } from "../utils/constants";
+import {
+  COMPANION_EVOLUTION_COSTS,
+  COMPANION_STAGE_HARVEST_BONUS,
+} from "../utils/constants";
 
 export const COMPANION_STAGES = [
   "child",
@@ -40,6 +43,11 @@ export class Companion {
 
   get stageLabel(): string {
     return COMPANION_STAGE_LABELS[this.stage];
+  }
+
+  get harvestBonus(): number {
+    if (this.stage === "child") return 0;
+    return COMPANION_STAGE_HARVEST_BONUS[this.stage];
   }
 
   get nextStage(): CompanionStage | undefined {

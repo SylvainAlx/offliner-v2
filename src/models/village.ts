@@ -82,6 +82,13 @@ export class Village {
     return this.houses.length * COMPANIONS_PER_HOUSE;
   }
 
+  get offliniumHarvestBonus(): number {
+    return this.companions.reduce(
+      (total, companion) => total + companion.harvestBonus,
+      0,
+    );
+  }
+
   get pendingCompanionCount(): number {
     return this.pendingElements.filter(
       (pending) => pending.type === "companion",

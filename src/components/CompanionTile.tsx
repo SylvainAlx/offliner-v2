@@ -1,5 +1,6 @@
 import type { Companion } from "../models/companion";
 import { COMPANION_STAGE_LABELS } from "../models/companion";
+import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
 import { createPortal } from "react-dom";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
@@ -46,6 +47,12 @@ export default function CompanionTile({ companion }: CompanionProps) {
         <span className="companion-details">
           <strong>{companion.name}</strong>
           <span className="companion-stage">{companion.stageLabel}</span>
+          {companion.harvestBonus > 0 && (
+            <span className="companion-harvest-bonus">
+              +{companion.harvestBonus} ⬡ toutes les{" "}
+              {OFFLINIUM_DELIVERY_INTERVAL / 1000} s hors ligne
+            </span>
+          )}
           <span>
             Invoqué le{" "}
             {new Date(companion.birthdate).toLocaleDateString("fr-FR")}

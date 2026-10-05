@@ -98,22 +98,28 @@ export class User {
     return copy;
   }
 
+  get offliniumHarvestRate(): number {
+    return 1 + this.village.offliniumHarvestBonus;
+  }
+
   addOfflinium(periodDurationMs: number): void {
     if (periodDurationMs < 0) {
       throw new Error("La durée du période doit être supérieure à 0.");
     } else {
-      this.offlinium += Math.floor(
-        periodDurationMs / OFFLINIUM_DELIVERY_INTERVAL,
-      );
+      this.offlinium +=
+        Math.floor(periodDurationMs / OFFLINIUM_DELIVERY_INTERVAL) *
+        this.offliniumHarvestRate;
     }
   }
 
   getCurrentPeriodOfflinium(totalOfflineMs: number): number {
     const completedOfflineMs = this.periodList.computeCompletedMs();
 
-    return Math.floor(
-      Math.max(0, totalOfflineMs - completedOfflineMs) /
-        OFFLINIUM_DELIVERY_INTERVAL,
+    return (
+      Math.floor(
+        Math.max(0, totalOfflineMs - completedOfflineMs) /
+          OFFLINIUM_DELIVERY_INTERVAL,
+      ) * this.offliniumHarvestRate
     );
   }
 

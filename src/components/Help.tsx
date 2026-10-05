@@ -29,6 +29,11 @@ export default function Help() {
         {COMPANION_EVOLUTION_COSTS.adult} ⬡), puis sage (
         {COMPANION_EVOLUTION_COSTS.sage} ⬡).
       </p>
+      <p>
+        Les compagnons évolués accélèrent la récolte : un adolescent ajoute +1
+        ⬡, un adulte +2 ⬡ et un sage +3 ⬡ à chaque tranche de{" "}
+        {OFFLINIUM_DELIVERY_INTERVAL / 1000} secondes hors ligne.
+      </p>
     </Card>
   );
 }
