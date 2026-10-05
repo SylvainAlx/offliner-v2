@@ -1,4 +1,4 @@
-import { Companion } from "./companion";
+import { Companion, COMPANION_STAGES, type CompanionStage } from "./companion";
 import { House } from "./house";
 import {
   COMPANIONS_PER_HOUSE,
@@ -42,11 +42,7 @@ export class Village {
     };
 
     this.companions = Array.isArray(record.companions)
-      ? record.companions.map((companionData) => {
-          const companion = new Companion();
-          Object.assign(companion, companionData);
-          return companion;
-        })
+      ? record.companions.map(loadCompanion)
       : [];
 
     this.houses = Array.isArray(record.houses)
@@ -230,6 +226,23 @@ export class Village {
     this.completePendingElements(currentOfflineMs);
     return completed.length;
   }
+}
+
+function loadCompanion(companionData: unknown): Companion {
+  const companion = new Companion();
+  if (typeof companionData === "object" && companionData !== null) {
+    Object.assign(companion, companionData);
+  }
+
+  if (!isCompanionStage(companion.stage)) companion.stage = "child";
+  return companion;
+}
+
+function isCompanionStage(value: unknown): value is CompanionStage {
+  return (
+    typeof value === "string" &&
+    (COMPANION_STAGES as readonly string[]).includes(value)
+  );
 }
 
 function getConstructionTime(type: VillageElementType): number {

@@ -38,6 +38,7 @@ export default function CompanionPreview({
           <CompanionSprite id={companion.id} />
         </div>
         <h2 id={`companion-preview-title-${companion.id}`}>{companion.name}</h2>
+        <p className="companion-preview-stage">{companion.stageLabel}</p>
         <p>
           Compagnon invoqué le{" "}
           {new Date(companion.birthdate).toLocaleDateString("fr-FR")}.

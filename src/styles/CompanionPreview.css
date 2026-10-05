@@ -78,6 +78,13 @@
   font-size: 0.78rem;
 }
 
+.companion-preview-dialog .companion-preview-stage {
+  margin-top: 10px;
+  margin-bottom: -1px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
 @keyframes companion-preview-fade-in {
   from {
     opacity: 0;

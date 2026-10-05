@@ -189,6 +189,16 @@ export class User {
     return true;
   }
 
+  evolveCompanion(companionId: string, totalOfflineMs: number): boolean {
+    const companion = this.village.getCompanion(companionId);
+    if (!companion || !companion.canEvolve()) return false;
+
+    const spend = this.spendOfflinium(companion.evolutionCost, totalOfflineMs);
+    if (!spend) return false;
+
+    return companion.evolve();
+  }
+
   cancelCompanionInvocation(
     companionId: string,
     currentOfflineMs: number,

@@ -1,5 +1,8 @@
 import "../styles/Help.css";
-import { OFFLINIUM_DELIVERY_INTERVAL } from "../utils/constants";
+import {
+  COMPANION_EVOLUTION_COSTS,
+  OFFLINIUM_DELIVERY_INTERVAL,
+} from "../utils/constants";
 import Card from "./ui/Card";
 
 export default function Help() {
@@ -19,6 +22,12 @@ export default function Help() {
       <p>
         Pour tester, activez le mode avion, coupez le Wi-Fi ou utilisez l'onglet
         Réseau (Network → Offline) de vos outils de développement.
+      </p>
+      <p>
+        Chaque compagnon commence enfant. Vous pouvez le faire évoluer en
+        adolescent ({COMPANION_EVOLUTION_COSTS.adolescent} ⬡), adulte (
+        {COMPANION_EVOLUTION_COSTS.adult} ⬡), puis sage (
+        {COMPANION_EVOLUTION_COSTS.sage} ⬡).
       </p>
     </Card>
   );

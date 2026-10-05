@@ -75,8 +75,19 @@
   font-size: 0.68rem;
 }
 
+.companion-details .companion-stage {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.companion-details .companion-evolution-hint {
+  color: var(--gray-500);
+  font-size: 0.62rem;
+}
+
 .companion-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 

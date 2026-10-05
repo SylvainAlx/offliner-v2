@@ -14,6 +14,7 @@ export interface UserStore {
   saveUser: () => void;
   buildHouse: (offlineMs: number) => boolean;
   invokeCompanion: (offlineMs: number) => boolean;
+  evolveCompanion: (companionId: string, offlineMs: number) => boolean;
   releaseCompanionAndGetOfflinium: (companionId: string) => boolean;
   cancelCompanionInvocation: (companionId: string, offlineMs: number) => boolean;
   completeCompanionInvocations: (offlineMs: number) => void;
@@ -82,6 +83,15 @@ export const useUser = create<UserStore>((set, get) => ({
       spend.stored,
       spend.openPeriod,
     );
+    next.saveUser();
+    set({ user: next });
+    return true;
+  },
+
+  evolveCompanion: (companionId, offlineMs) => {
+    const next = get().user.clone();
+    if (!next.evolveCompanion(companionId, offlineMs)) return false;
+
     next.saveUser();
     set({ user: next });
     return true;

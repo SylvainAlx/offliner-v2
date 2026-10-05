@@ -1,4 +1,5 @@
 import type { Companion } from "../models/companion";
+import { COMPANION_STAGE_LABELS } from "../models/companion";
 import { createPortal } from "react-dom";
 import "../styles/CompanionTile.css";
 import Button from "./ui/Button";
@@ -20,8 +21,16 @@ export default function CompanionTile({ companion }: CompanionProps) {
     setIsReleaseModalOpen,
     isInfoModalOpen,
     setIsInfoModalOpen,
+    isEvolutionModalOpen,
+    setIsEvolutionModalOpen,
+    evolutionCost,
+    canEvolve,
+    handleEvolution,
     releaseCompanionAndGetOfflinium,
-  } = useCompanionTile();
+  } = useCompanionTile(companion);
+  const nextStageLabel = companion.nextStage
+    ? COMPANION_STAGE_LABELS[companion.nextStage].toLowerCase()
+    : "suivant";
 
   return (
     <>
@@ -36,13 +45,31 @@ export default function CompanionTile({ companion }: CompanionProps) {
         </button>
         <span className="companion-details">
           <strong>{companion.name}</strong>
+          <span className="companion-stage">{companion.stageLabel}</span>
           <span>
             Invoqué le{" "}
             {new Date(companion.birthdate).toLocaleDateString("fr-FR")}
           </span>
+          <span className="companion-evolution-hint">
+            {companion.canEvolve()
+              ? `Prochain stade : ${nextStageLabel} · ${evolutionCost.toLocaleString("fr-FR")} ⬡`
+              : "Stade maximal atteint"}
+          </span>
         </span>
         <div className="companion-actions">
           <Button onClick={() => setIsInfoModalOpen(true)}>👋​</Button>
+          <Button
+            onClick={() => setIsEvolutionModalOpen(true)}
+            color="var(--green-dark)"
+            disabled={!canEvolve}
+            ariaLabel={
+              canEvolve
+                ? `Faire évoluer ${companion.name}`
+                : `${companion.name} est sage ou manque d'Offlinium`
+            }
+          >
+            {companion.canEvolve() ? "⬆️" : "✨"}
+          </Button>
           <Button
             onClick={() => setIsReleaseModalOpen(true)}
             color="var(--red-bg)"
@@ -69,6 +96,15 @@ export default function CompanionTile({ companion }: CompanionProps) {
         title={`Bonjour de ${companion.name}`}
         message={companion.sayHello()}
         onClose={() => setIsInfoModalOpen(false)}
+      />
+
+      <ConfirmModal
+        isOpen={isEvolutionModalOpen}
+        title={`Faire évoluer ${companion.name} ?`}
+        message={`Passer au stade ${nextStageLabel} coûte ${evolutionCost.toLocaleString("fr-FR")} Offlinium.`}
+        confirmLabel="Faire évoluer"
+        onCancel={() => setIsEvolutionModalOpen(false)}
+        onConfirm={handleEvolution}
       />
 
       {isSpriteOpen &&
