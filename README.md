@@ -20,7 +20,7 @@ prioritairement mobile, mais également utilisable sur ordinateur.
 
 Offliner v2 est la seconde version du projet. Une première implémentation avait
 initialement été développée en React Native avec Expo dans le dépôt
-[offliner](https://github.com/SylvainAlx/offliner).
+[offliner](https://github.com/SylvainAlx/offliner-v2).
 
 Cette version explore une approche web installable (PWA), tout en conservant
 l’idée centrale de transformer le temps hors ligne en progression dans un
@@ -69,12 +69,12 @@ L’application est ensuite accessible à l’adresse indiquée par Vite, en gé
 
 ## Scripts disponibles
 
-| Commande | Description |
-| --- | --- |
-| `pnpm dev` | Lance le serveur de développement Vite. |
-| `pnpm build` | Vérifie les types TypeScript et génère la version de production dans `dist/`. |
-| `pnpm preview` | Sert localement la version générée dans `dist/`. |
-| `pnpm lint` | Analyse le code avec Oxlint. |
+| Commande       | Description                                                                   |
+| -------------- | ----------------------------------------------------------------------------- |
+| `pnpm dev`     | Lance le serveur de développement Vite.                                       |
+| `pnpm build`   | Vérifie les types TypeScript et génère la version de production dans `dist/`. |
+| `pnpm preview` | Sert localement la version générée dans `dist/`.                              |
+| `pnpm lint`    | Analyse le code avec Oxlint.                                                  |
 
 Avant de publier une version, il est recommandé d’exécuter :
 

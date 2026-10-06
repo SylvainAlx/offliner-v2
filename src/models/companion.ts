@@ -73,8 +73,4 @@ export class Companion {
     this.stage = nextStage;
     return true;
   }
-
-  sayHello(): string {
-    return `Bonjour, je m'appelle ${this.name}. Je suis ${this.stageLabel.toLowerCase()}. J'ai été invoqué le ${new Date(this.birthdate).toLocaleDateString()} à ${new Date(this.birthdate).toLocaleTimeString()}.`;
-  }
 }
