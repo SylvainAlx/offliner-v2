@@ -10,7 +10,6 @@ import Status from "./components/Status";
 import Village from "./components/Village";
 import DataBackup from "./components/DataBackup";
 import Sidebar, { type AppSection } from "./components/layouts/Sidebar";
-import "./styles/App.css";
 
 function AppContent() {
   const { isOnline } = useOnlineStatus();
@@ -46,19 +45,24 @@ function AppContent() {
   };
 
   return (
-    <div className={`app-container ${isOnline ? "online" : "offline"}`}>
-      <Header
-        isMenuOpen={isMenuOpen}
-        onMenuOpen={() => setIsMenuOpen(true)}
-      />
-      <div className="app-layout">
+    <div
+      className={`min-h-screen flex flex-col transition-[background-color] duration-400 ease-[ease] p-0 m-0 ${
+        isOnline
+          ? "bg-[linear-gradient(180deg,var(--accent-bg)_0%,#ffffff_40%)]"
+          : "bg-[linear-gradient(180deg,var(--green-bg)_0%,#ffffff_40%)]"
+      }`}
+    >
+      <Header isMenuOpen={isMenuOpen} onMenuOpen={() => setIsMenuOpen(true)} />
+      <div className="flex items-start gap-5 w-[min(calc(100%-32px),1080px)] mx-auto flex-1 max-md:block max-md:w-full">
         <Sidebar
           activeSection={activeSection}
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
           onSelect={setActiveSection}
         />
-        <main className="app-main">{renderSection()}</main>
+        <main className="flex-[1_1_720px] flex flex-col gap-5 min-w-0 max-w-180 pb-6 w-full max-md:max-w-140 max-md:px-4 max-md:mx-auto">
+          {renderSection()}
+        </main>
       </div>
       <Footer />
     </div>
