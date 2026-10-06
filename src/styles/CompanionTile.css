@@ -1,7 +1,7 @@
 .companion-item {
-  --card-edge: #6b7280;
-  --card-surface: #f3f4f6;
-  --card-accent: #374151;
+  --card-edge: #64748b;
+  --card-surface: #f1f5f9;
+  --card-accent: #334155;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -20,6 +20,17 @@
     inset 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
+.companion-item::before {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  background: var(--card-edge);
+  content: "";
+}
+
 .companion-item::after {
   position: absolute;
   pointer-events: none;
@@ -30,27 +41,27 @@
 }
 
 .companion-card-child {
-  --card-edge: #9ca3af;
-  --card-surface: #f3f4f6;
-  --card-accent: #4b5563;
+  --card-edge: #3b82f6;
+  --card-surface: #eff6ff;
+  --card-accent: #1d4ed8;
 }
 
 .companion-card-adolescent {
-  --card-edge: #15803d;
-  --card-surface: #ecfdf5;
-  --card-accent: #166534;
+  --card-edge: #16a34a;
+  --card-surface: #f0fdf4;
+  --card-accent: #15803d;
 }
 
 .companion-card-adult {
-  --card-edge: #7e22ce;
-  --card-surface: #faf5ff;
-  --card-accent: #6b21a8;
+  --card-edge: #8b5cf6;
+  --card-surface: #f5f3ff;
+  --card-accent: #6d28d9;
 }
 
 .companion-card-sage {
-  --card-edge: #b45309;
+  --card-edge: #d97706;
   --card-surface: #fffbeb;
-  --card-accent: #92400e;
+  --card-accent: #b45309;
 }
 
 .companion-card-header {

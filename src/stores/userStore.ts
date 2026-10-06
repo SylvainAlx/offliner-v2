@@ -29,9 +29,11 @@ function createInitialUser(): User {
   user.loadUser();
 
   const isOnline = typeof navigator !== "undefined" ? navigator.onLine : true;
-  const now = Date.now();
-  user.discardOpenPeriod();
-  if (!isOnline) user.periodList.openPeriodIfNeeded(now);
+  // New offline periods are opened by onlineStatusStore after the
+  // confirmation delay. Keep a confirmed period across page reloads.
+  if (isOnline && user.periodList.getOpenPeriod() !== null) {
+    user.closeOfflinePeriod(Date.now());
+  }
   user.saveUser();
   return user;
 }
@@ -180,8 +182,6 @@ export const useUser = create<UserStore>((set, get) => ({
     user.loadUser();
     if (online) {
       user.closeOfflinePeriod(now);
-    } else {
-      user.periodList.openPeriodIfNeeded(now);
     }
     user.saveUser();
     set({ user });
