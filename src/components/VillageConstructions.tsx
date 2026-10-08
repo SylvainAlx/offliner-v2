@@ -3,10 +3,10 @@ import {
   COMPANION_INVOCATION_COST,
   HOUSE_CONSTRUCTION_COST,
 } from "../utils/constants";
-import { BuildButton } from "./BuildButton";
 import PendingElement from "./PendingElement";
 import VillageSection from "./VillageSection";
 import "../styles/VillageConstructions.css";
+import { CraftTile } from "./CraftTile";
 
 export default function VillageConstructions() {
   const {
@@ -31,7 +31,7 @@ export default function VillageConstructions() {
       subtitle="Chaque élément avance pendant vos périodes hors ligne."
     >
       <div className="craft-tile-grid">
-        <BuildButton
+        <CraftTile
           elementName="Maison"
           icon="🏠"
           description="Augmente la capacité de population de 4."
@@ -44,12 +44,14 @@ export default function VillageConstructions() {
           renderProgress={renderProgress}
           liveOfflinium={liveOfflinium}
           craftTime="2 min"
-        >
-          {canBuildHouse
-            ? "Construire"
-            : `Il vous manque ${HOUSE_CONSTRUCTION_COST - liveOfflinium} ⬡`}
-        </BuildButton>
-        <BuildButton
+          children={
+            canBuildHouse
+              ? "Construire"
+              : `Il vous manque ${HOUSE_CONSTRUCTION_COST - liveOfflinium} ⬡`
+          }
+          actionLabel="Construire"
+        />
+        <CraftTile
           elementName="Compagnon"
           icon="🐾"
           description="Ajoute un compagnon qui peut évoluer."
@@ -62,6 +64,7 @@ export default function VillageConstructions() {
           renderProgress={renderProgress}
           liveOfflinium={liveOfflinium}
           craftTime="1 min"
+          actionLabel="Invoquer"
         >
           {houses.length === 0
             ? "Construisez d'abord une maison"
@@ -70,7 +73,7 @@ export default function VillageConstructions() {
               : canInvoke
                 ? "Invoquer"
                 : `Il vous manque ${COMPANION_INVOCATION_COST - liveOfflinium} ⬡`}
-        </BuildButton>
+        </CraftTile>
       </div>
       {pendingElements.length > 0 && (
         <div

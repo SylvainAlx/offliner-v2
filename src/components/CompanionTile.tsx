@@ -32,12 +32,9 @@ export default function CompanionTile({ companion }: CompanionProps) {
 
   return (
     <>
-      <li
-        className={"companion-item companion-card-" + companion.stage}
-      >
+      <li className={"companion-item companion-card-" + companion.stage}>
         <div className="companion-card-header">
           <strong className="companion-card-name">{companion.name}</strong>
-          <span className="companion-card-stage">{companion.stageLabel}</span>
         </div>
         <button
           type="button"
@@ -47,6 +44,9 @@ export default function CompanionTile({ companion }: CompanionProps) {
         >
           <CompanionSprite id={companion.id} />
         </button>
+        <span className="companion-card-stage">
+          rang : {companion.stageLabel}
+        </span>
         <span className="companion-details">
           <span className="companion-bonus-label">Bonus de récolte</span>
           <strong className="companion-bonus-value">
@@ -57,23 +57,25 @@ export default function CompanionTile({ companion }: CompanionProps) {
           </span>
         </span>
         <div className="companion-actions">
-          <Button
-            onClick={() => setIsEvolutionModalOpen(true)}
-            color="var(--green-dark)"
-            disabled={!canEvolve}
-            ariaLabel={
-              canEvolve
-                ? `Faire évoluer ${companion.name}`
-                : `${companion.name} est sage ou manque d'Offlinium`
-            }
-          >
-            {companion.canEvolve() ? "⬆️" : "✨"}
-          </Button>
+          {companion.canEvolve && (
+            <Button
+              onClick={() => setIsEvolutionModalOpen(true)}
+              color="var(--green-dark)"
+              disabled={!canEvolve}
+              ariaLabel={
+                canEvolve
+                  ? `Faire évoluer ${companion.name}`
+                  : `${companion.name} est sage ou manque d'Offlinium`
+              }
+            >
+              Évoluer
+            </Button>
+          )}
           <Button
             onClick={() => setIsReleaseModalOpen(true)}
-            color="var(--red-bg)"
+            color="var(--red-primary)"
           >
-            ❌​
+            Libérer
           </Button>
         </div>
       </li>

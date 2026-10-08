@@ -1,5 +1,4 @@
 import { createPortal } from "react-dom";
-import "../../styles/Modal.css";
 import { useModal } from "../../hooks/useModal";
 
 interface ModalProps {
@@ -23,21 +22,31 @@ export default function Modal({
 
   return createPortal(
     <div
-      className="modal-backdrop"
+      className="fixed z-1100 inset-0 grid place-items-center p-6 bg-[rgba(17,24,39,0.68)] animate-[modal-fade-in_0.15s_ease-out]"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
       <div
-        className="modal-dialog"
+        className="w-[min(100%,380px)] p-6 border border-gray-100 rounded-[18px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.25)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={messageId}
       >
-        <h2 id={titleId}>{title}</h2>
-        <p id={messageId}>{message}</p>
+        <h2
+          id={titleId}
+          className="m-0 mb-2 text-gray-900 text-[1.05rem] font-medium"
+        >
+          {title}
+        </h2>
+        <p
+          id={messageId}
+          className="m-0 text-gray-600 text-[0.84rem] leading-normal"
+        >
+          {message}
+        </p>
         {children}
       </div>
     </div>,

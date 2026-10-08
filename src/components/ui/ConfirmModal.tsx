@@ -20,16 +20,11 @@ export default function ConfirmModal({
   onCancel,
 }: ConfirmModalProps) {
   return (
-    <Modal
-      isOpen={isOpen}
-      title={title}
-      message={message}
-      onClose={onCancel}
-    >
-      <div className="modal-actions">
+    <Modal isOpen={isOpen} title={title} message={message} onClose={onCancel}>
+      <div className="flex justify-end gap-2 mt-5">
         <button
           type="button"
-          className="modal-button modal-button-cancel"
+          className="min-h-10 px-3.5 py-2 border border-gray-200 rounded-[10px] bg-gray-50 text-gray-700 text-[0.8rem] font-bold cursor-pointer hover:bg-gray-100 transition-colors focus-visible:outline-2 focus-visible:outline-(--accent) focus-visible:outline-offset-2"
           onClick={onCancel}
           autoFocus
         >
@@ -37,7 +32,7 @@ export default function ConfirmModal({
         </button>
         <button
           type="button"
-          className="modal-button modal-button-confirm"
+          className="min-h-10 px-3.5 py-2 border border-transparent rounded-[10px] bg-(--red-bg) text-(--red-dark) text-[0.8rem] font-bold cursor-pointer hover:bg-[#fecaca] transition-colors focus-visible:outline-2 focus-visible:outline-(--accent) focus-visible:outline-offset-2"
           onClick={onConfirm}
         >
           {confirmLabel}

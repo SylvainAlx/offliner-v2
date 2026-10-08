@@ -1,7 +1,8 @@
 import type { PendingElement } from "../models/village";
-import "../styles/buildButton.css";
+import "../styles/CraftTile.css";
+import Button from "./ui/Button";
 
-interface BuildButtonProps {
+interface CraftTileProps {
   elementName: string;
   icon: string;
   canBuild: boolean;
@@ -18,9 +19,10 @@ interface BuildButtonProps {
   liveOfflinium: number;
   craftTime: string;
   children: React.ReactNode;
+  actionLabel: string;
 }
 
-export function BuildButton({
+export function CraftTile({
   elementName,
   icon,
   canBuild,
@@ -33,15 +35,10 @@ export function BuildButton({
   description,
   craftTime,
   children,
-}: BuildButtonProps) {
+  actionLabel,
+}: CraftTileProps) {
   return (
-    <button
-      type="button"
-      className={`craft-tile${canBuild ? "" : " craft-tile-unavailable"}`}
-      onClick={() => onClick()}
-      disabled={!canBuild}
-      aria-label={`Construire ${elementName} pour ${cost} orbes d'Offlinium`}
-    >
+    <div className={`craft-tile${canBuild ? "" : " craft-tile-unavailable"}`}>
       <span className="craft-tile-topline">
         <span className="craft-tile-icon-wrapper">
           <span className="craft-tile-icon" aria-hidden="true">
@@ -66,6 +63,13 @@ export function BuildButton({
       )}
 
       <span className="craft-tile-action">{children}</span>
-    </button>
+      <Button
+        disabled={!canBuild}
+        onClick={onClick}
+        aria-label={`Construire ${elementName} pour ${cost} orbes d'Offlinium`}
+      >
+        {actionLabel}
+      </Button>
+    </div>
   );
 }
