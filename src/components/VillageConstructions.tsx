@@ -44,13 +44,12 @@ export default function VillageConstructions() {
           renderProgress={renderProgress}
           liveOfflinium={liveOfflinium}
           craftTime="2 min"
-          children={
-            canBuildHouse
-              ? "Construire"
-              : `Il vous manque ${HOUSE_CONSTRUCTION_COST - liveOfflinium} ⬡`
-          }
           actionLabel="Construire"
-        />
+        >
+          {canBuildHouse
+            ? "Construire"
+            : `Il vous manque ${HOUSE_CONSTRUCTION_COST - liveOfflinium} ⬡`}
+        </CraftTile>
         <CraftTile
           elementName="Compagnon"
           icon="🐾"

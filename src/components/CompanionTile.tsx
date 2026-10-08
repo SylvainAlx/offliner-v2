@@ -57,7 +57,7 @@ export default function CompanionTile({ companion }: CompanionProps) {
           </span>
         </span>
         <div className="companion-actions">
-          {companion.canEvolve && (
+          {companion.canEvolve() && (
             <Button
               onClick={() => setIsEvolutionModalOpen(true)}
               color="var(--green-dark)"
