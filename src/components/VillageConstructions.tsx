@@ -29,7 +29,7 @@ export default function VillageConstructions() {
       title="À construire / invoquer"
       subtitle="Chaque élément avance pendant vos périodes hors ligne."
     >
-      <div className="flex flex-wrap justify-center gap-5">
+      <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
         <CraftTile
           elementName="Maison"
           icon="🏠"

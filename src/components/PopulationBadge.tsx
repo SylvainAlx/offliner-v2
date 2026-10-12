@@ -12,10 +12,13 @@ export default function PopulationBadge() {
       title={`Population : ${population}/${populationMax}`}
       aria-label={`Population : ${population} compagnon${population > 1 ? "s" : ""} sur ${populationMax} places`}
     >
-      <span className="text-[1.1rem] leading-none text-(--green-dark)" aria-hidden="true">
+      <span
+        className="text-[1.1rem] leading-none text-(--green-dark)"
+        aria-hidden="true"
+      >
         🐾
       </span>
-      <span className="font-[var(--mono)] text-base font-extrabold text-(--gray-900)">
+      <span className="font-(--mono) text-base text-(--gray-900)">
         {population}/{populationMax}
       </span>
     </div>

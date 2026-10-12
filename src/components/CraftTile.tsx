@@ -37,38 +37,46 @@ export function CraftTile({
   actionLabel,
 }: CraftTileProps) {
   return (
-    <div className="flex min-h-[150px] w-[280px] flex-col items-stretch rounded-2xl border border-(--accent-border) bg-[linear-gradient(150deg,#ffffff_0%,#faf5ff_100%)] p-3.5 text-left font-inherit text-(--gray-900)">
-      <span className="mb-2 flex items-center justify-between">
-        <span className="relative inline-flex">
+    <div className="flex w-full flex-col gap-3 rounded-2xl border border-dashed border-(--accent-border) bg-(--gray-50) p-4 text-left text-(--gray-900)">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
           <span
-            className="grid size-[35px] place-items-center rounded-[11px] bg-(--accent-bg) text-[1.2rem]"
+            className="grid size-12 shrink-0 place-items-center rounded-xl bg-(--accent-bg) text-[1.5rem] shadow-(--shadow-sm)"
             aria-hidden="true"
           >
             {icon}
           </span>
-          <span
-            className="absolute right-[-8px] bottom-[-6px] rounded-full border border-(--gray-200) bg-white p-[2px_5px] font-[var(--mono)] text-[0.65rem] font-extrabold leading-[1.1] whitespace-nowrap text-(--gray-800)"
-            aria-label={countLabel}
-          >
-            {count}
-          </span>
-        </span>
-        <span className="flex items-center gap-2">
-          <span className="text-[0.78rem] font-extrabold text-(--accent)">
+          <div className="min-w-0">
+            <span className="block text-[0.62rem] font-extrabold uppercase tracking-[0.08em] text-(--accent)">
+              Action
+            </span>
+            <strong className="block truncate text-base">{elementName}</strong>
+            <span className="mt-0.5 block text-[0.74rem] leading-[1.35] text-(--gray-600)">
+              {description}
+            </span>
+          </div>
+        </div>
+        <div className="shrink-0 text-right">
+          <span className="block font-(--mono) text-[0.82rem] text-(--accent)">
             {cost} ⬡
           </span>
+          <span className="mt-0.5 block text-[0.68rem] text-(--gray-500)">
+            ⏱️ {craftTime}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-2 border-t border-(--gray-200) pt-2.5">
+        <span
+          className="font-(--mono) text-[0.7rem] text-(--gray-700)"
+          aria-label={countLabel}
+        >
+          {count} · {countLabel}
         </span>
-      </span>
-      <strong className="text-[0.94rem]">{elementName}</strong>
-      <span className="mt-0.5 text-[0.75rem] text-(--gray-600)">
-        {description}
-      </span>
-      <span className="mt-0.5 text-[0.7rem] text-(--gray-500)">
-        ⏱️ {craftTime}
-      </span>
+      </div>
 
       {pendingElements.length > 0 && (
-        <span className="mt-3 flex flex-col gap-[7px]">
+        <span className="flex flex-col gap-1.75 rounded-lg bg-white/70 p-2">
           {pendingElements.map(renderProgress)}
         </span>
       )}
@@ -81,9 +89,10 @@ export function CraftTile({
         {children}
       </span>
       <Button
+        className="w-full"
         disabled={!canBuild}
         onClick={onClick}
-        aria-label={`Construire ${elementName} pour ${cost} orbes d'Offlinium`}
+        aria-label={`${actionLabel} ${elementName} pour ${cost} orbes d'Offlinium`}
       >
         {actionLabel}
       </Button>

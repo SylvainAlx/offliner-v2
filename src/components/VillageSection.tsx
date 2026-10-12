@@ -15,7 +15,7 @@ export default function VillageSection({
             {title}
           </h3>
           {subtitle && (
-            <p className="mt-[3px] text-[0.78rem] leading-[1.4] text-(--gray-600)">
+            <p className="mt-0.75 text-[0.78rem] leading-[1.4] text-(--gray-600)">
               {subtitle}
             </p>
           )}

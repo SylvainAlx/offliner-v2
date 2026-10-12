@@ -17,7 +17,7 @@ export default function DayItem({ day }: { day: OfflineDay }) {
             <span className="text-[0.9rem] font-bold tabular-nums text-(--gray-900)">
               {formatDuration(day.durationMs)}
             </span>
-            <span className="inline-flex items-center gap-[3px] rounded-full border border-[rgba(170,59,255,0.25)] bg-[rgba(170,59,255,0.1)] px-[7px] py-[2px] font-[var(--mono)] text-[0.725rem] font-bold text-(--accent)">
+            <span className="inline-flex items-center gap-0.75 rounded-full border border-[rgba(170,59,255,0.25)] bg-[rgba(170,59,255,0.1)] px-1.75 py-0.5 font-(--mono) text-[0.725rem] text-(--accent)">
               +{Math.floor(day.durationMs / OFFLINIUM_DELIVERY_INTERVAL)} ⬡
             </span>
           </div>

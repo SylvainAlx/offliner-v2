@@ -24,7 +24,7 @@ export default function Status() {
             {formatDate(lastChecked)}
           </span>
         </div>
-        <div className="mx-[-16px] flex items-center justify-between gap-3 border-y border-(--gray-100) bg-white px-4 py-3">
+        <div className="-mx-4 flex items-center justify-between gap-3 border-y border-(--gray-100) bg-white px-4 py-3">
           <span className="text-[0.85rem] font-medium text-(--gray-600)">
             Temps total hors ligne
           </span>

@@ -19,7 +19,7 @@ export default function PendingElement({
       </span>
       <button
         type="button"
-        className="flex-[0_0_auto] cursor-pointer rounded-[7px] border border-[#fecaca] bg-[#fff1f2] px-[7px] py-[5px] font-inherit text-[0.68rem] font-bold text-(--red-dark) hover:bg-[#ffe4e6] focus-visible:outline-2 focus-visible:outline-(--red-primary) focus-visible:outline-offset-1"
+        className="flex-[0_0_auto] cursor-pointer rounded-[7px] border border-[#fecaca] bg-[#fff1f2] px-1.75 py-1.25 font-inherit text-[0.68rem] font-bold text-(--red-dark) hover:bg-[#ffe4e6] focus-visible:outline-2 focus-visible:outline-(--red-primary) focus-visible:outline-offset-1"
         onClick={() => cancelPendingElement(pending.id, totalOfflineMs)}
       >
         Annuler · rembourser{" "}

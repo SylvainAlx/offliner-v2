@@ -30,7 +30,7 @@ export default function DataBackup() {
           progression ou la transférer sur un autre appareil.
         </p>
 
-        <div className="mt-4 grid gap-[9px] [&>button]:w-full">
+        <div className="mt-4 grid gap-2.25 [&>button]:w-full">
           <Button
             onClick={() => setIsExportModalOpen(true)}
             color="var(--accent)"
@@ -61,7 +61,7 @@ export default function DataBackup() {
 
         {feedback && (
           <p
-            className={`mt-[11px] text-[0.8rem] leading-[1.45] ${
+            className={`mt-2.75 text-[0.8rem] leading-[1.45] ${
               feedback.kind === "success"
                 ? "text-(--green-dark)"
                 : "text-(--red-dark)"

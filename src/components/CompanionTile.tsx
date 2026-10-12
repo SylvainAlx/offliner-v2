@@ -45,36 +45,36 @@ export default function CompanionTile({ companion }: CompanionProps) {
   return (
     <>
       <li
-        className={`relative flex w-[280px] flex-col items-stretch gap-2 overflow-hidden rounded-[15px] border-[3px] border-(--card-edge) bg-[linear-gradient(145deg,rgba(255,255,255,0.8),transparent_42%),var(--card-surface)] p-[9px] shadow-[0_5px_10px_rgba(17,24,39,0.14),inset_0_0_0_1px_rgba(255,255,255,0.8)] before:absolute before:inset-x-0 before:top-0 before:z-[1] before:h-1.5 before:bg-(--card-edge) before:content-[''] after:absolute after:inset-1 after:pointer-events-none after:rounded-[9px] after:border after:border-[rgba(255,255,255,0.7)] after:content-[''] ${STAGE_CLASSES[companion.stage]}`}
+        className={`grid w-full max-w-none grid-cols-[64px_minmax(0,1fr)] gap-x-3 gap-y-1 rounded-xl border border-l-4 border-(--card-edge) bg-(--card-surface) p-2.5 shadow-[0_2px_7px_rgba(17,24,39,0.1)] ${STAGE_CLASSES[companion.stage]}`}
       >
-        <div className="relative z-[1] flex min-w-0 flex-col items-center justify-between gap-1.5 p-[1px_2px_0]">
-          <strong className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-[var(--display)] text-base text-(--gray-900)">
-            {companion.name}
-          </strong>
-        </div>
         <button
           type="button"
-          className="relative z-[1] grid h-[118px] w-full flex-[0_0_auto] place-items-center cursor-pointer p-2 text-[1.1rem] text-(--card-accent) transition-transform duration-150 ease-out hover:scale-105 focus-visible:outline-2 focus-visible:outline-(--card-accent) focus-visible:outline-offset-2"
+          className="row-span-3 grid size-16 place-items-center self-start rounded-lg border border-white/70 bg-white/60 p-1 cursor-pointer text-(--card-accent) transition-transform duration-150 ease-out hover:scale-105 focus-visible:outline-2 focus-visible:outline-(--card-accent) focus-visible:outline-offset-2"
           onClick={() => setIsSpriteOpen(true)}
           aria-label={`Voir ${companion.name} en grand`}
         >
-          <CompanionSprite id={companion.id} />
+          <CompanionSprite
+            id={companion.id}
+            className="block size-12 [image-rendering:pixelated] [shape-rendering:crispEdges]"
+          />
         </button>
-        <span className="flex-[0_0_auto] bg-[color-mix(in_srgb,var(--card-accent)_12%,white)] p-[3px] text-center text-[0.58rem] font-extrabold uppercase text-(--card-accent)">
-          rang : {companion.stageLabel}
-        </span>
-        <span className="relative z-[1] flex min-w-0 flex-col items-center rounded-lg border border-[color-mix(in_srgb,var(--card-accent)_25%,transparent)] bg-[rgba(255,255,255,0.55)] p-[7px_5px] text-center">
-          <span className="text-[0.59rem] uppercase tracking-[0.02em] text-(--gray-600)">
-            Bonus de récolte
-          </span>
-          <strong className="font-[var(--mono)] text-base leading-tight text-(--card-accent)">
-            +{companion.harvestBonus} ⬡
+        <div className="flex min-w-0 items-start justify-between gap-2">
+          <strong className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-(--display) text-[0.95rem] text-(--gray-900)">
+            {companion.name}
           </strong>
-          <span className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[0.59rem] tracking-[0.02em] text-(--gray-600)">
+          <span className="shrink-0 rounded bg-[color-mix(in_srgb,var(--card-accent)_12%,white)] px-1.5 py-0.5 text-[0.58rem] font-extrabold uppercase text-(--card-accent)">
+            {companion.stageLabel}
+          </span>
+        </div>
+        <div className="flex min-w-0 items-center gap-2 text-[0.68rem] text-(--gray-600)">
+          <span className="font-(--mono) text-(--card-accent)">
+            +{companion.harvestBonus} ⬡
+          </span>
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
             toutes les {OFFLINIUM_DELIVERY_INTERVAL / 1000} s hors ligne
           </span>
-        </span>
-        <div className="relative z-[1] flex justify-center gap-1.5 [&>button]:min-h-9 [&>button]:rounded-lg [&>button]:px-[11px] [&>button]:py-[7px] [&>button]:text-[0.8rem]">
+        </div>
+        <div className="flex flex-wrap gap-1.5 [&>button]:min-h-8! [&>button]:rounded-lg! [&>button]:px-2! [&>button]:py-1! [&>button]:text-[0.72rem]!">
           {companion.canEvolve() && (
             <Button
               onClick={() => setIsEvolutionModalOpen(true)}

@@ -12,7 +12,7 @@ export default function OffliniumBadge() {
       }`}
     >
       <span className="text-[1.1rem] leading-none text-(--accent)">⬡</span>
-      <span className="font-[var(--mono)] text-base font-extrabold text-(--gray-900)">
+      <span className="font-(--mono) text-base text-(--gray-900)">
         {currentOfflinium}
       </span>
     </div>

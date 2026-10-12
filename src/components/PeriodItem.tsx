@@ -13,7 +13,7 @@ export default function PeriodItem({ isOpen, now, period }: PeriodItemProps) {
     <div
       className={`flex w-full gap-3 ${
         isOpen
-          ? "mx-[-20px] mb-3 rounded-xl border-b-0 bg-(--red-bg) px-5 py-3.5"
+          ? "-mx-5 mb-3 rounded-xl border-b-0 bg-(--red-bg) px-5 py-3.5"
           : "border-b border-(--gray-100) py-3 last:border-b-0"
       }`}
     >
@@ -44,7 +44,7 @@ export default function PeriodItem({ isOpen, now, period }: PeriodItemProps) {
               )}
             </span>
             <span
-              className={`inline-flex items-center gap-[3px] rounded-full border px-[7px] py-[2px] font-[var(--mono)] text-[0.725rem] font-bold text-(--accent) ${
+              className={`inline-flex items-center gap-0.75 rounded-full border px-1.75 py-0.5 font-(--mono) text-[0.725rem] text-(--accent) ${
                 isOpen
                   ? "border-[rgba(170,59,255,0.5)] bg-white shadow-[0_0_6px_rgba(170,59,255,0.2)]"
                   : "border-[rgba(170,59,255,0.25)] bg-[rgba(170,59,255,0.1)]"
@@ -65,7 +65,9 @@ export default function PeriodItem({ isOpen, now, period }: PeriodItemProps) {
           {isOpen
             ? "Débuté le " + formatDateTime(period.start)
             : period.end != null
-              ? formatDateTime(period.start) + " → " + formatDateTime(period.end)
+              ? formatDateTime(period.start) +
+                " → " +
+                formatDateTime(period.end)
               : ""}
         </div>
       </div>

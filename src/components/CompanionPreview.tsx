@@ -12,7 +12,7 @@ export default function CompanionPreview({
 }: CompanionPreviewProps) {
   return (
     <div
-      className="fixed inset-0 z-[1000] grid place-items-center p-6 bg-[rgba(17,24,39,0.68)] animate-[modal-fade-in_0.15s_ease-out]"
+      className="fixed inset-0 z-1000 grid place-items-center p-6 bg-[rgba(17,24,39,0.68)] animate-[modal-fade-in_0.15s_ease-out]"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) setIsSpriteOpen(false);
@@ -26,7 +26,7 @@ export default function CompanionPreview({
       >
         <button
           type="button"
-          className="absolute top-2.5 right-3 grid size-8 place-items-center rounded-full border-0 bg-(--gray-100) p-0 font-inherit text-[1.35rem] leading-none text-(--gray-700) outline-offset-2 focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+          className="absolute top-2.5 right-3 grid size-8 place-items-center rounded-full border-0 bg-(--gray-100) p-0 font-inherit text-[1.35rem] leading-none text-(--gray-700) outline-offset-2 focus-visible:outline-2 focus-visible:outline-(--accent)"
           onClick={() => setIsSpriteOpen(false)}
           aria-label="Fermer l’aperçu"
           autoFocus
@@ -40,15 +40,15 @@ export default function CompanionPreview({
           />
         </div>
         <h2
-          className="m-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap font-[var(--heading)] text-[1.05rem] font-medium text-(--gray-900)"
+          className="m-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap font-(--heading) text-[1.05rem] text-(--gray-900)"
           id={`companion-preview-title-${companion.id}`}
         >
           {companion.name}
         </h2>
-        <p className="mt-2.5 mb-[-1px] text-[0.78rem] font-bold text-(--accent)">
+        <p className="mt-2.5 -mb-px text-[0.78rem] font-bold text-(--accent)">
           {companion.stageLabel}
         </p>
-        <p className="mt-[5px] text-[0.78rem] text-(--gray-600)">
+        <p className="mt-1.25 text-[0.78rem] text-(--gray-600)">
           Compagnon invoqué le{" "}
           {new Date(companion.birthdate).toLocaleDateString("fr-FR")}.
         </p>
