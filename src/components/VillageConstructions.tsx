@@ -5,7 +5,6 @@ import {
 } from "../utils/constants";
 import PendingElement from "./PendingElement";
 import VillageSection from "./VillageSection";
-import "../styles/VillageConstructions.css";
 import { CraftTile } from "./CraftTile";
 
 export default function VillageConstructions() {
@@ -30,7 +29,7 @@ export default function VillageConstructions() {
       title="À construire / invoquer"
       subtitle="Chaque élément avance pendant vos périodes hors ligne."
     >
-      <div className="craft-tile-grid">
+      <div className="flex flex-wrap justify-center gap-5">
         <CraftTile
           elementName="Maison"
           icon="🏠"
@@ -76,7 +75,7 @@ export default function VillageConstructions() {
       </div>
       {pendingElements.length > 0 && (
         <div
-          className="craft-queue-cancel-list"
+          className="mt-2 flex flex-col gap-1.5"
           aria-label="Constructions en cours"
         >
           {pendingElements.map((pending, index) => (

@@ -1,6 +1,5 @@
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { formatDate, formatDuration } from "../utils/format";
-import "../styles/Status.css";
 import Card from "./ui/Card";
 
 export default function Status() {
@@ -16,14 +15,20 @@ export default function Status() {
           : "Votre appareil n'est pas connecté à Internet."
       }
     >
-      <div className="status-details">
-        <div className="detail-item">
-          <span className="detail-label">Dernier contrôle</span>
-          <span className="detail-value">{formatDate(lastChecked)}</span>
+      <div className="flex w-full flex-col gap-3 rounded-xl border border-(--gray-100) bg-(--gray-50) p-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-[0.85rem] font-medium text-(--gray-600)">
+            Dernier contrôle
+          </span>
+          <span className="max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap text-right text-[0.85rem] font-semibold text-(--gray-800)">
+            {formatDate(lastChecked)}
+          </span>
         </div>
-        <div className="detail-item highlight">
-          <span className="detail-label">Temps total hors ligne</span>
-          <span className="detail-value strong">
+        <div className="mx-[-16px] flex items-center justify-between gap-3 border-y border-(--gray-100) bg-white px-4 py-3">
+          <span className="text-[0.85rem] font-medium text-(--gray-600)">
+            Temps total hors ligne
+          </span>
+          <span className="max-w-[60%] overflow-hidden text-ellipsis whitespace-nowrap text-right text-base font-bold text-(--gray-900)">
             {formatDuration(totalOfflineMs)}
           </span>
         </div>

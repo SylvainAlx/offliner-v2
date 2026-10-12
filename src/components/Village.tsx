@@ -1,7 +1,6 @@
 import Card from "./ui/Card";
 import { useVillage } from "../hooks/useVillage";
 import VillageCompanions from "./VillageCompanions";
-import "../styles/Village.css";
 import VillageConstructions from "./VillageConstructions";
 
 export default function Village() {

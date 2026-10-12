@@ -1,7 +1,6 @@
 import { useVillageCompanions } from "../hooks/useVillageCompanions";
 import CompanionTile from "./CompanionTile";
 import VillageSection from "./VillageSection";
-import "../styles/VillageCompanions.css";
 
 export default function VillageCompanions() {
   const { houses, companions } = useVillageCompanions();
@@ -12,18 +11,23 @@ export default function VillageCompanions() {
       subtitle="Votre population utilise les places disponibles dans vos maisons."
     >
       {companions.length > 0 ? (
-        <ul className="companion-list">
+        <ul className="m-0 flex list-none flex-wrap justify-center gap-5 p-0">
           {companions.map((companion) => (
             <CompanionTile companion={companion} key={companion.id} />
           ))}
         </ul>
       ) : (
-        <div className="village-empty-state">
-          <span className="village-empty-icon" aria-hidden="true">
+        <div className="flex flex-col items-center gap-[3px] rounded-xl border border-dashed border-(--gray-200) p-[18px_12px] text-center text-(--gray-600)">
+          <span
+            className="mb-[3px] text-[1.4rem] text-(--accent)"
+            aria-hidden="true"
+          >
             ◇
           </span>
-          <p>Votre village n&apos;a pas encore de compagnon.</p>
-          <span>
+          <p className="text-[0.82rem] font-semibold text-(--gray-700)">
+            Votre village n&apos;a pas encore de compagnon.
+          </p>
+          <span className="text-[0.75rem]">
             {houses.length === 0
               ? "Construisez d'abord une maison."
               : "La première invocation vous attend."}

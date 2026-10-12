@@ -7,13 +7,16 @@ interface CompanionSpriteProps {
 
 export default function CompanionSprite({
   id,
-  className = "companion-sprite",
+  className,
 }: CompanionSpriteProps) {
   const sprite = generateCompanionSprite(id);
+  const spriteClassName =
+    className ??
+    "block size-[90px] [image-rendering:pixelated] [shape-rendering:crispEdges]";
 
   return (
     <svg
-      className={className}
+      className={spriteClassName}
       viewBox={`0 0 ${sprite.size} ${sprite.size}`}
       aria-hidden="true"
     >

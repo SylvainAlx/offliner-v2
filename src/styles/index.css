@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import '_media-queries.css';
 
 :root {
    --green-primary: #22c55e;
@@ -123,5 +122,25 @@ code {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes dotBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes home-page-orb-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.08);
   }
 }

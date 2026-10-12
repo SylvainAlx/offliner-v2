@@ -1,4 +1,3 @@
-import "../styles/DataBackup.css";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
 import { useDataBackup } from "../hooks/useDataBackup";
@@ -25,13 +24,13 @@ export default function DataBackup() {
       title="Données du compte"
       subtitle="Exportez, importez ou effacez vos données Offliner."
     >
-      <div className="data-backup-content">
-        <p className="data-backup-description">
+      <div className="w-full">
+        <p className="text-[0.85rem] leading-[1.55] text-(--gray-600)">
           Enregistrez votre compte dans un fichier JSON pour conserver votre
           progression ou la transférer sur un autre appareil.
         </p>
 
-        <div className="data-backup-actions">
+        <div className="mt-4 grid gap-[9px] [&>button]:w-full">
           <Button
             onClick={() => setIsExportModalOpen(true)}
             color="var(--accent)"
@@ -52,7 +51,7 @@ export default function DataBackup() {
           </Button>
           <input
             ref={fileInputRef}
-            className="data-backup-file-input"
+            className="absolute h-px w-px overflow-hidden [clip:rect(0_0_0_0)] [clip-path:inset(50%)] whitespace-nowrap"
             type="file"
             accept="application/json,.json"
             onChange={handleImport}
@@ -62,7 +61,11 @@ export default function DataBackup() {
 
         {feedback && (
           <p
-            className={`data-backup-feedback data-backup-feedback-${feedback.kind}`}
+            className={`mt-[11px] text-[0.8rem] leading-[1.45] ${
+              feedback.kind === "success"
+                ? "text-(--green-dark)"
+                : "text-(--red-dark)"
+            }`}
             role={feedback.kind === "error" ? "alert" : "status"}
           >
             {feedback.message}

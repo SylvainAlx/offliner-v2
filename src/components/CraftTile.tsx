@@ -1,5 +1,4 @@
 import type { PendingElement } from "../models/village";
-import "../styles/CraftTile.css";
 import Button from "./ui/Button";
 
 interface CraftTileProps {
@@ -38,31 +37,49 @@ export function CraftTile({
   actionLabel,
 }: CraftTileProps) {
   return (
-    <div className={`craft-tile${canBuild ? "" : " craft-tile-unavailable"}`}>
-      <span className="craft-tile-topline">
-        <span className="craft-tile-icon-wrapper">
-          <span className="craft-tile-icon" aria-hidden="true">
+    <div className="flex min-h-[150px] w-[280px] flex-col items-stretch rounded-2xl border border-(--accent-border) bg-[linear-gradient(150deg,#ffffff_0%,#faf5ff_100%)] p-3.5 text-left font-inherit text-(--gray-900)">
+      <span className="mb-2 flex items-center justify-between">
+        <span className="relative inline-flex">
+          <span
+            className="grid size-[35px] place-items-center rounded-[11px] bg-(--accent-bg) text-[1.2rem]"
+            aria-hidden="true"
+          >
             {icon}
           </span>
-          <span className="craft-tile-count" aria-label={countLabel}>
+          <span
+            className="absolute right-[-8px] bottom-[-6px] rounded-full border border-(--gray-200) bg-white p-[2px_5px] font-[var(--mono)] text-[0.65rem] font-extrabold leading-[1.1] whitespace-nowrap text-(--gray-800)"
+            aria-label={countLabel}
+          >
             {count}
           </span>
         </span>
-        <span className="craft-tile-meta">
-          <span className="craft-tile-cost">{cost} ⬡</span>
+        <span className="flex items-center gap-2">
+          <span className="text-[0.78rem] font-extrabold text-(--accent)">
+            {cost} ⬡
+          </span>
         </span>
       </span>
-      <strong>{elementName}</strong>
-      <span className="craft-tile-description">{description}</span>
-      <span className="craft-tile-time">⏱️ {craftTime}</span>
+      <strong className="text-[0.94rem]">{elementName}</strong>
+      <span className="mt-0.5 text-[0.75rem] text-(--gray-600)">
+        {description}
+      </span>
+      <span className="mt-0.5 text-[0.7rem] text-(--gray-500)">
+        ⏱️ {craftTime}
+      </span>
 
       {pendingElements.length > 0 && (
-        <span className="craft-tile-progress-list">
+        <span className="mt-3 flex flex-col gap-[7px]">
           {pendingElements.map(renderProgress)}
         </span>
       )}
 
-      <span className="craft-tile-action">{children}</span>
+      <span
+        className={`mt-auto pt-3 text-[0.75rem] font-extrabold ${
+          canBuild ? "text-(--accent)" : "text-(--gray-600)"
+        }`}
+      >
+        {children}
+      </span>
       <Button
         disabled={!canBuild}
         onClick={onClick}

@@ -53,8 +53,8 @@ export function useVillageConstructions() {
       : 0;
 
     return (
-      <span className="craft-tile-progress" key={pending.id}>
-        <span className="craft-tile-progress-label">
+      <span className="flex flex-col gap-1" key={pending.id}>
+        <span className="flex justify-between gap-2 text-[0.68rem] text-(--gray-600)">
           <span>
             {isActive
               ? isOnline
@@ -64,10 +64,18 @@ export function useVillageConstructions() {
                   : "Invocation"
               : `En file · position ${queueIndex + 1}`}
           </span>
-          <strong>{isActive ? formatCountdown(remaining) : "—"}</strong>
+          <strong className="font-[var(--mono)] text-[0.7rem] text-(--accent)">
+            {isActive ? formatCountdown(remaining) : "—"}
+          </strong>
         </span>
-        <span className="craft-tile-progress-track" aria-hidden="true">
-          <span style={{ width: `${progress}%` }} />
+        <span
+          className="block h-[5px] w-full overflow-hidden rounded-full bg-[rgba(170,59,255,0.12)]"
+          aria-hidden="true"
+        >
+          <span
+            className="block h-full rounded-[inherit] bg-(--accent) transition-[width] duration-[350ms] ease-out"
+            style={{ width: `${progress}%` }}
+          />
         </span>
       </span>
     );
