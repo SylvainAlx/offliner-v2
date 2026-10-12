@@ -45,11 +45,6 @@ progression est enregistrée dans une base IndexedDB locale, gérée par
 [Dexie](https://dexie.org/). Le profil courant est stocké dans la base
 `offliner`, dans l’enregistrement `profiles/current`.
 
-Lors de la première ouverture après la migration, l’ancienne clé
-`localStorage` `offliner:user` est importée automatiquement. Elle est conservée
-temporairement comme filet de sécurité et n’est plus utilisée par
-l’application.
-
 La section **Données du compte** permet d’exporter la progression dans un
 fichier JSON afin de la conserver ou de la transférer sur un autre appareil.
 Ce fichier peut contenir les données de jeu du profil local : conservez-le dans

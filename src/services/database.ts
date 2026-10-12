@@ -7,14 +7,8 @@ export interface StoredProfile {
   data: unknown;
 }
 
-export interface StorageMeta {
-  key: string;
-  value: string;
-}
-
 class OfflinerDatabase extends Dexie {
   profiles!: Table<StoredProfile, string>;
-  meta!: Table<StorageMeta, string>;
 
   constructor() {
     super("offliner");
@@ -22,6 +16,13 @@ class OfflinerDatabase extends Dexie {
     this.version(1).stores({
       profiles: "id",
       meta: "key",
+    });
+
+    // Remove the metadata store used only by the one-time localStorage
+    // migration. The profile data itself remains untouched.
+    this.version(2).stores({
+      profiles: "id",
+      meta: null,
     });
   }
 }
