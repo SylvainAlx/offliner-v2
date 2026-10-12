@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { User } from "../models/user";
 import { OFFLINE_CONFIRMATION_DELAY_MS } from "../utils/constants";
 import { useUser } from "./userStore";
 
@@ -19,12 +18,10 @@ function getInitialOnline(): boolean {
 
 function persistDirectly(now: number, isOnline: boolean): void {
   try {
-    const user = new User();
-    user.loadUser();
     // Do not create a period just because the page is being hidden. A period
     // is created by the visible countdown once its five seconds have elapsed.
-    if (isOnline) user.closeOfflinePeriod(now);
-    user.saveUser();
+    // The current Zustand state is persisted by the asynchronous repository.
+    useUser.getState().syncWithStorage(isOnline, now);
   } catch {
     // Persistence must not prevent the page lifecycle from completing.
   }

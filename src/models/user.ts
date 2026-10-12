@@ -1,10 +1,8 @@
 import {
   COMPANION_INVOCATION_COST,
   OFFLINIUM_DELIVERY_INTERVAL,
-  USER_KEY,
 } from "../utils/constants";
 import { PeriodList } from "./periodList";
-import { readStorage, writeStorage } from "../services/storage";
 import { Companion } from "./companion";
 import { Village } from "./village";
 import { House } from "./house";
@@ -31,9 +29,8 @@ export class User {
     this.createdAt = Date.now();
   }
 
-  loadUser(): void {
+  loadFromSnapshot(parsed: unknown): void {
     try {
-      const parsed = readStorage<unknown>(USER_KEY, null);
       if (!parsed) return;
 
       if (Array.isArray(parsed)) {
@@ -66,10 +63,6 @@ export class User {
       console.error("Error loading user data:", e);
       return;
     }
-  }
-
-  saveUser(): void {
-    writeStorage(USER_KEY, this);
   }
 
   clone(): User {

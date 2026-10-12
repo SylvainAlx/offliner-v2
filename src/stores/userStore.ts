@@ -4,14 +4,17 @@ import {
   COMPANION_INVOCATION_COST,
   HOUSE_CONSTRUCTION_COST,
 } from "../utils/constants";
+import { userRepository } from "../services/userRepository";
 
 export interface UserStore {
   user: User;
+  isHydrated: boolean;
+  hydrate: () => Promise<User>;
   updateName: (name: string) => void;
   openPeriodIfNeeded: (startTs: number) => void;
   closeAnyOpenPeriod: (endTs: number) => void;
   resetPeriods: () => void;
-  saveUser: () => void;
+  saveUser: () => Promise<void>;
   buildHouse: (offlineMs: number) => boolean;
   invokeCompanion: (offlineMs: number) => boolean;
   evolveCompanion: (companionId: string, offlineMs: number) => boolean;
@@ -20,26 +23,39 @@ export interface UserStore {
   completeCompanionInvocations: (offlineMs: number) => void;
   completePendingElements: (offlineMs: number) => void;
   cancelPendingElement: (elementId: string, offlineMs: number) => boolean;
-  reloadUser: () => User;
+  reloadUser: () => Promise<User>;
   syncWithStorage: (online: boolean, now: number) => User;
 }
 
-function createInitialUser(): User {
-  const user = new User();
-  user.loadUser();
+let writeQueue = Promise.resolve();
 
-  const isOnline = typeof navigator !== "undefined" ? navigator.onLine : true;
-  // New offline periods are opened by onlineStatusStore after the
-  // confirmation delay. Keep a confirmed period across page reloads.
-  if (isOnline && user.periodList.getOpenPeriod() !== null) {
-    user.closeOfflinePeriod(Date.now());
-  }
-  user.saveUser();
-  return user;
+function persist(user: User): Promise<void> {
+  writeQueue = writeQueue
+    .then(() => userRepository.save(user))
+    .catch((error: unknown) => {
+      console.error("Error saving user data:", error);
+    });
+
+  return writeQueue;
 }
 
 export const useUser = create<UserStore>((set, get) => ({
-  user: createInitialUser(),
+  user: new User(),
+  isHydrated: false,
+
+  hydrate: async () => {
+    const user = await userRepository.load();
+    const isOnline = typeof navigator !== "undefined" ? navigator.onLine : true;
+
+    // A confirmed period must be closed when the app starts online.
+    if (isOnline && user.periodList.getOpenPeriod() !== null) {
+      user.closeOfflinePeriod(Date.now());
+    }
+
+    set({ user, isHydrated: true });
+    await persist(user);
+    return user;
+  },
 
   updateName: (name) => {
     const trimmedName = name.trim();
@@ -47,13 +63,11 @@ export const useUser = create<UserStore>((set, get) => ({
 
     const next = get().user.clone();
     next.name = trimmedName;
-    next.saveUser();
     set({ user: next });
+    void persist(next);
   },
 
-  saveUser: () => {
-    get().user.saveUser();
-  },
+  saveUser: () => persist(get().user),
 
   buildHouse: (offlineMs) => {
     const next = get().user.clone();
@@ -66,8 +80,8 @@ export const useUser = create<UserStore>((set, get) => ({
       spend.stored,
       spend.openPeriod,
     );
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
@@ -76,17 +90,16 @@ export const useUser = create<UserStore>((set, get) => ({
     if (!next.village.canInvokeCompanion()) return false;
 
     const spend = next.spendOfflinium(COMPANION_INVOCATION_COST, offlineMs);
-    if (!spend) {
-      return false;
-    }
+    if (!spend) return false;
+
     next.village.addPendingElement(
       "companion",
       offlineMs,
       spend.stored,
       spend.openPeriod,
     );
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
@@ -94,8 +107,8 @@ export const useUser = create<UserStore>((set, get) => ({
     const next = get().user.clone();
     if (!next.evolveCompanion(companionId, offlineMs)) return false;
 
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
@@ -103,19 +116,17 @@ export const useUser = create<UserStore>((set, get) => ({
     const next = get().user.clone();
     if (!next.releaseCompanionAndGetOfflinium(companionId)) return false;
 
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
   cancelCompanionInvocation: (companionId, offlineMs) => {
     const next = get().user.clone();
-    if (!next.cancelCompanionInvocation(companionId, offlineMs)) {
-      return false;
-    }
+    if (!next.cancelCompanionInvocation(companionId, offlineMs)) return false;
 
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
@@ -127,31 +138,31 @@ export const useUser = create<UserStore>((set, get) => ({
     const next = get().user.clone();
     if (next.village.completePendingElements(offlineMs) === 0) return;
 
-    next.saveUser();
     set({ user: next });
+    void persist(next);
   },
 
   cancelPendingElement: (elementId, offlineMs) => {
     const next = get().user.clone();
     if (!next.cancelPendingElement(elementId, offlineMs)) return false;
 
-    next.saveUser();
     set({ user: next });
+    void persist(next);
     return true;
   },
 
   openPeriodIfNeeded: (startTs) => {
     const next = get().user.clone();
     next.periodList.openPeriodIfNeeded(startTs);
-    next.saveUser();
     set({ user: next });
+    void persist(next);
   },
 
   closeAnyOpenPeriod: (endTs) => {
     const next = get().user.clone();
     next.closeOfflinePeriod(endTs);
-    next.saveUser();
     set({ user: next });
+    void persist(next);
   },
 
   resetPeriods: () => {
@@ -166,25 +177,23 @@ export const useUser = create<UserStore>((set, get) => ({
         offlineMsAtStart: pending.offlineMsAtStart - elapsedOfflineMs,
       }),
     );
-    next.saveUser();
     set({ user: next });
+    void persist(next);
   },
 
-  reloadUser: () => {
-    const user = new User();
-    user.loadUser();
-    set({ user });
+  reloadUser: async () => {
+    const user = await userRepository.load();
+    set({ user, isHydrated: true });
     return user;
   },
 
+  // Kept as a compatibility name for the lifecycle store. The in-memory
+  // Zustand state is the source of truth; persistence is now asynchronous.
   syncWithStorage: (online, now) => {
-    const user = new User();
-    user.loadUser();
-    if (online) {
-      user.closeOfflinePeriod(now);
-    }
-    user.saveUser();
+    const user = get().user.clone();
+    if (online) user.closeOfflinePeriod(now);
     set({ user });
+    void persist(user);
     return user;
   },
 }));

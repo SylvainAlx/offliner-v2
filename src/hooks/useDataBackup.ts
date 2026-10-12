@@ -1,11 +1,11 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import { useOnlineStatus } from "../stores/onlineStatusStore";
 import { useUser } from "../stores/userStore";
-import { USER_KEY } from "../utils/constants";
+import { userRepository } from "../services/userRepository";
 
 export function useDataBackup() {
   const saveUser = useUser((state) => state.saveUser);
-  const syncWithStorage = useUser((state) => state.syncWithStorage);
+  const hydrate = useUser((state) => state.hydrate);
   const refreshOnlineStatus = useOnlineStatus((state) => state.refreshFromUser);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
@@ -54,13 +54,13 @@ export function useDataBackup() {
     );
   }
 
-  function handleExport() {
+  async function handleExport() {
     if (typeof window === "undefined") return;
 
-    saveUser();
-    const rawData = window.localStorage.getItem(USER_KEY);
+    await saveUser();
+    const data = await userRepository.exportSnapshot();
 
-    if (!rawData) {
+    if (!data) {
       setFeedback({
         kind: "error",
         message: "Impossible de lire les données du compte.",
@@ -68,7 +68,9 @@ export function useDataBackup() {
       return;
     }
 
-    const blob = new Blob([rawData], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -96,8 +98,9 @@ export function useDataBackup() {
         throw new Error("format");
       }
 
-      window.localStorage.setItem(USER_KEY, JSON.stringify(parsedData));
-      syncWithStorage(navigator.onLine, Date.now());
+      await saveUser();
+      await userRepository.importSnapshot(parsedData);
+      await hydrate();
       refreshOnlineStatus();
       setFeedback({
         kind: "success",
@@ -119,11 +122,12 @@ export function useDataBackup() {
     }
   }
 
-  function handleClearAll() {
+  async function handleClearAll() {
     if (typeof window === "undefined") return;
 
-    window.localStorage.removeItem(USER_KEY);
-    syncWithStorage(navigator.onLine, Date.now());
+    await saveUser();
+    await userRepository.clear();
+    await hydrate();
     refreshOnlineStatus();
     setFeedback({
       kind: "success",
